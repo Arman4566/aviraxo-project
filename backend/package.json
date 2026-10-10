@@ -1,0 +1,22 @@
+{
+  "name": "aviraxo-billing-backend",
+  "version": "2.0.0",
+  "description": "AVIRAXO / Galla Pro billing backend - Phase 1 (Express + PostgreSQL, Firebase login)",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "migrate": "node db/migrate.js",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "pg": "^8.12.0",
+    "zod": "^3.23.8"
+  }
+}

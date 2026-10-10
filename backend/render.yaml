@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: galla-pro-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run migrate && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FIREBASE_PROJECT_ID
+        value: galla-pro-b61ef
+      - key: DATABASE_URL
+        sync: false   # paste your Neon connection string in the Render dashboard
