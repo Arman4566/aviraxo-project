@@ -5,6 +5,9 @@ const validate = require('../middleware/validate');
 const asyncHandler = require('../utils/asyncHandler');
 const { parseId } = require('../utils/ids');
 const { DOC_TYPES, nextNumber, createInvoice, loadInvoice, cancelInvoice } = require('../services/invoices');
+const { convertToInvoice } = require('../services/documents');
+const { forbidden } = require('../utils/errors');
+const { can } = require('../utils/permissions');
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD').refine((s) => !Number.isNaN(Date.parse(`${s}T00:00:00Z`)), 'Not a real date');
 
@@ -29,6 +32,7 @@ const createSchema = z.object({
   payment_method: z.string().trim().max(40).default('Cash'),
   paid_amount: z.number().int().min(0).optional(),           // default: full amount, or nothing for Credit
   gst_enabled: z.boolean().default(false),
+  client_ref: z.string().trim().min(8).max(64).optional(),   // offline billing: makes a retried push idempotent
   notes: z.string().max(1000).default(''),
   terms: z.string().max(2000).default(''),
   lines: z.array(lineSchema).min(1, 'Add at least one item').max(200),
@@ -81,7 +85,16 @@ router.get('/:id', asyncHandler(async (req, res) => {
   res.json({ invoice: await loadInvoice({ query }, req.business.id, parseId(req.params.id)) });
 }));
 
-router.post('/:id/cancel', validate(z.object({ reason: z.string().trim().min(3).max(300) })), asyncHandler(async (req, res) => {
+// Estimate / proforma / delivery challan -> invoice (same items and totals; the original is marked as converted).
+router.post('/:id/convert', validate(z.object({ doc_type: z.enum(['gstInvoice', 'retailInvoice']).default('gstInvoice'), payment_method: z.string().trim().max(40).optional(),
+  invoice_date: isoDate.optional(), due_date: isoDate.nullable().optional() })), asyncHandler(async (req, res) => {
+  const b = req.body;
+  const invoice = await withTransaction((c) => convertToInvoice(c, { biz: req.business, userId: req.user.id, id: parseId(req.params.id), docType: b.doc_type,
+    paymentMethod: b.payment_method, invoiceDate: b.invoice_date, dueDate: b.due_date }));
+  res.status(201).json({ invoice });
+}));
+
+router.post('/:id/cancel', (req, _res, next) => (can(req.business.role, 'invoices.cancel') ? next() : next(forbidden('Your role cannot cancel invoices'))), validate(z.object({ reason: z.string().trim().min(3).max(300) })), asyncHandler(async (req, res) => {
   const id = parseId(req.params.id);
   await withTransaction((c) => cancelInvoice(c, { biz: req.business, userId: req.user.id, id, reason: req.body.reason }));
   res.json({ invoice: await loadInvoice({ query }, req.business.id, id) });

@@ -2,6 +2,8 @@ const config = require('../config');
 const { query } = require('../db');
 const { verifyFirebaseIdToken } = require('../utils/firebase');
 const { unauthorized, AppError } = require('../utils/errors');
+const { acceptInvitesFor } = require('../services/staff');
+const { withTransaction } = require('../db');
 const asyncHandler = require('../utils/asyncHandler');
 
 // firebase uid -> internal user id (avoids a database write on every request)
@@ -50,14 +52,36 @@ const requireAuth = asyncHandler(async (req, _res, next) => {
  * Tenant guard: loads the signed-in user's business into req.business.
  * Every business-owned query MUST filter by req.business.id, so one shop never sees another's data.
  */
-const requireBusiness = asyncHandler(async (req, _res, next) => {
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+async function findBusiness(userId, wanted) {
+  const params = [userId];
+  let pick = '';
+  if (wanted) { params.push(wanted); pick = 'AND b.id = $2'; }
   const { rows } = await query(
     `SELECT b.*, bu.role FROM businesses b JOIN business_users bu ON bu.business_id = b.id
-      WHERE bu.user_id = $1 AND bu.status = 'active' ORDER BY b.created_at LIMIT 1`,
-    [req.user.id]
-  );
-  if (!rows[0]) throw new AppError(428, 'Business setup required', { code: 'business_setup_required' });
-  req.business = rows[0];
+      WHERE bu.user_id = $1 AND bu.status = 'active' ${pick} ORDER BY b.created_at LIMIT 1`, params);
+  return rows[0];
+}
+
+/**
+ * Tenant guard: loads the signed-in user's business (with their role there) into req.business.
+ * With several firms the app sends X-Business-Id; without it the oldest firm is used. A user with no business yet
+ * first joins any staff invitations sent to their email. Every business-owned query MUST filter by req.business.id.
+ */
+const requireBusiness = asyncHandler(async (req, _res, next) => {
+  const wanted = String(req.headers['x-business-id'] || '').trim();
+  if (wanted && !UUID.test(wanted)) throw new AppError(400, 'Invalid X-Business-Id');
+  let biz = await findBusiness(req.user.id, wanted || null);
+  if (!biz && !wanted) {
+    await withTransaction((c) => acceptInvitesFor(c, { userId: req.user.id, email: req.user.email }));
+    biz = await findBusiness(req.user.id, null);
+  }
+  if (!biz) {
+    if (wanted) throw new AppError(403, 'You do not have access to this business');
+    throw new AppError(428, 'Business setup required', { code: 'business_setup_required' });
+  }
+  req.business = biz;
   next();
 });
 

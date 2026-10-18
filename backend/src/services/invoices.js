@@ -38,6 +38,11 @@ async function nextNumber(client, businessId, docType, { consume }) {
 }
 
 async function createInvoice(c, { biz, userId, body: b }) {
+  // Offline billing: the phone may push the same document twice. A repeated client_ref returns the invoice already saved.
+  if (b.client_ref) {
+    const { rows: dup } = await c.query('SELECT id FROM invoices WHERE business_id = $1 AND client_ref = $2', [biz.id, b.client_ref]);
+    if (dup[0]) return dup[0].id;
+  }
   const affectsBooks = BOOK_TYPES.includes(b.doc_type);
   const invoiceDate = b.invoice_date || todayIST();
 
@@ -115,14 +120,14 @@ async function createInvoice(c, { biz, userId, body: b }) {
     `INSERT INTO invoices (business_id, doc_type, affects_books, invoice_no, invoice_date, due_date, party_id, cash_customer,
         party_name, party_phone, party_gst_registered, business_name, business_address, business_gstin, business_state, currency,
         gst_enabled, place_of_supply, is_interstate, payment_method, notes, terms, subtotal, discount_total, taxable_value,
-        cgst, sgst, igst, tax_total, grand_total, amount_paid, status, created_by)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,0,$31,$32)
+        cgst, sgst, igst, tax_total, grand_total, amount_paid, status, created_by, client_ref)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,0,$31,$32,$33)
      RETURNING id`,
     [biz.id, b.doc_type, affectsBooks, invoiceNo, invoiceDate, dueDate, party ? party.id : null, !!b.cash_customer,
      party ? party.name : b.cash_customer ? 'Cash Customer' : '', party ? party.phone : '', party ? party.gst_registered : false,
      biz.name, biz.address || '', biz.gstin || '', biz.state || '', biz.currency || 'INR',
      gstEnabled, placeOfSupply, interstate, b.payment_method, b.notes || '', b.terms || '', calc.subtotal, calc.discount_total,
-     calc.taxable_value, calc.cgst, calc.sgst, calc.igst, calc.tax_total, calc.grand_total, status, userId]);
+     calc.taxable_value, calc.cgst, calc.sgst, calc.igst, calc.tax_total, calc.grand_total, status, userId, b.client_ref || null]);
   const invoiceId = inv[0].id;
 
   for (let i = 0; i < b.lines.length; i++) {

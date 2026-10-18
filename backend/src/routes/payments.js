@@ -17,6 +17,7 @@ const schema = z.object({
   payment_date: isoDate.optional(),
   reference_no: z.string().max(60).default(''),
   notes: z.string().max(300).default(''),
+  client_ref: z.string().trim().min(8).max(64).optional(),
   allocations: z.array(z.object({ invoice_id: z.number().int().positive(), amount: z.number().int().positive() })).max(100).optional(),
 });
 
@@ -28,12 +29,12 @@ router.post('/', validate(schema), asyncHandler(async (req, res) => {
     if (!rows[0]) throw notFound('Party not found');
     const r = await recordPayment(c, {
       businessId: req.business.id, userId: req.user.id, partyId: b.party_id, amount: b.amount, mode: normalizeMode(b.mode),
-      paymentDate: b.payment_date || todayIST(), referenceNo: b.reference_no, notes: b.notes, allocations: b.allocations,
+      paymentDate: b.payment_date || todayIST(), referenceNo: b.reference_no, notes: b.notes, allocations: b.allocations, clientRef: b.client_ref,
     });
-    await audit(c, { businessId: req.business.id, userId: req.user.id, entity: 'payment', entityId: r.payment.id, action: 'create', details: { amount: b.amount } });
+    if (!r.duplicate) await audit(c, { businessId: req.business.id, userId: req.user.id, entity: 'payment', entityId: r.payment.id, action: 'create', details: { amount: b.amount } });
     return r;
   });
-  res.status(201).json(out);
+  res.status(out.duplicate ? 200 : 201).json(out);
 }));
 
 const listQuery = z.object({

@@ -1,4 +1,4 @@
-// Applies db/schema.sql. Safe to run repeatedly (all statements are IF NOT EXISTS).
+// Applies db/schema.sql then db/phase2.sql. Safe to run repeatedly (all statements are IF NOT EXISTS).
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
@@ -11,8 +11,10 @@ const { Pool } = require('pg');
     ssl: /sslmode=require|neon\.tech/i.test(url) ? { rejectUnauthorized: false } : undefined,
   });
   try {
-    const sql = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
-    await pool.query(sql);
+    for (const file of ['schema.sql', 'phase2.sql']) {
+      await pool.query(fs.readFileSync(path.join(__dirname, file), 'utf8'));
+      console.log(`Applied ${file}`);
+    }
     console.log('Schema applied.');
   } catch (e) {
     console.error('Migration failed:', e.message);

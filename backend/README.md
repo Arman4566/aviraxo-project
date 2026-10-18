@@ -1,4 +1,4 @@
-# Galla Pro / Aviraxo Billing Backend (Phase 1) v2
+# Galla Pro Billing Backend (Phase 1) v2
 
 Node.js 22 + Express + PostgreSQL. The server is the **source of truth**: it numbers invoices, does the GST maths,
 moves stock and keeps customer balances. The Flutter app only sends what the user typed.
@@ -42,3 +42,27 @@ Errors: `{ "error": "human readable message" }` with 400/401/404/409/428. `428` 
 Per-business isolation · gap-free numbering per series · stock can't go negative (unless the business allows it) ·
 credit limit check · walk-in customers can't buy on credit · amount paid can never exceed the invoice ·
 GST only for GST-registered businesses; CGST+SGST within the state, IGST across states · cancelling restores stock.
+
+## Phase 2-6 additions
+
+Run `npm run migrate` once: it now applies `db/schema.sql` and then `db/phase2.sql` (safe to re-run).
+
+| Area | Endpoints |
+|---|---|
+| Payment tracking | `GET /api/receivables/summary`, `/aging`, `/parties`; `PUT /api/receivables/parties/:id/reminders` (pause/resume) |
+| Reminders | `GET/POST/PUT/DELETE /api/reminders/rules`, `GET /api/reminders/due`, `POST /api/reminders/compose`, `POST/GET /api/reminders/log` |
+| Promise to pay | `POST/GET /api/promises`, `PUT /api/promises/:id` |
+| Expenses | `/api/expenses` (CRUD, recurring), `/categories`, `/summary` |
+| Inventory | `GET /api/inventory/low-stock`, `GET /api/inventory/barcode/:code` |
+| Documents | `POST /api/invoices/:id/convert` (estimate / proforma / challan to invoice) |
+| Reports | `/api/reports/profit-loss`, `/day-book`, `/cash-flow`, `/cash-bank`, `/gstr1`, `/gstr3b` |
+| Team | `/api/staff` (+ `/invite`, `/invites/:id`, `/:id`, `/audit/log`); roles owner, manager, cashier, accountant, viewer |
+| Multi-firm | `X-Business-Id` header; `POST /api/business/new`; `GET /api/me` lists all firms |
+| Backup | `GET /api/backup/export`, `POST /api/backup/restore` (owner, into an empty firm) |
+| Insights | `/api/insights/summary`, `/forecast`, `/risk/:partyId`, `/check-invoice`, `/gstin/:gstin` |
+
+Offline sync: `POST /api/invoices`, `/api/payments` and `/api/expenses` accept `client_ref`; sending the same one twice returns the original instead of creating a duplicate.
+
+Reminders: the server works out who to chase and writes the message plus `wa.me`, `sms:`, `mailto:` and UPI links; the owner taps send. Fully automatic sending needs a WhatsApp Business API or SMS gateway account.
+
+Tests: `TEST_DB=<db> PGHOST=... PGUSER=... npm test` (82 tests; database tests need PostgreSQL).

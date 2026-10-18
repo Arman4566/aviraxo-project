@@ -3,7 +3,8 @@ const { z } = require('zod');
 const { query, withTransaction } = require('../db');
 const validate = require('../middleware/validate');
 const asyncHandler = require('../utils/asyncHandler');
-const { badRequest } = require('../utils/errors');
+const { badRequest, forbidden } = require('../utils/errors');
+const { can } = require('../utils/permissions');
 const { stateCodeFromName } = require('../utils/states');
 const { isValidGstin } = require('../utils/invoiceMath');
 const { audit } = require('../utils/audit');
@@ -56,10 +57,13 @@ router.get('/', asyncHandler(async (req, res) => {
 router.put('/', validate(schema), asyncHandler(async (req, res) => {
   const b = req.body;
   const business = await withTransaction(async (c) => {
+    const wanted = String(req.headers['x-business-id'] || '').trim();
     const { rows: existing } = await c.query(
-      `SELECT b.* FROM businesses b JOIN business_users bu ON bu.business_id = b.id
-        WHERE bu.user_id = $1 AND bu.status = 'active' ORDER BY b.created_at LIMIT 1 FOR UPDATE OF b`, [req.user.id]);
+      `SELECT b.*, bu.role FROM businesses b JOIN business_users bu ON bu.business_id = b.id
+        WHERE bu.user_id = $1 AND bu.status = 'active' ${wanted ? 'AND b.id = $2' : ''} ORDER BY b.created_at LIMIT 1 FOR UPDATE OF b`,
+      wanted ? [req.user.id, wanted] : [req.user.id]);
     const cur = existing[0];
+    if (cur && !can(cur.role, 'settings.manage')) throw forbidden('Only the owner or a manager can change business settings');
     if (!cur && !b.name) throw badRequest('name is required to set up a business');
 
     const m = (k, d = null) => (b[k] !== undefined ? b[k] : cur ? cur[k] : d);
@@ -88,6 +92,22 @@ router.put('/', validate(schema), asyncHandler(async (req, res) => {
     return rows[0];
   });
   res.json({ business: businessJson(business) });
+}));
+
+// Add another firm under the same login (multi-firm). The app then sends X-Business-Id to choose between them.
+router.post('/new', validate(schema.required({ name: true })), asyncHandler(async (req, res) => {
+  const b = req.body;
+  const business = await withTransaction(async (c) => {
+    const { rows } = await c.query(
+      `INSERT INTO businesses (owner_user_id, name, business_type, industry, gst_registered, gstin, address, state, state_code, pincode, currency, settings)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb) RETURNING *`,
+      [req.user.id, b.name, b.business_type || null, b.industry || null, !!b.gst_registered, b.gstin || null, b.address || null, b.state || null,
+       deriveStateCode(b.gstin, b.state), b.pincode || null, b.currency || 'INR', JSON.stringify(b.settings || {})]);
+    await c.query(`INSERT INTO business_users (business_id, user_id, role) VALUES ($1,$2,'owner')`, [rows[0].id, req.user.id]);
+    await audit(c, { businessId: rows[0].id, userId: req.user.id, entity: 'business', entityId: null, action: 'create' });
+    return rows[0];
+  });
+  res.status(201).json({ business: businessJson(business) });
 }));
 
 module.exports = router;

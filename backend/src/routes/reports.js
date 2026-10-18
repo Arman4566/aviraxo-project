@@ -6,6 +6,9 @@ const asyncHandler = require('../utils/asyncHandler');
 const { TODAY_SQL } = require('../utils/time');
 const { ITEM_SELECT, itemJson } = require('../services/itemQueries');
 const { PARTY_SELECT, partyJson } = require('../services/partyQueries');
+const fin = require('../services/finance');
+const { forbidden } = require('../utils/errors');
+const { can } = require('../utils/permissions');
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD');
 const range = z.object({ from: isoDate, to: isoDate, group: z.enum(['day', 'party', 'item']).default('day') });
@@ -76,5 +79,16 @@ router.get('/parties', asyncHandler(async (req, res) => {
   const topDues = parties.filter((p) => p.balance > 0).sort((a, b) => b.balance - a.balance).slice(0, 20);
   res.json({ customers, suppliers, top_dues: topDues });
 }));
+
+// ---- Phase 4: profit & loss, day book, cash & bank, cash flow, GST returns ----
+const rangeOnly = range.omit({ group: true });
+router.get('/profit-loss', validate(rangeOnly, 'query'), asyncHandler(async (req, res) => res.json(await fin.profitLoss({ query }, req.business, req.query))));
+router.get('/day-book', validate(z.object({ date: isoDate }), 'query'), asyncHandler(async (req, res) => res.json(await fin.dayBook({ query }, req.business.id, req.query.date))));
+router.get('/cash-flow', validate(rangeOnly, 'query'), asyncHandler(async (req, res) => res.json(await fin.cashFlow({ query }, req.business.id, req.query))));
+router.get('/cash-bank', asyncHandler(async (req, res) => res.json(await fin.cashAndBank({ query }, req.business))));
+
+const gstOnly = (req) => { if (!can(req.business.role, 'reports.gst')) throw forbidden('GST returns are only available to the owner, manager and accountant'); };
+router.get('/gstr1', validate(rangeOnly, 'query'), asyncHandler(async (req, res) => { gstOnly(req); res.json(await fin.gstr1({ query }, req.business, req.query)); }));
+router.get('/gstr3b', validate(rangeOnly, 'query'), asyncHandler(async (req, res) => { gstOnly(req); res.json(await fin.gstr3b({ query }, req.business, req.query)); }));
 
 module.exports = router;

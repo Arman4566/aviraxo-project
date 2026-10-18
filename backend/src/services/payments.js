@@ -7,13 +7,23 @@ const { badRequest } = require('../utils/errors');
  * - leftover stays unallocated (an advance) and still reduces the party's balance
  * partyId may be null for a walk-in cash sale (then allocations are required).
  */
-async function recordPayment(c, { businessId, userId, partyId, amount, mode, paymentDate, referenceNo, notes, allocations }) {
+async function recordPayment(c, { businessId, userId, partyId, amount, mode, paymentDate, referenceNo, notes, allocations, clientRef }) {
   if (!Number.isInteger(amount) || amount <= 0) throw badRequest('amount must be a positive whole number of paise');
 
+  // Offline billing: a repeated client_ref returns the payment already saved instead of recording it twice.
+  if (clientRef) {
+    const { rows: dup } = await c.query('SELECT * FROM payments WHERE business_id = $1 AND client_ref = $2', [businessId, clientRef]);
+    if (dup[0]) {
+      const { rows: al } = await c.query('SELECT invoice_id, amount FROM payment_allocations WHERE payment_id = $1', [dup[0].id]);
+      const allocated = al.reduce((s, a) => s + a.amount, 0);
+      return { payment: dup[0], allocations: al, allocated, unallocated: dup[0].amount - allocated, duplicate: true };
+    }
+  }
+
   const { rows } = await c.query(
-    `INSERT INTO payments (business_id, direction, party_id, payment_date, amount, mode, reference_no, notes, created_by)
-     VALUES ($1,'in',$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
-    [businessId, partyId || null, paymentDate, amount, mode, referenceNo || '', notes || '', userId]
+    `INSERT INTO payments (business_id, direction, party_id, payment_date, amount, mode, reference_no, notes, created_by, client_ref)
+     VALUES ($1,'in',$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+    [businessId, partyId || null, paymentDate, amount, mode, referenceNo || '', notes || '', userId, clientRef || null]
   );
   const payment = rows[0];
 
