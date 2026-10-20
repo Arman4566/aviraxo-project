@@ -1,0 +1,49 @@
+name: galla_pro
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.4.1
+  path: ^1.9.1
+  cupertino_icons: ^1.0.8
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  firebase_core: ^4.4.0
+  cloud_firestore: ^6.1.2
+  shared_preferences: ^2.5.4
+  url_launcher: ^6.3.2
+  firebase_auth: ^6.1.4
+  google_sign_in: ^7.2.0
+  http: ^1.2.2
+  share_plus: ^10.1.4        # backup export / share a reminder
+  path_provider: ^2.1.5      # temp file for backup export
+  mobile_scanner: ^6.0.2     # barcode scanning at billing and in the item form
+  image_picker: ^1.1.2       # photo of a bill for AI bill scan
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/galla_pro.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/images/galla_pro.png
+  min_sdk_android: 21

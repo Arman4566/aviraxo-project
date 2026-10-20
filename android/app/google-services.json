@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "736964508316",
+    "project_id": "galla-pro-b61ef",
+    "storage_bucket": "galla-pro-b61ef.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736964508316:android:d5a3a048dd121da1648b59",
+        "android_client_info": {
+          "package_name": "com.example.admin_mini_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736964508316-t18caika02o2vgefkqknpqfa6qc228hm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.admin_mini_app",
+            "certificate_hash": "3c02520efe9ee85a69f8bfa981de37479c8927b9"
+          }
+        },
+        {
+          "client_id": "736964508316-b5fkqba4evbji42a4i9aht4rgfcp4rp6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDakpl-06oYSkSf88vb1Wx_0Tkv_qLb2sw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736964508316-b5fkqba4evbji42a4i9aht4rgfcp4rp6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "736964508316-fkuh7ha3lcncitbr50ov1rt3t4bfevfl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gallaPro"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736964508316:android:de0cca795cc241aa648b59",
+        "android_client_info": {
+          "package_name": "com.example.galla_pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736964508316-ijq83ip7nkctpimd7c3vnk9mjg1949r6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.galla_pro",
+            "certificate_hash": "3c02520efe9ee85a69f8bfa981de37479c8927b9"
+          }
+        },
+        {
+          "client_id": "736964508316-b5fkqba4evbji42a4i9aht4rgfcp4rp6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDakpl-06oYSkSf88vb1Wx_0Tkv_qLb2sw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736964508316-b5fkqba4evbji42a4i9aht4rgfcp4rp6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "736964508316-fkuh7ha3lcncitbr50ov1rt3t4bfevfl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gallaPro"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

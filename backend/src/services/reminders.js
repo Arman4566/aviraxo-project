@@ -139,7 +139,7 @@ async function openInvoicesOf(db, businessId, partyId, ids = null) {
 }
 
 /** Builds one reminder for a customer, on demand (the "Remind" button). */
-async function compose(db, { business, partyId, invoiceIds = null, tone = null, language = 'en', template = '', today = todayIST() }) {
+async function compose(db, { business, partyId, invoiceIds = null, tone = null, language = 'en', template = '', messageOverride = '', today = todayIST() }) {
   const { rows: [party] } = await db.query(
     `SELECT p.*, (${BALANCE_SQL}) AS balance FROM parties p WHERE p.id = $1 AND p.business_id = $2`, [partyId, business.id]);
   if (!party) throw notFound('Party not found');
@@ -152,7 +152,7 @@ async function compose(db, { business, partyId, invoiceIds = null, tone = null, 
   const total = lines.reduce((s, i) => s + (i.grand_total - i.amount_paid), 0);
   const maxLate = Math.max(0, ...lines.map((i) => daysBetween(dueOf(i), today)));
   const chosenTone = tone || (maxLate > 30 ? 'final' : maxLate > 0 ? 'firm' : 'friendly');
-  const message = renderMessage({ tone: chosenTone, language, template, party: party.name, business: business.name, invoices: lines, upiId: settingsOf(business).upiId || '', today });
+  const message = messageOverride || renderMessage({ tone: chosenTone, language, template, party: party.name, business: business.name, invoices: lines, upiId: settingsOf(business).upiId || '', today });
   return {
     party_id: party.id, party_name: party.name, tone: chosenTone, language, message, total_due: total,
     invoices: lines.map((i) => ({ id: i.id || null, invoice_no: i.invoice_no, due_date: i.due_date || null, balance: i.grand_total - i.amount_paid })),

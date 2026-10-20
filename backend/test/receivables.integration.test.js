@@ -9,7 +9,9 @@ const rem = require('../src/services/reminders');
 
 const DB = process.env.TEST_DB;
 const skip = DB ? false : 'set TEST_DB to run';
-const TODAY = '2026-10-18';
+const { todayIST } = require('../src/utils/time');
+const TODAY = todayIST();
+const d = (n) => { const x = new Date(TODAY + 'T00:00:00Z'); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };
 const line = (rate) => ({ name: 'Goods', unit: 'pcs', hsn: '', gst_slab: 0, qty: 1, rate, discount_is_percent: true, discount_value: 0, tax_inclusive: false });
 
 test('Payment tracking and reminders on PostgreSQL', { skip }, async (t) => {
@@ -26,7 +28,7 @@ test('Payment tracking and reminders on PostgreSQL', { skip }, async (t) => {
   const { rows: [b2] } = await q(`INSERT INTO businesses (owner_user_id, name, state_code) VALUES ($1,'Other Shop','27') RETURNING *`, [u2.id]);
   const mkParty = async (name, phone, extra = '', biz = b) =>
     (await q(`INSERT INTO parties (business_id, name, phone, ${extra ? 'reminders_paused,' : ''} type) VALUES ($1,$2,$3,${extra ? 'true,' : ''}'customer') RETURNING id`, [biz.id, name, phone])).rows[0].id;
-  const credit = (party, rate, due, date = '2026-09-01', biz = b) =>
+  const credit = (party, rate, due, date = d(-47), biz = b) =>
     tx((c) => createInvoice(c, { biz, userId: u.id, body: { doc_type: 'gstInvoice', party_id: party, payment_method: 'Credit (Pay Later)', invoice_date: date, due_date: due, gst_enabled: false, notes: '', terms: '', cash_customer: false, lines: [line(rate)] } }));
 
   const asha = await mkParty('Asha Traders', '98765 43210');     // due today
@@ -36,11 +38,11 @@ test('Payment tracking and reminders on PostgreSQL', { skip }, async (t) => {
   const esha = await mkParty('Esha Boutique', '9000000002');      // 40 days overdue
   const other = await mkParty('Other tenant customer', '9000000003', '', b2);
   await credit(asha, 100000, TODAY);
-  await credit(bharat, 250000, '2026-10-15');
-  await credit(chitra, 80000, '2026-10-01');
-  await credit(dev, 60000, '2026-10-20');
-  await credit(esha, 500000, '2026-09-08');
-  await credit(other, 999900, '2026-10-01', '2026-09-01', b2);
+  await credit(bharat, 250000, d(-3));
+  await credit(chitra, 80000, d(-17));
+  await credit(dev, 60000, d(2));
+  await credit(esha, 500000, d(-40));
+  await credit(other, 999900, d(-17), d(-47), b2);
 
   await t.test('default rules are created once, per business', async () => {
     await tx((c) => rem.ensureDefaultRules(c, b.id));
@@ -107,24 +109,24 @@ test('Payment tracking and reminders on PostgreSQL', { skip }, async (t) => {
 
   await t.test('a promise to pay silences overdue nagging until its date, then is marked broken', async () => {
     const bharat = (await q(`SELECT id FROM parties WHERE name = 'Bharat Stores'`)).rows[0].id;
-    await assert.rejects(tx((c) => rem.createPromise(c, { businessId: b.id, userId: u.id, partyId: bharat, promisedDate: '2026-10-01', today: TODAY })), /past/);
-    const p = await tx((c) => rem.createPromise(c, { businessId: b.id, userId: u.id, partyId: bharat, promisedDate: '2026-10-22', amount: 250000, note: 'after Diwali stock sale', today: TODAY }));
+    await assert.rejects(tx((c) => rem.createPromise(c, { businessId: b.id, userId: u.id, partyId: bharat, promisedDate: d(-17), today: TODAY })), /past/);
+    const p = await tx((c) => rem.createPromise(c, { businessId: b.id, userId: u.id, partyId: bharat, promisedDate: d(4), amount: 250000, note: 'after Diwali stock sale', today: TODAY }));
     assert.equal(p.status, 'open');
     const list = await tx((c) => rem.dueToday(c, { business: b, today: TODAY }));
     assert.ok(!list.some((r) => r.party_name === 'Bharat Stores'), 'no nagging while the promise is open');
     const out = await rec.outstandingParties(s, b.id);
-    assert.equal(out.parties.find((x) => x.name === 'Bharat Stores').open_promise.promised_date, '2026-10-22');
+    assert.equal(out.parties.find((x) => x.name === 'Bharat Stores').open_promise.promised_date, d(4));
     // a newer promise replaces the old open one
-    await tx((c) => rem.createPromise(c, { businessId: b.id, userId: u.id, partyId: bharat, promisedDate: '2026-10-25', today: TODAY }));
+    await tx((c) => rem.createPromise(c, { businessId: b.id, userId: u.id, partyId: bharat, promisedDate: d(7), today: TODAY }));
     assert.equal((await rem.listPromises(s, b.id, { partyId: bharat, status: 'cancelled', today: TODAY })).length, 1);
     // date passes unpaid -> broken
-    const later = await rem.listPromises(s, b.id, { partyId: bharat, today: '2026-10-26' });
+    const later = await rem.listPromises(s, b.id, { partyId: bharat, today: d(8) });
     assert.deepEqual(later.map((x) => x.status).sort(), ['broken', 'cancelled']);
   });
 
   await t.test('paying in full marks the promise kept and clears the outstanding list', async () => {
     const dev = (await q(`SELECT id FROM parties WHERE name = 'Dev Agency'`)).rows[0].id;
-    await tx((c) => rem.createPromise(c, { businessId: b.id, userId: u.id, partyId: dev, promisedDate: '2026-10-19', today: TODAY }));
+    await tx((c) => rem.createPromise(c, { businessId: b.id, userId: u.id, partyId: dev, promisedDate: d(1), today: TODAY }));
     await tx((c) => recordPayment(c, { businessId: b.id, userId: u.id, partyId: dev, amount: 60000, mode: 'upi', paymentDate: TODAY }));
     const ps = await rem.listPromises(s, b.id, { partyId: dev, today: TODAY });
     assert.equal(ps[0].status, 'kept');
@@ -153,7 +155,7 @@ test('Payment tracking and reminders on PostgreSQL', { skip }, async (t) => {
 
   await t.test('risk uses payment history: Asha paid on the due date, so she scores low', async () => {
     const asha = (await q(`SELECT id FROM parties WHERE name = 'Asha Traders'`)).rows[0].id;
-    await credit(asha, 70000, '2026-10-30', TODAY);
+    await credit(asha, 70000, d(12), TODAY);
     const out = await rec.outstandingParties(s, b.id);
     const a = out.parties.find((p) => p.name === 'Asha Traders');
     assert.equal(a.risk_label, 'low');

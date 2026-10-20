@@ -66,3 +66,17 @@ Offline sync: `POST /api/invoices`, `/api/payments` and `/api/expenses` accept `
 Reminders: the server works out who to chase and writes the message plus `wa.me`, `sms:`, `mailto:` and UPI links; the owner taps send. Fully automatic sending needs a WhatsApp Business API or SMS gateway account.
 
 Tests: `TEST_DB=<db> PGHOST=... PGUSER=... npm test` (82 tests; database tests need PostgreSQL).
+
+
+### Analytics
+`GET /api/analytics/overview?from=YYYY-MM-DD&to=YYYY-MM-DD` (permission `reports.view`) returns totals, previous-period comparison, daily series, top items/customers, payment modes, expense categories, 6-month trend and weekday pattern. Cost/profit fields are hidden for roles without `items.see_cost`.
+
+### AI (Google Gemini)
+Set `GEMINI_API_KEY` (free key: https://aistudio.google.com/apikey) in the environment; `GEMINI_MODEL` defaults to `gemini-2.5-flash`, `AI_HOURLY_LIMIT` (default 40) caps calls per business per hour. With no key, AI endpoints answer 503 and everything else works.
+All need `insights.view`:
+- `GET /api/ai/status` - `{enabled}`
+- `POST /api/ai/ask` `{question, history[]}` - answers from a fresh read-only snapshot of the business (sales, dues, stock). Roles without cost access never get profit numbers.
+- `GET /api/ai/summary` - headline + 3-4 insight points with an action each.
+- `POST /api/ai/reminder-draft` `{party_id, tone?, language, hint?}` - AI rewording of the payment reminder; amounts are checked and the plain template is returned if the AI fails or drops the amount.
+- `POST /api/ai/scan-bill` `{image_base64, mime_type}` - items read from a bill photo (rates in paise). Needs `items.manage`.
+Customer/item names are passed to the AI as data with an instruction not to follow text inside them. Data is sent to Google, so mention it in your privacy policy.
