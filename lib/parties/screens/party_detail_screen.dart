@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 
 import '../../core/messenger.dart';
 import '../../data/models/party_entity.dart';
@@ -138,7 +139,7 @@ class _PartyDetailScreenState extends State<PartyDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(party.name, style: const TextStyle(fontWeight: FontWeight.w900)),
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
         actions: [
           IconButton(icon: const Icon(Icons.edit_rounded), onPressed: () => _edit(party)),
@@ -169,14 +170,14 @@ class _PartyDetailScreenState extends State<PartyDetailScreen> {
                   children: [
                     Text(party.name, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
                     const SizedBox(height: 6),
-                    Text(party.phone, style: const TextStyle(color: GPColors.ink2)),
+                    Text(party.phone, style: TextStyle(color: GPColors.ink2)),
                     if (party.email.isNotEmpty) ...[
                       const SizedBox(height: 4),
-                      Text(party.email, style: const TextStyle(color: GPColors.ink2)),
+                      Text(party.email, style: TextStyle(color: GPColors.ink2)),
                     ],
                     if (party.paymentTerm.isNotEmpty) ...[
                       const SizedBox(height: 4),
-                      Text("Terms: ${party.paymentTerm}", style: const TextStyle(color: GPColors.ink2)),
+                      Text("Terms: ${party.paymentTerm}", style: TextStyle(color: GPColors.ink2)),
                     ],
                     const SizedBox(height: 10),
                     DueBadge(party: party),
@@ -190,7 +191,7 @@ class _PartyDetailScreenState extends State<PartyDetailScreen> {
               child: Text("Transactions", style: TextStyle(fontWeight: FontWeight.w900)),
             ),
             if (entries.isEmpty)
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(24),
                 child: Center(child: Text("No invoices or payments yet.", style: TextStyle(color: GPColors.ink2))),
               ),
@@ -236,8 +237,8 @@ class _PartyDetailScreenState extends State<PartyDetailScreen> {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: GPColors.surface,
           border: Border(top: BorderSide(color: GPColors.line)),
         ),
         child: Row(

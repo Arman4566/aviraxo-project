@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
 import '../../widgets/gp_app_bar.dart';
 import '../../widgets/gp_buttons.dart';
@@ -69,8 +71,8 @@ class _OBIndustryScreenState extends State<OBIndustryScreen> {
                 TextField(
                   controller: _search,
                   onChanged: (_) => setState(() {}),
-                  decoration: const InputDecoration(
-                    hintText: "Search industry (optional)",
+                  decoration: InputDecoration(
+                    hintText: trs("Search industry (optional)"),
                     prefixIcon: Icon(Icons.search_rounded),
                   ),
                 ),
@@ -119,7 +121,7 @@ class _OBIndustryScreenState extends State<OBIndustryScreen> {
                               const SizedBox(height: 10),
                               Text(it.name, style: const TextStyle(fontWeight: FontWeight.w900)),
                               const SizedBox(height: 6),
-                              Text(it.desc, style: const TextStyle(color: GPColors.ink2)),
+                              Text(it.desc, style: TextStyle(color: GPColors.ink2)),
                             ],
                           ),
                         ),

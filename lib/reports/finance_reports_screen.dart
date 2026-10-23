@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
 
 import '../core/money.dart';
 import '../data/repositories/extras_repo.dart';
@@ -83,7 +85,7 @@ class _FinanceReportsScreenState extends State<FinanceReportsScreen> {
       body: ListView(padding: const EdgeInsets.all(16), children: [
         DropdownButtonFormField<String>(
           value: _report,
-          decoration: const InputDecoration(labelText: 'Report'),
+          decoration: InputDecoration(labelText: trs('Report')),
           items: [for (final e in reports.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
           onChanged: (v) {
             _report = v ?? _report;

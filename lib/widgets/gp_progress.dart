@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 import '../theme/gp_colors.dart';
 
 /// Shows "Step 3 of 7 · GST" and a filled bar. The text is parsed ("Step n of m") so existing callers keep working.
@@ -38,7 +39,7 @@ class GPProgressPill extends StatelessWidget {
               text,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.w800, color: GPColors.ink),
+              style: TextStyle(fontWeight: FontWeight.w800, color: GPColors.ink),
             ),
           ),
         ]),

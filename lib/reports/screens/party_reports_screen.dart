@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/party_repo.dart';
 import '../../data/models/party_entity.dart';
@@ -15,7 +16,7 @@ class PartyReportsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Party Reports", style: TextStyle(fontWeight: FontWeight.w900)),
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
       ),
       body: FutureBuilder<_PartyData>(
@@ -61,7 +62,7 @@ class PartyReportsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
-                  child: const Text("No dues found.", style: TextStyle(color: GPColors.ink2)),
+                  child: Text("No dues found.", style: TextStyle(color: GPColors.ink2)),
                 )
               else
                 ...d.topDues.take(5).map((p) {
@@ -82,7 +83,7 @@ class PartyReportsScreen extends StatelessWidget {
                 width: double.infinity,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: GPColors.line),
+                    side: BorderSide(color: GPColors.line),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: () {
@@ -161,7 +162,7 @@ class _sum extends StatelessWidget {
         children: [
           Text(value, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
           const SizedBox(height: 4),
-          Text(label, style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700)),
+          Text(label, style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700)),
         ],
       ),
     );

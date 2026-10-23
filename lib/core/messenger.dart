@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 
 /// App-wide snackbar access, so repositories and screens can show server errors without a BuildContext.
 class AppMessenger {

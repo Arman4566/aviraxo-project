@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../widgets/gp_buttons.dart';
 
@@ -51,7 +52,7 @@ class OBWelcomeScreen extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               "Galla Pro configures billing & inventory based on your business.",
@@ -80,7 +81,7 @@ class OBWelcomeScreen extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          const Text(
+          Text(
             "You can change all settings later.",
             style: TextStyle(
               color: GPColors.ink2,

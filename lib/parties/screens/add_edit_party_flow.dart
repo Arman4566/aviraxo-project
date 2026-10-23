@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
+import '../../widgets/glass.dart';
 import '../../core/messenger.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/party_repo.dart';
@@ -130,11 +133,8 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
 
     if (!mounted) return;
 
-    showModalBottomSheet(
+    showGlassSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-      ),
       builder: (_) => _SuccessSheet(
         isEdit: _isEdit,
         onCreateInvoice: () {
@@ -165,8 +165,7 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
           Navigator.pop(context);
           Navigator.pop(context, savedModel);
         },
-      ),
-    );
+      ),);
   }
 
   @override
@@ -265,19 +264,19 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
         const SizedBox(height: 10),
         TextField(
           controller: _name,
-          decoration: const InputDecoration(hintText: "Party Name"),
+          decoration: InputDecoration(hintText: trs("Party Name")),
         ),
         const SizedBox(height: 10),
         TextField(
           controller: _phone,
           keyboardType: TextInputType.phone,
-          decoration: const InputDecoration(hintText: "Phone Number"),
+          decoration: InputDecoration(hintText: trs("Phone Number")),
         ),
         const SizedBox(height: 10),
         TextField(
           controller: _email,
           keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(hintText: "Email (optional)"),
+          decoration: InputDecoration(hintText: trs("Email (optional)")),
         ),
         const SizedBox(height: 12),
         const Text("Party Type", style: TextStyle(fontWeight: FontWeight.w900)),
@@ -309,24 +308,24 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
         if (_gst) ...[
           TextField(
             controller: _gstin,
-            decoration: const InputDecoration(hintText: "GSTIN"),
+            decoration: InputDecoration(hintText: trs("GSTIN")),
           ),
           const SizedBox(height: 10),
         ],
         TextField(
           controller: _state,
-          decoration: const InputDecoration(hintText: "State"),
+          decoration: InputDecoration(hintText: trs("State")),
         ),
         const SizedBox(height: 10),
         TextField(
           controller: _billing,
-          decoration: const InputDecoration(hintText: "Billing Address"),
+          decoration: InputDecoration(hintText: trs("Billing Address")),
         ),
         const SizedBox(height: 10),
         TextField(
           controller: _shipping,
           decoration:
-          const InputDecoration(hintText: "Shipping Address (optional)"),
+          InputDecoration(hintText: trs("Shipping Address (optional)")),
         ),
       ],
     );
@@ -342,7 +341,7 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
         TextField(
           controller: _opening,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(hintText: "Opening Balance"),
+          decoration: InputDecoration(hintText: trs("Opening Balance")),
         ),
         SwitchListTile(
           value: _toReceive,
@@ -352,7 +351,7 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
         TextField(
           controller: _creditLimit,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(hintText: "Credit Limit"),
+          decoration: InputDecoration(hintText: trs("Credit Limit")),
         ),
         const SizedBox(height: 10),
         DropdownButtonFormField(
@@ -361,7 +360,7 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
               .map((e) => DropdownMenuItem(value: e, child: Text(e)))
               .toList(),
           onChanged: (v) => setState(() => _terms = v as String),
-          decoration: const InputDecoration(hintText: "Payment Terms"),
+          decoration: InputDecoration(hintText: trs("Payment Terms")),
         )
       ],
     );

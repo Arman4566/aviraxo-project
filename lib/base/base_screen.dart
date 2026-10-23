@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:ui' show ImageFilter;
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
 import '../models/onboarding_data.dart';
 import '../theme/gp_colors.dart';
+import '../core/prefs.dart';
 
 import '../dashboard/dashboard_screen.dart';
 import '../invoices/invoices_screen.dart';
@@ -38,7 +42,7 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _index = 0;
-  static const Color _accent = GPColors.primary;
+  static Color get _accent => GPColors.primary;
 
   final _repo = WorkspaceRepo();
 
@@ -50,39 +54,39 @@ class _BaseScreenState extends State<BaseScreen> {
 
     final items = <_TabItem>[
       _TabItem(
-        label: "Dashboard",
+        label: trs("Dashboard"),
         iconOutlined: Icons.home_outlined,
         iconFilled: Icons.home_rounded,
         screen: DashboardScreen(data: data),
       ),
       _TabItem(
-        label: "Invoices",
+        label: trs("Invoices"),
         iconOutlined: Icons.receipt_long_outlined,
         iconFilled: Icons.receipt_long_rounded,
         screen: InvoicesScreen(data: data),
       ),
       if (!isServices)
         _TabItem(
-          label: "Catalog",
+          label: trs("Catalog"),
           iconOutlined: Icons.storefront_outlined,
           iconFilled: Icons.storefront_rounded,
           screen: CatalogScreen(data: data),
         ),
       if (!isServices)
         _TabItem(
-          label: "Inventory",
+          label: trs("Inventory"),
           iconOutlined: Icons.inventory_2_outlined,
           iconFilled: Icons.inventory_2_rounded,
           screen: InventoryScreen(data: data),
         ),
       _TabItem(
-        label: "Parties",
+        label: trs("Parties"),
         iconOutlined: Icons.groups_outlined,
         iconFilled: Icons.groups_rounded,
         screen: PartiesScreen(data: data),
       ),
       _TabItem(
-        label: "Reports",
+        label: trs("Reports"),
         iconOutlined: Icons.bar_chart_outlined,
         iconFilled: Icons.bar_chart_rounded,
         screen: ReportsScreen(data: data),
@@ -150,11 +154,21 @@ class _BaseScreenState extends State<BaseScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: _accent,
+            backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
-            foregroundColor: Colors.white,
+            foregroundColor: GPColors.ink,
             elevation: 0,
             scrolledUnderElevation: 0,
+            // Frosted bar: blurs and tints whatever scrolls under it.
+            flexibleSpace: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(color: GPColors.surface, border: Border(bottom: BorderSide(color: GPColors.glassEdge))),
+                  child: const SizedBox.expand(),
+                ),
+              ),
+            ),
             leading: Builder(
               builder: (context) => IconButton(
                 icon: const Icon(Icons.menu_rounded),
@@ -173,7 +187,7 @@ class _BaseScreenState extends State<BaseScreen> {
                 builder: (context, n, _) => n == 0
                     ? const SizedBox.shrink()
                     : IconButton(
-                        tooltip: "$n waiting to sync",
+                        tooltip: trs("$n waiting to sync"),
                         icon: Badge(label: Text("$n"), child: const Icon(Icons.cloud_upload_outlined)),
                         onPressed: () async {
                           final sent = await Outbox.I.flush();
@@ -185,12 +199,12 @@ class _BaseScreenState extends State<BaseScreen> {
                       ),
               ),
               IconButton(
-                tooltip: "Payment reminders",
+                tooltip: trs("Payment reminders"),
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ReceivablesScreen(initialTab: 2))),
                 icon: const Icon(Icons.notifications_none_rounded),
               ),
               IconButton(
-                tooltip: "Settings",
+                tooltip: trs("Settings"),
                 onPressed: () => _openSettings(data),
                 icon: const Icon(Icons.settings_rounded),
               ),
@@ -258,9 +272,13 @@ class _BaseScreenState extends State<BaseScreen> {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),
-            child: Container(
-              decoration: const BoxDecoration(
-                border: Border(top: BorderSide(color: GPColors.line)),
+            child: ClipRect(
+              child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+              child: Container(
+              decoration: BoxDecoration(
+                color: GPColors.surface,
+                border: Border(top: BorderSide(color: GPColors.glassEdge)),
               ),
               child: BottomNavigationBar(
                 currentIndex: _index,
@@ -268,7 +286,7 @@ class _BaseScreenState extends State<BaseScreen> {
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: _accent,
                 unselectedItemColor: GPColors.ink2,
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
                 elevation: 0,
                 selectedIconTheme: const IconThemeData(size: 24),
                 unselectedIconTheme: const IconThemeData(size: 24),
@@ -280,9 +298,11 @@ class _BaseScreenState extends State<BaseScreen> {
                       icon: Icon(
                         i == _index ? tabs[i].iconFilled : tabs[i].iconOutlined,
                       ),
-                      label: tabs[i].label,
+                      label: trs(tabs[i].label),
                     ),
                 ],
+              ),
+            ),
               ),
             ),
           ),
@@ -352,7 +372,7 @@ class _AppDrawer extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(16, statusBar + 16, 16, 16),
             decoration: BoxDecoration(
               color: accent,
-              border: const Border(bottom: BorderSide(color: GPColors.line)),
+              border: Border(bottom: BorderSide(color: GPColors.line)),
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,6 +395,35 @@ class _AppDrawer extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          // Quick switches: language and light/dark.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 0),
+            child: Row(children: [
+              Expanded(
+                child: ValueListenableBuilder<String>(
+                  valueListenable: AppPrefs.I.language,
+                  builder: (_, lang, __) => SegmentedButton<String>(
+                    showSelectedIcon: false,
+                    segments: const [
+                      ButtonSegment(value: 'en', label: Text('English')),
+                      ButtonSegment(value: 'hi', label: Text('हिन्दी')),
+                    ],
+                    selected: {lang},
+                    onSelectionChanged: (v) => AppPrefs.I.setLanguage(v.first),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              ValueListenableBuilder<ThemeMode>(
+                valueListenable: AppPrefs.I.themeMode,
+                builder: (_, mode, __) => IconButton.filledTonal(
+                  tooltip: trs('Theme'),
+                  onPressed: () => AppPrefs.I.setThemeMode(GPColors.dark ? ThemeMode.light : ThemeMode.dark),
+                  icon: Icon(GPColors.dark ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
+                ),
+              ),
+            ]),
           ),
           Expanded(
             child: ListView.builder(

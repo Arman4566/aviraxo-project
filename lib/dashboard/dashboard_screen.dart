@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 import '../core/outbox.dart';
 import '../insights/analytics_screen.dart';
 import '../ai/ai_summary_card.dart';
@@ -372,10 +373,10 @@ class _FirstTimeBanner extends StatelessWidget {
               color: GPColors.primary.withOpacity(0.20),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Icons.auto_awesome_rounded, color: GPColors.ink),
+            child: Icon(Icons.auto_awesome_rounded, color: GPColors.ink),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -390,7 +391,7 @@ class _FirstTimeBanner extends StatelessWidget {
           ),
           TextButton(
             onPressed: onCreateInvoice,
-            child: const Text(
+            child: Text(
               "Create",
               style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.primaryDeep),
             ),
@@ -416,7 +417,7 @@ class _WorkspaceHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [GPColors.primary, GPColors.primaryDeep],
@@ -432,7 +433,7 @@ class _WorkspaceHeader extends StatelessWidget {
               Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.18), borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(color: GPColors.surface.withValues(alpha: 0.18), borderRadius: BorderRadius.circular(12)),
                 child: const Icon(Icons.store_rounded, color: Colors.white),
               ),
               const SizedBox(width: 12),
@@ -569,7 +570,7 @@ class _MetricCard extends StatelessWidget {
       width: 190,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),
@@ -594,7 +595,7 @@ class _MetricCard extends StatelessWidget {
           const Spacer(),
           Text(d.value, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
           const SizedBox(height: 4),
-          Text(d.sub, style: const TextStyle(color: GPColors.ink2)),
+          Text(d.sub, style: TextStyle(color: GPColors.ink2)),
         ],
       ),
     );
@@ -786,7 +787,7 @@ class _ActionTile extends StatelessWidget {
             const Spacer(),
             Text(item.title, style: const TextStyle(fontWeight: FontWeight.w900)),
             const SizedBox(height: 4),
-            const Text("Tap to open", style: TextStyle(color: GPColors.ink2)),
+            Text("Tap to open", style: TextStyle(color: GPColors.ink2)),
           ],
         ),
       ),
@@ -822,7 +823,7 @@ class _InvoiceTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),
@@ -835,7 +836,7 @@ class _InvoiceTile extends StatelessWidget {
               color: GPColors.primary.withOpacity(0.18),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Icons.receipt_long_rounded, color: GPColors.ink),
+            child: Icon(Icons.receipt_long_rounded, color: GPColors.ink),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -844,7 +845,7 @@ class _InvoiceTile extends StatelessWidget {
               children: [
                 Text("${inv.invoiceNo} • $party", style: const TextStyle(fontWeight: FontWeight.w900)),
                 const SizedBox(height: 4),
-                Text(date, style: const TextStyle(color: GPColors.ink2)),
+                Text(date, style: TextStyle(color: GPColors.ink2)),
               ],
             ),
           ),
@@ -865,7 +866,7 @@ class _EmptyActivity extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),
@@ -878,10 +879,10 @@ class _EmptyActivity extends StatelessWidget {
               color: GPColors.primary.withOpacity(0.18),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Icons.history_rounded, color: GPColors.ink),
+            child: Icon(Icons.history_rounded, color: GPColors.ink),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -977,7 +978,7 @@ class _TipCard extends StatelessWidget {
               children: [
                 Text(t.title, style: const TextStyle(fontWeight: FontWeight.w900)),
                 const SizedBox(height: 4),
-                Text(t.desc, style: const TextStyle(color: GPColors.ink2)),
+                Text(t.desc, style: TextStyle(color: GPColors.ink2)),
               ],
             ),
           ),
@@ -995,7 +996,7 @@ class _LoadingCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),

@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
 import '../../widgets/gp_app_bar.dart';
 import '../../widgets/gp_buttons.dart';
@@ -113,13 +115,13 @@ class _OBGstScreenState extends State<OBGstScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         GPTextField(
-                          label: "GSTIN",
+                          label: trs("GSTIN"),
                           hint: "e.g. 27ABCDE1234F1Z5",
                           controller: _gstinCtrl,
                           keyboardType: TextInputType.text,
                           textCapitalization: TextCapitalization.characters,
                           errorText: _gstinError,
-                          helperText: "15 characters. Leave empty to add it later in Settings.",
+                          helperText: trs("15 characters. Leave empty to add it later in Settings."),
                           onChanged: (_) => setState(() => _gstinError = null),
                         ),
                         const SizedBox(height: 12),
@@ -145,7 +147,7 @@ class _OBGstScreenState extends State<OBGstScreen> {
                           runSpacing: 10,
                           children: [0, 5, 12, 18, 28].map((s) {
                             return GPMultiChip(
-                              label: "$s%",
+                              label: trs("$s%"),
                               selected: widget.data.gstSlabs.contains(s),
                               onTap: () => toggleSlab(s),
                             );
@@ -155,12 +157,12 @@ class _OBGstScreenState extends State<OBGstScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     "You can change all GST settings later in Settings > Tax & GST.",
                     style: TextStyle(color: GPColors.ink2),
                   ),
                 ] else if (registered == false) ...[
-                  const Text(
+                  Text(
                     "We’ll use non-GST invoices.",
                     style: TextStyle(color: GPColors.ink2),
                   ),

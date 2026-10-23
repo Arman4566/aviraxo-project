@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
 import '../../widgets/gp_app_bar.dart';
 import '../../widgets/gp_buttons.dart';
@@ -79,7 +80,7 @@ class _OBTeamScreenState extends State<OBTeamScreen> {
                 const SizedBox(height: 14),
 
                 if (sel == "Me + staff") ...[
-                  const Text("Select roles (demo)",
+                  Text("Select roles (demo)",
                       style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.ink)),
                   const SizedBox(height: 10),
                   ...roles.map((r) {
@@ -95,7 +96,7 @@ class _OBTeamScreenState extends State<OBTeamScreen> {
                       ),
                     );
                   }),
-                  const Text(
+                  Text(
                     "You can invite staff any time from Settings > Users & Roles.",
                     style: TextStyle(color: GPColors.ink2),
                   )

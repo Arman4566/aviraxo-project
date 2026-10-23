@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
 import '../theme/gp_colors.dart';
 import 'gp_progress.dart';
 
@@ -23,14 +25,14 @@ class GPAppBar extends StatelessWidget {
           IconButton(
             onPressed: onBack,
             icon: const Icon(Icons.arrow_back_rounded),
-            tooltip: "Back",
+            tooltip: trs("Back"),
           ),
           Expanded(
             child: GPProgressPill(text: stepLabel),
           ),
           TextButton(
             onPressed: onSkip,
-            child: const Text(
+            child: Text(
               "Skip",
               style: TextStyle(
                 fontWeight: FontWeight.w800,

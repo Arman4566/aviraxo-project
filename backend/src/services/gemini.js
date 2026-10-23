@@ -31,6 +31,9 @@ async function generate({ system, contents, json = false, temperature = 0.3, max
   }
   if (!res.ok) {
     if (res.status === 429) throw new AppError(429, 'AI usage limit reached for now. Please try again in a minute.');
+    let detail = '';
+    try { detail = (await res.text()).slice(0, 400); } catch { /* ignore */ }
+    console.warn(`[ai] Gemini HTTP ${res.status} (model ${config.geminiModel}): ${detail}`);
     throw new AppError(502, 'The AI service returned an error. Please try again.');
   }
   const data = await res.json();

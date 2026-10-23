@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 
 /// Frame for a real chart on the report screens (replaces the old "Chart Preview" placeholder).
@@ -22,7 +23,7 @@ class ChartCard extends StatelessWidget {
         children: [
           Text(title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 15)),
           const SizedBox(height: 2),
-          Text(subtitle, style: const TextStyle(color: GPColors.ink2, fontSize: 12)),
+          Text(subtitle, style: TextStyle(color: GPColors.ink2, fontSize: 12)),
           const SizedBox(height: 12),
           child,
         ],

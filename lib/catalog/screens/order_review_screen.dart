@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../theme/gp_colors.dart';
 import '../controllers/catalog_controller.dart';
@@ -66,7 +68,7 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Order Review", style: TextStyle(fontWeight: FontWeight.w900)),
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
       ),
       body: ListView(
@@ -81,7 +83,7 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(color: GPColors.line),
-                color: Colors.white,
+                color: GPColors.surface,
               ),
               child: Row(
                 children: [
@@ -109,9 +111,9 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
             child: TextField(
               controller: _phone,
               keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "Phone number (10 digits, saved)",
+                hintText: trs("Phone number (10 digits, saved)"),
                 prefixIcon: Icon(Icons.phone_rounded),
               ),
             ),
@@ -130,9 +132,9 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
               controller: _address,
               keyboardType: TextInputType.streetAddress,
               maxLines: 3,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "Delivery address (saved)",
+                hintText: trs("Delivery address (saved)"),
                 prefixIcon: Icon(Icons.location_on_rounded),
               ),
             ),
@@ -161,8 +163,8 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
       ),
       bottomSheet: Container(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: GPColors.surface,
           border: Border(top: BorderSide(color: GPColors.line)),
         ),
         child: SizedBox(

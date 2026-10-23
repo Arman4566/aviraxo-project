@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
 import '../../widgets/gp_app_bar.dart';
 import '../../widgets/gp_buttons.dart';
@@ -75,7 +76,7 @@ class _OBBillingScreenState extends State<OBBillingScreen> {
                 ),
 
                 const SizedBox(height: 16),
-                const Text("Accepted payment methods",
+                Text("Accepted payment methods",
                     style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.ink)),
                 const SizedBox(height: 10),
                 Wrap(
@@ -93,7 +94,7 @@ class _OBBillingScreenState extends State<OBBillingScreen> {
                 const SizedBox(height: 18),
                 GPPrimaryButton(text: "Next", onPressed: widget.onNext),
                 const SizedBox(height: 6),
-                const Text(
+                Text(
                   "Tip: choose multiple — you can change this later.",
                   style: TextStyle(color: GPColors.ink2),
                 )

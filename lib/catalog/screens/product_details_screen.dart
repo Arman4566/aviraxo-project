@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../controllers/catalog_controller.dart';
 import '../models/catalog_models.dart';
@@ -89,7 +90,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
                       ),
                       const SizedBox(height: 8),
-                      Text(p.description, style: const TextStyle(color: GPColors.ink2)),
+                      Text(p.description, style: TextStyle(color: GPColors.ink2)),
                       const SizedBox(height: 16),
 
                       Container(
@@ -118,8 +119,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                 Container(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: GPColors.surface,
                     border: Border(top: BorderSide(color: GPColors.line)),
                   ),
                   child: Row(
@@ -128,7 +129,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         child: OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
                             foregroundColor: GPColors.onPrimary,
-                            side: const BorderSide(color: GPColors.line),
+                            side: BorderSide(color: GPColors.line),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                             padding: const EdgeInsets.symmetric(vertical: 14),
                           ),

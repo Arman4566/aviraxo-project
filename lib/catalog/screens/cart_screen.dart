@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../controllers/catalog_controller.dart';
 import '../widgets/qty_stepper.dart';
@@ -36,7 +37,7 @@ class CartScreen extends StatelessWidget {
         return Scaffold(
       appBar: AppBar(
             title: const Text("Cart", style: TextStyle(fontWeight: FontWeight.w900)),
-            backgroundColor: Colors.white,
+            backgroundColor: GPColors.surface,
             surfaceTintColor: Colors.transparent,
           ),
           body: lines.isEmpty
@@ -48,7 +49,7 @@ class CartScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(color: GPColors.line),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.shopping_cart_outlined, size: 46),
@@ -68,7 +69,7 @@ class CartScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 10),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: GPColors.surface,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
@@ -92,7 +93,7 @@ class CartScreen extends StatelessWidget {
                             Text(line.product.name, style: const TextStyle(fontWeight: FontWeight.w900)),
                             const SizedBox(height: 6),
                             Text("₹ ${line.lineTotal.toStringAsFixed(0)}",
-                                style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w800)),
+                                style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w800)),
                           ],
                         ),
                       ),
@@ -121,8 +122,8 @@ class CartScreen extends StatelessWidget {
               ? null
               : Container(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: GPColors.surface,
               border: Border(top: BorderSide(color: GPColors.line)),
             ),
             child: SizedBox(

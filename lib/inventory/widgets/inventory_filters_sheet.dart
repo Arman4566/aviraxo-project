@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
 
@@ -75,7 +76,7 @@ class _InventoryFiltersSheetState extends State<InventoryFiltersSheet> {
               Expanded(
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: GPColors.line),
+                    side: BorderSide(color: GPColors.line),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     minimumSize: const Size(0, 52),
                   ),
@@ -123,7 +124,7 @@ class _InventoryFiltersSheetState extends State<InventoryFiltersSheet> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color: on ? GPColors.tint.withOpacity(0.75) : Colors.white,
+                  color: on ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
                   borderRadius: BorderRadius.circular(999),
                   border: Border.all(color: on ? GPColors.primary : GPColors.line),
                 ),

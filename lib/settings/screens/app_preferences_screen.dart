@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 
 import '../../core/outbox.dart';
 import '../../core/prefs.dart';
@@ -54,7 +55,7 @@ class AppPreferencesScreen extends StatelessWidget {
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BackupScreen())),
             ),
             const Divider(),
-            const Text('App version 1.1.0', style: TextStyle(color: GPColors.ink2)),
+            Text('App version 1.1.0', style: TextStyle(color: GPColors.ink2)),
           ]),
         ),
       ),

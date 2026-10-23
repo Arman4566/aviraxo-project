@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 
 import '../core/money.dart';
 import '../data/repositories/extras_repo.dart';
@@ -50,15 +51,15 @@ class _SalesTrendCardState extends State<SalesTrendCard> {
                 const Expanded(child: Text('Sales, last 7 days', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15))),
                 if (a != null) DeltaChip(pct: pct),
                 const SizedBox(width: 6),
-                const Icon(Icons.chevron_right, color: GPColors.ink2),
+                Icon(Icons.chevron_right, color: GPColors.ink2),
               ]),
               const SizedBox(height: 2),
-              Text(a == null ? '…' : inr(total), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: GPColors.primary)),
+              Text(a == null ? '…' : inr(total), style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: GPColors.primary)),
               const SizedBox(height: 8),
               if (a == null)
                 const SizedBox(height: 150, child: Center(child: CircularProgressIndicator()))
               else
-                LineChart(series: [sales], labels: labels, height: 150, colors: const [GPColors.primary]),
+                LineChart(series: [sales], labels: labels, height: 150, colors: [GPColors.primary]),
             ]),
           ),
         );

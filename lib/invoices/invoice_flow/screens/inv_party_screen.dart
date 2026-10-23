@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/auto_translate.dart';
+import '../../../l10n/gtext.dart';
 
 import '../../../models/onboarding_data.dart';
 import '../../../theme/gp_colors.dart';
@@ -104,8 +106,8 @@ class _InvPartyScreenState extends State<InvPartyScreen> {
           TextField(
             controller: _search,
             onChanged: (_) => setState(() {}),
-            decoration: const InputDecoration(
-              hintText: "Search name / phone",
+            decoration: InputDecoration(
+              hintText: trs("Search name / phone"),
               prefixIcon: Icon(Icons.search_rounded),
             ),
           ),
@@ -130,7 +132,7 @@ class _InvPartyScreenState extends State<InvPartyScreen> {
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: widget.draft.cashCustomer ? GPColors.tint.withOpacity(0.75) : Colors.white,
+                  color: widget.draft.cashCustomer ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: widget.draft.cashCustomer ? GPColors.primary : GPColors.line),
                 ),
@@ -143,10 +145,10 @@ class _InvPartyScreenState extends State<InvPartyScreen> {
                         color: GPColors.primary.withOpacity(0.18),
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      child: const Icon(Icons.person_outline_rounded, color: GPColors.ink),
+                      child: Icon(Icons.person_outline_rounded, color: GPColors.ink),
                     ),
                     const SizedBox(width: 12),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -223,7 +225,7 @@ class _InvPartyScreenState extends State<InvPartyScreen> {
             width: double.infinity,
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: GPColors.line),
+                side: BorderSide(color: GPColors.line),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
               onPressed: _addCustomer,
@@ -283,7 +285,7 @@ class _EmptyState extends StatelessWidget {
             const SizedBox(height: 10),
             const Text("No customers found", style: TextStyle(fontWeight: FontWeight.w900)),
             const SizedBox(height: 6),
-            const Text("Add your first customer to continue", style: TextStyle(color: GPColors.ink2)),
+            Text("Add your first customer to continue", style: TextStyle(color: GPColors.ink2)),
             const SizedBox(height: 12),
             SizedBox(
               height: 48,

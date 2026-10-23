@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
+import '../../widgets/glass.dart';
 import '../../theme/gp_colors.dart';
 import '../models/party_model.dart';
 import '../widgets/party_list_tile.dart';
@@ -46,10 +49,9 @@ class PartiesListScreen extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.filter_list_rounded),
-                    onPressed: () => showModalBottomSheet(
+                    onPressed: () => showGlassSheet(
                       context: context,
-                      builder: (_) => const PartyFiltersSheet(),
-                    ),
+                      builder: (_) => const PartyFiltersSheet(),),
                   ),
                   const SizedBox(width: 6),
                   ElevatedButton.icon(
@@ -74,8 +76,8 @@ class PartiesListScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
               child: TextField(
                 onChanged: onSearch,
-                decoration: const InputDecoration(
-                  hintText: "Search parties",
+                decoration: InputDecoration(
+                  hintText: trs("Search parties"),
                   prefixIcon: Icon(Icons.search_rounded),
                 ),
               ),
@@ -126,7 +128,7 @@ class _EmptyState extends StatelessWidget {
             const Text("No parties added yet",
                 style: TextStyle(fontWeight: FontWeight.w900)),
             const SizedBox(height: 6),
-            const Text("Add your first customer or supplier",
+            Text("Add your first customer or supplier",
                 style: TextStyle(color: GPColors.ink2)),
             const SizedBox(height: 12),
             ElevatedButton(

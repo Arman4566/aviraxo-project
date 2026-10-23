@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 
 import '../../core/messenger.dart';
 import '../../data/repositories/extras_repo.dart';
@@ -33,12 +35,12 @@ class _UsersRolesScreenState extends State<UsersRolesScreen> {
         builder: (c, set) => AlertDialog(
           title: Text(tr('invite')),
           content: Column(mainAxisSize: MainAxisSize.min, children: [
-            TextField(controller: email, keyboardType: TextInputType.emailAddress, decoration: const InputDecoration(labelText: 'Their email (the one they sign in with)')),
+            TextField(controller: email, keyboardType: TextInputType.emailAddress, decoration: InputDecoration(labelText: trs('Their email (the one they sign in with)'))),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: role,
               isExpanded: true,
-              decoration: const InputDecoration(labelText: 'Role'),
+              decoration: InputDecoration(labelText: trs('Role')),
               items: [for (final e in _roleHelp.entries) DropdownMenuItem(value: e.key, child: Text(e.key))],
               onChanged: (v) => set(() => role = v ?? role),
             ),
@@ -112,7 +114,7 @@ class _UsersRolesScreenState extends State<UsersRolesScreen> {
                     subtitle: Text('${i['role']}'),
                     trailing: IconButton(
                       icon: const Icon(Icons.close),
-                      tooltip: 'Cancel invite',
+                      tooltip: trs('Cancel invite'),
                       onPressed: () async {
                         try {
                           await _repo.revokeInvite((i['id'] as num).toInt());

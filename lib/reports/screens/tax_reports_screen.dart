@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/invoice_repo.dart';
 import '../widgets/chart_card.dart';
@@ -15,7 +16,7 @@ class TaxReportsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tax Reports (GST)", style: TextStyle(fontWeight: FontWeight.w900)),
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
       ),
       body: FutureBuilder<_TaxData>(
@@ -46,7 +47,7 @@ class TaxReportsScreen extends StatelessWidget {
                 subtitle: "GST on your sales",
                 child: d.trend.hasData
                     ? BarChart(series: [d.trend.values], labels: d.trend.labels, colors: const [GPColors.info])
-                    : const Text("No GST collected in this range.", style: TextStyle(color: GPColors.ink2)),
+                    : Text("No GST collected in this range.", style: TextStyle(color: GPColors.ink2)),
               ),
               const SizedBox(height: 14),
               const Text("GST Report Types", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
@@ -79,7 +80,7 @@ class TaxReportsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: GPColors.line),
                 ),
-                child: const Text(
+                child: Text(
                   "Note: CGST/SGST/IGST split is estimated for now. We can make it accurate once we use state/place-of-supply logic.",
                   style: TextStyle(color: GPColors.ink2),
                 ),
@@ -143,7 +144,7 @@ class _MetricStrip extends StatelessWidget {
             width: 190,
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: GPColors.surface,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: GPColors.line),
             ),
@@ -166,7 +167,7 @@ class _MetricStrip extends StatelessWidget {
                 const Spacer(),
                 Text(m.value, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
                 const SizedBox(height: 4),
-                Text(m.sub, style: const TextStyle(color: GPColors.ink2)),
+                Text(m.sub, style: TextStyle(color: GPColors.ink2)),
               ],
             ),
           );

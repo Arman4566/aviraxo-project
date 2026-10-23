@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../models/party_model.dart';
 import 'due_badge.dart';
@@ -17,7 +18,7 @@ class PartyListTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: GPColors.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: GPColors.line),
         ),
@@ -37,7 +38,7 @@ class PartyListTile extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.w900)),
                   const SizedBox(height: 4),
                   Text(party.phone,
-                      style: const TextStyle(color: GPColors.ink2)),
+                      style: TextStyle(color: GPColors.ink2)),
                   const SizedBox(height: 6),
                   Row(
                     children: [

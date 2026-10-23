@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/app_settings_repo.dart';
@@ -81,7 +82,7 @@ class _TaxSettingsScreenState extends State<TaxSettingsScreen> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(label, style: const TextStyle(fontWeight: FontWeight.w800)),
         const SizedBox(height: 4),
-        Text(value, style: const TextStyle(color: GPColors.ink2)),
+        Text(value, style: TextStyle(color: GPColors.ink2)),
       ]),
     );
   }

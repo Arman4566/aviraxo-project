@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
+import '../widgets/glass.dart';
 
 import '../core/messenger.dart';
 import '../data/repositories/receivables_repo.dart';
@@ -29,12 +32,11 @@ class _ReminderRulesScreenState extends State<ReminderRulesScreen> {
   }
 
   Future<void> _edit([Map<String, dynamic>? rule]) async {
-    final saved = await showModalBottomSheet<bool>(
+    final saved = await showGlassSheet<bool>(
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (_) => _RuleForm(rule: rule),
-    );
+      builder: (_) => _RuleForm(rule: rule),);
     if (saved == true) _reload();
   }
 
@@ -155,13 +157,13 @@ class _RuleFormState extends State<_RuleForm> {
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(widget.rule == null ? 'New reminder rule' : 'Edit rule', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 12),
-          TextField(controller: _name, decoration: const InputDecoration(labelText: 'Rule name')),
+          TextField(controller: _name, decoration: InputDecoration(labelText: trs('Rule name'))),
           const SizedBox(height: 12),
           _drop('When', _trigger, {'before_due': 'Before the due date', 'on_due': 'On the due date', 'after_due': 'After the due date'}, (v) => _trigger = v),
           if (_trigger != 'on_due')
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: TextField(controller: _offset, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'How many days')),
+              child: TextField(controller: _offset, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: trs('How many days'))),
             ),
           if (_trigger == 'after_due')
             Padding(
@@ -169,7 +171,7 @@ class _RuleFormState extends State<_RuleForm> {
               child: TextField(
                 controller: _repeat,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Repeat every (days, optional)', helperText: 'Keeps reminding until the invoice is paid'),
+                decoration: InputDecoration(labelText: trs('Repeat every (days, optional)'), helperText: trs('Keeps reminding until the invoice is paid')),
               ),
             ),
           _drop('Send on', _channel, {'whatsapp': 'WhatsApp', 'sms': 'SMS', 'email': 'Email'}, (v) => _channel = v),

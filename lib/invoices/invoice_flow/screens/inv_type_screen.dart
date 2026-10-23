@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/gtext.dart';
 import '../../../models/onboarding_data.dart';
 import '../../../theme/gp_colors.dart';
 import '../models/invoice_draft.dart';
@@ -73,7 +74,7 @@ class _InvTypeScreenState extends State<InvTypeScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: selected ? GPColors.tint.withOpacity(0.75) : Colors.white,
+                      color: selected ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(
                         color: selected ? GPColors.primary : GPColors.line,
@@ -100,10 +101,10 @@ class _InvTypeScreenState extends State<InvTypeScreen> {
                               children: [
                                 Text(c.title, style: const TextStyle(fontWeight: FontWeight.w900)),
                                 const SizedBox(height: 4),
-                                Text(c.sub, style: const TextStyle(color: GPColors.ink2)),
+                                Text(c.sub, style: TextStyle(color: GPColors.ink2)),
                                 if (dimGstCard) ...[
                                   const SizedBox(height: 4),
-                                  const Text("GST is not enabled for this business (turn it on in Settings > Tax)",
+                                  Text("GST is not enabled for this business (turn it on in Settings > Tax)",
                                       style: TextStyle(color: GPColors.ink2, fontSize: 12)),
                                 ]
                               ],
@@ -112,7 +113,7 @@ class _InvTypeScreenState extends State<InvTypeScreen> {
                           if (selected)
                             const Icon(Icons.check_circle_rounded, color: GPColors.success)
                           else
-                            const Icon(Icons.circle_outlined, color: GPColors.line),
+                            Icon(Icons.circle_outlined, color: GPColors.line),
                         ],
                       ),
                     ),

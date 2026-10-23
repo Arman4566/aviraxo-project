@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
+import '../../theme/gp_colors.dart';
 import '../../auth/auth_service.dart';
 import '../widgets/settings_tile.dart';
 import 'business_settings_screen.dart';
@@ -30,7 +32,7 @@ class SettingsHomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings", style: TextStyle(fontWeight: FontWeight.w900)),
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
       ),
       body: ListView(

@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
+import '../widgets/glass.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,12 +18,11 @@ import '../theme/gp_colors.dart';
 ///
 /// Pass [prepared] (an item from /reminders/due) or just [partyId] to compose on demand.
 Future<bool?> showReminderSheet(BuildContext context, {required int partyId, required String partyName, Map<String, dynamic>? prepared}) {
-  return showModalBottomSheet<bool>(
+  return showGlassSheet<bool>(
     context: context,
     isScrollControlled: true,
     showDragHandle: true,
-    builder: (_) => _ReminderSheet(partyId: partyId, partyName: partyName, prepared: prepared),
-  );
+    builder: (_) => _ReminderSheet(partyId: partyId, partyName: partyName, prepared: prepared),);
 }
 
 class _ReminderSheet extends StatefulWidget {
@@ -218,7 +220,7 @@ class _ReminderSheetState extends State<_ReminderSheet> {
                 onSelectionChanged: _busy ? null : (s) => _load(tone: s.first),
               ),
               const SizedBox(height: 12),
-              TextField(controller: _msg, maxLines: 8, minLines: 4, decoration: const InputDecoration(labelText: 'Message (you can edit it)')),
+              TextField(controller: _msg, maxLines: 8, minLines: 4, decoration: InputDecoration(labelText: trs('Message (you can edit it)'))),
               const SizedBox(height: 12),
               Row(children: [
                 Expanded(child: FilledButton.icon(onPressed: () => _send('whatsapp'), icon: const Icon(Icons.chat), label: Text(tr('send_whatsapp')))),

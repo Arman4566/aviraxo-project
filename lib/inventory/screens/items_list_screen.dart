@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
+import '../../widgets/glass.dart';
 import '../../widgets/barcode_scanner_page.dart';
 import '../../models/onboarding_data.dart';
 import '../../theme/gp_colors.dart';
@@ -163,18 +166,15 @@ class ItemsListScreen extends StatelessWidget {
   }
 
   void _openFilters(BuildContext context) async {
-    final updated = await showModalBottomSheet<InventoryFilters>(
+    final updated = await showGlassSheet<InventoryFilters>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(22))),
       builder: (_) => InventoryFiltersSheet(
         stockEnabled: stockEnabled,
         gstEnabled: gstEnabled,
         items: items,
         initial: filters.copy(),
-      ),
-    );
+      ),);
 
     if (updated != null) {
       filters.status = updated.status;
@@ -215,7 +215,7 @@ class _EmptyState extends StatelessWidget {
             const SizedBox(height: 10),
             Text(title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
             const SizedBox(height: 6),
-            const Text("Start by adding your first entry.", style: TextStyle(color: GPColors.ink2)),
+            Text("Start by adding your first entry.", style: TextStyle(color: GPColors.ink2)),
             const SizedBox(height: 12),
             SizedBox(
               height: 48,
@@ -262,10 +262,10 @@ class _SearchBoxState extends State<_SearchBox> {
       controller: _c,
       onChanged: widget.onChanged,
       decoration: InputDecoration(
-        hintText: "Search items (name / SKU / barcode)",
+        hintText: trs("Search items (name / SKU / barcode)"),
         prefixIcon: const Icon(Icons.search_rounded),
         suffixIcon: IconButton(
-          tooltip: "Scan barcode",
+          tooltip: trs("Scan barcode"),
           icon: const Icon(Icons.qr_code_scanner_rounded),
           onPressed: () async {
             final code = await scanBarcode(context);

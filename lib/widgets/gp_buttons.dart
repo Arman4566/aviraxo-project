@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 import '../theme/gp_colors.dart';
 
 class GPPrimaryButton extends StatelessWidget {
@@ -40,7 +41,7 @@ class GPSecondaryButton extends StatelessWidget {
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           foregroundColor: GPColors.ink,
-          side: const BorderSide(color: GPColors.line),
+          side: BorderSide(color: GPColors.line),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
         onPressed: onPressed,

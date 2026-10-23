@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
 
@@ -82,7 +84,7 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
     if (!widget.stockEnabled) {
       return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: GPColors.surface,
           surfaceTintColor: Colors.transparent,
           title: const Text("Purchase Entry", style: TextStyle(fontWeight: FontWeight.w900)),
         ),
@@ -94,7 +96,7 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
         title: const Text("Purchase Entry", style: TextStyle(fontWeight: FontWeight.w900)),
       ),
@@ -115,7 +117,7 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
                     style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
                 const SizedBox(height: 6),
                 Text("Current stock: ${widget.item.stockQty} ${widget.item.unit}",
-                    style: const TextStyle(color: GPColors.ink2)),
+                    style: TextStyle(color: GPColors.ink2)),
               ],
             ),
           ),
@@ -124,8 +126,8 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
           TextField(
             controller: _qty,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              hintText: "Purchased quantity",
+            decoration: InputDecoration(
+              hintText: trs("Purchased quantity"),
               prefixIcon: Icon(Icons.add_circle_outline_rounded),
             ),
           ),
@@ -134,8 +136,8 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
           TextField(
             controller: _purchase,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              hintText: "Purchase price (optional)",
+            decoration: InputDecoration(
+              hintText: trs("Purchase price (optional)"),
               prefixIcon: Icon(Icons.currency_rupee_rounded),
             ),
           ),
@@ -144,8 +146,8 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
           TextField(
             controller: _selling,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              hintText: "Selling price (optional)",
+            decoration: InputDecoration(
+              hintText: trs("Selling price (optional)"),
               prefixIcon: Icon(Icons.currency_rupee_rounded),
             ),
           ),

@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
 import '../../theme/gp_colors.dart';
 import '../../widgets/gp_app_bar.dart';
@@ -114,14 +116,14 @@ class _OBBusinessDetailsScreenState extends State<OBBusinessDetailsScreen> {
                 const SizedBox(height: 12),
 
                 GPTextField(
-                  label: "Business Name",
+                  label: trs("Business Name"),
                   hint: "e.g. Shree Ganesh Traders",
                   controller: _name,
                 ),
                 const SizedBox(height: 12),
 
                 GPTextField(
-                  label: "Address",
+                  label: trs("Address"),
                   hint: "Street, area, city",
                   controller: _addr,
                 ),
@@ -129,7 +131,7 @@ class _OBBusinessDetailsScreenState extends State<OBBusinessDetailsScreen> {
 
                 // ✅ SAFE DROPDOWN (NO OVERFLOW EVER)
                 _SafeDropdownField(
-                  label: "State",
+                  label: trs("State"),
                   hint: "Select state",
                   value: widget.data.state,
                   items: _states,
@@ -138,7 +140,7 @@ class _OBBusinessDetailsScreenState extends State<OBBusinessDetailsScreen> {
                 const SizedBox(height: 12),
 
                 GPTextField(
-                  label: "PIN Code",
+                  label: trs("PIN Code"),
                   hint: "e.g. 411001",
                   controller: _pin,
                   keyboardType: TextInputType.number,
@@ -147,7 +149,7 @@ class _OBBusinessDetailsScreenState extends State<OBBusinessDetailsScreen> {
 
                 // ✅ SAFE DROPDOWN (NO OVERFLOW EVER)
                 _SafeDropdownField(
-                  label: "Currency",
+                  label: trs("Currency"),
                   hint: "Select currency",
                   value: widget.data.currency,
                   items: const ["INR", "USD", "EUR"],
@@ -233,14 +235,14 @@ class _SafeDropdownField extends StatelessWidget {
             hint,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: const TextStyle(
+            style: TextStyle(
               color: GPColors.ink2,
               fontWeight: FontWeight.w700,
             ),
           ),
 
           // ✅ selected text style
-          style: const TextStyle(
+          style: TextStyle(
             color: GPColors.ink,
             fontWeight: FontWeight.w800,
             fontSize: 18,

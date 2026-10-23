@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
+import '../../widgets/glass.dart';
 import '../../widgets/barcode_scanner_page.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
@@ -153,12 +156,8 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
       updatedAt: DateTime.now(),
     );
 
-    await showModalBottomSheet(
+    await showGlassSheet(
       context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-      ),
       builder: (_) => _SuccessSheet(
         isEdit: _isEdit,
         onAddAnother: () {
@@ -182,8 +181,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
           Navigator.pop(context);
           Navigator.pop(context, item);
         },
-      ),
-    );
+      ),);
   }
 
   @override
@@ -309,8 +307,8 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
         TextField(
           controller: _sku,
           textInputAction: TextInputAction.next,
-          decoration: const InputDecoration(
-            hintText: "Item Code / SKU",
+          decoration: InputDecoration(
+            hintText: trs("Item Code / SKU"),
             prefixIcon: Icon(Icons.qr_code_rounded),
           ),
         ),
@@ -320,10 +318,10 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
-            hintText: "Barcode (scan or type)",
+            hintText: trs("Barcode (scan or type)"),
             prefixIcon: const Icon(Icons.barcode_reader),
             suffixIcon: IconButton(
-              tooltip: "Scan barcode",
+              tooltip: trs("Scan barcode"),
               icon: const Icon(Icons.qr_code_scanner_rounded),
               onPressed: () async {
                 final code = await scanBarcode(context);
@@ -339,8 +337,8 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
               .map((c) => DropdownMenuItem(value: c, child: Text(c)))
               .toList(),
           onChanged: (v) => setState(() => _category = v ?? _category),
-          decoration: const InputDecoration(
-            hintText: "Category",
+          decoration: InputDecoration(
+            hintText: trs("Category"),
             prefixIcon: Icon(Icons.category_rounded),
           ),
         ),
@@ -351,8 +349,8 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
               .map((u) => DropdownMenuItem(value: u, child: Text(u)))
               .toList(),
           onChanged: (v) => setState(() => _unit = v ?? _unit),
-          decoration: const InputDecoration(
-            hintText: "Unit",
+          decoration: InputDecoration(
+            hintText: trs("Unit"),
             prefixIcon: Icon(Icons.straighten_rounded),
           ),
         ),
@@ -373,8 +371,8 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
           controller: _purchase,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.next,
-          decoration: const InputDecoration(
-            hintText: "Purchase Price",
+          decoration: InputDecoration(
+            hintText: trs("Purchase Price"),
             prefixIcon: Icon(Icons.currency_rupee_rounded),
           ),
         ),
@@ -383,8 +381,8 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
           controller: _selling,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.done,
-          decoration: const InputDecoration(
-            hintText: "Selling Price",
+          decoration: InputDecoration(
+            hintText: trs("Selling Price"),
             prefixIcon: Icon(Icons.currency_rupee_rounded),
           ),
         ),
@@ -413,7 +411,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: on ? GPColors.tint.withOpacity(0.75) : Colors.white,
+                    color: on ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(color: on ? GPColors.primary : GPColors.line),
                   ),
@@ -430,7 +428,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: GPColors.line),
             ),
-            child: const Text("GST not enabled in onboarding.",
+            child: Text("GST not enabled in onboarding.",
                 style: TextStyle(color: GPColors.ink2)),
           ),
         ],
@@ -453,7 +451,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: GPColors.line),
             ),
-            child: const Text("Stock fields are hidden for Services business.",
+            child: Text("Stock fields are hidden for Services business.",
                 style: TextStyle(color: GPColors.ink2)),
           ),
         ],
@@ -469,8 +467,8 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
         TextField(
           controller: _openingStock,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            hintText: "Opening stock",
+          decoration: InputDecoration(
+            hintText: trs("Opening stock"),
             prefixIcon: Icon(Icons.inventory_rounded),
           ),
         ),
@@ -478,16 +476,16 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
         TextField(
           controller: _lowStock,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            hintText: "Low stock alert level",
+          decoration: InputDecoration(
+            hintText: trs("Low stock alert level"),
             prefixIcon: Icon(Icons.warning_amber_rounded),
           ),
         ),
         const SizedBox(height: 10),
         TextField(
           controller: _location,
-          decoration: const InputDecoration(
-            hintText: "Warehouse / Location",
+          decoration: InputDecoration(
+            hintText: trs("Warehouse / Location"),
             prefixIcon: Icon(Icons.location_on_rounded),
           ),
         ),
@@ -502,7 +500,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: on ? GPColors.tint.withOpacity(0.75) : Colors.white,
+          color: on ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: on ? GPColors.primary : GPColors.line),
         ),
@@ -554,7 +552,7 @@ class _SuccessSheet extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: GPColors.line),
+                side: BorderSide(color: GPColors.line),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -588,7 +586,7 @@ class _SuccessSheet extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: GPColors.line),
+                side: BorderSide(color: GPColors.line),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),

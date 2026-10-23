@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 
 import '../core/api_client.dart';
 import '../data/repositories/ai_repo.dart';
@@ -47,13 +48,13 @@ class _AiSummaryCardState extends State<AiSummaryCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
-            const Icon(Icons.auto_awesome_rounded, color: GPColors.primary, size: 20),
+            Icon(Icons.auto_awesome_rounded, color: GPColors.primary, size: 20),
             const SizedBox(width: 8),
             const Expanded(child: Text('AI business check-up', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15))),
             TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AskScreen())), child: const Text('Ask AI')),
           ]),
           if (s == null && !_busy && _error == null) ...[
-            const Text('Get a short summary of what needs your attention today: dues, stock and sales.', style: TextStyle(color: GPColors.ink2)),
+            Text('Get a short summary of what needs your attention today: dues, stock and sales.', style: TextStyle(color: GPColors.ink2)),
             const SizedBox(height: 10),
             FilledButton.icon(onPressed: _load, icon: const Icon(Icons.bolt_rounded), label: const Text('Generate check-up')),
           ],

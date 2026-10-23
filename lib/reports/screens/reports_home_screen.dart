@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
 import '../../theme/gp_colors.dart';
 import '../widgets/date_filter_pill.dart';
@@ -69,7 +71,7 @@ class _ReportsHomeScreenState extends State<ReportsHomeScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(primary: GPColors.primaryDeep),
+            colorScheme: ColorScheme.light(primary: GPColors.primaryDeep),
           ),
           child: child!,
         );
@@ -101,19 +103,19 @@ class _ReportsHomeScreenState extends State<ReportsHomeScreen> {
             Row(
               children: [
                 DateFilterPill(
-                  label: "Today",
+                  label: trs("Today"),
                   selected: _range == "Today",
                   onTap: () => setState(() => _range = "Today"),
                 ),
                 const SizedBox(width: 10),
                 DateFilterPill(
-                  label: "This Month",
+                  label: trs("This Month"),
                   selected: _range == "This Month",
                   onTap: () => setState(() => _range = "This Month"),
                 ),
                 const SizedBox(width: 10),
                 DateFilterPill(
-                  label: "Custom",
+                  label: trs("Custom"),
                   selected: _range == "Custom",
                   onTap: _pickCustomRange,
                 ),
@@ -130,7 +132,7 @@ class _ReportsHomeScreenState extends State<ReportsHomeScreen> {
               ),
               child: Text(
                 "Showing: $_rangeLabel",
-                style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
+                style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
               ),
             ),
 

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../data/models/app_settings.dart';
 import '../../data/repositories/app_settings_repo.dart';
 import '../../receivables/receivables_screen.dart';

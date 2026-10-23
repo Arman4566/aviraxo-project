@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
 
@@ -69,7 +70,7 @@ class _Card extends StatelessWidget {
               children: [
                 Text(d.value, style: const TextStyle(fontWeight: FontWeight.w900)),
                 const SizedBox(height: 2),
-                Text(d.label, style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700)),
+                Text(d.label, style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700)),
               ],
             ),
           ),

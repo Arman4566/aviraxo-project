@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/gtext.dart';
 import '../../../models/onboarding_data.dart';
 import '../../../theme/gp_colors.dart';
 import '../models/invoice_draft.dart';
@@ -26,8 +27,8 @@ class InvSummaryBar extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: GPColors.surface,
         border: Border(top: BorderSide(color: GPColors.line)),
       ),
       child: Column(
@@ -58,7 +59,7 @@ class InvSummaryBar extends StatelessWidget {
                 height: 48,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: GPColors.line),
+                    side: BorderSide(color: GPColors.line),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: onViewSummary,
@@ -91,7 +92,7 @@ class InvSummaryBar extends StatelessWidget {
                   height: 52,
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: GPColors.line),
+                      side: BorderSide(color: GPColors.line),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
                     onPressed: onContinue,

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../models/onboarding_data.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/app_settings_repo.dart';
@@ -29,7 +30,7 @@ class _InventorySettingsScreenState extends State<InventorySettingsScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text("Inventory Settings", style: TextStyle(fontWeight: FontWeight.w900)),
-            backgroundColor: Colors.white,
+            backgroundColor: GPColors.surface,
             surfaceTintColor: Colors.transparent,
           ),
           body: ListView(
@@ -65,7 +66,7 @@ class _InventorySettingsScreenState extends State<InventorySettingsScreen> {
               ),
 
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 "Some options are auto-configured based on onboarding",
                 style: TextStyle(color: GPColors.ink2),
               ),

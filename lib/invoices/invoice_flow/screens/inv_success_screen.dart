@@ -1,5 +1,6 @@
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/gtext.dart';
 import 'package:printing/printing.dart';
 
 import '../../../theme/gp_colors.dart';
@@ -74,7 +75,7 @@ class _InvSuccessScreenState extends State<InvSuccessScreen> {
                       : "${inv.invoiceNo} • ₹${inv.grandTotal.toStringAsFixed(2)}"
                           "${inv.balanceDue > 0.005 ? " • Due ₹${inv.balanceDue.toStringAsFixed(2)}" : ""}",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: GPColors.ink2),
+                  style: TextStyle(color: GPColors.ink2),
                 );
               },
             ),
@@ -107,7 +108,7 @@ class _InvSuccessScreenState extends State<InvSuccessScreen> {
               width: double.infinity,
               child: OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: GPColors.line),
+                  side: BorderSide(color: GPColors.line),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
                 onPressed: widget.onGoDashboard,
@@ -126,7 +127,7 @@ class _InvSuccessScreenState extends State<InvSuccessScreen> {
       width: double.infinity,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: GPColors.line),
+          side: BorderSide(color: GPColors.line),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
         onPressed: () async {

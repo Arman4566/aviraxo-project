@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../widgets/gp_buttons.dart';
 
@@ -36,7 +37,7 @@ class OBCompleteScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center),
           const SizedBox(height: 10),
-          const Text(
+          Text(
             "Your business is set up.\nLet's head to your dashboard.",
             textAlign: TextAlign.center,
             style: TextStyle(color: GPColors.ink2, height: 1.35),

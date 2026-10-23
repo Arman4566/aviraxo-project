@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/auto_translate.dart';
+import '../../../l10n/gtext.dart';
 import '../../../widgets/barcode_scanner_page.dart';
 import '../../../core/messenger.dart';
 import '../../../models/onboarding_data.dart';
@@ -164,7 +166,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                   ),
                   TextButton(
                     onPressed: _openNewItem,
-                    child: const Text("➕ New Item", style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.primaryDeep)),
+                    child: Text("➕ New Item", style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.primaryDeep)),
                   ),
                 ],
               ),
@@ -174,10 +176,10 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                 controller: _search,
                 onChanged: (_) => setState(() {}),
                 decoration: InputDecoration(
-                  hintText: "Search item name / SKU / barcode",
+                  hintText: trs("Search item name / SKU / barcode"),
                   prefixIcon: const Icon(Icons.search_rounded),
                   suffixIcon: IconButton(
-                    tooltip: "Scan barcode",
+                    tooltip: trs("Scan barcode"),
                     icon: const Icon(Icons.qr_code_scanner_rounded),
                     onPressed: _scan,
                   ),
@@ -194,7 +196,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
-                  child: const Text(
+                  child: Text(
                     "No items found in inventory.\nTap “New Item” to add one.",
                     style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
                   ),
@@ -215,7 +217,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: isSelected ? GPColors.tint.withOpacity(0.75) : Colors.white,
+                            color: isSelected ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: isSelected ? GPColors.primary : GPColors.line),
                           ),
@@ -228,7 +230,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                                   color: GPColors.primary.withOpacity(0.18),
                                   borderRadius: BorderRadius.circular(14),
                                 ),
-                                child: const Icon(Icons.inventory_2_rounded, color: GPColors.ink, size: 18),
+                                child: Icon(Icons.inventory_2_rounded, color: GPColors.ink, size: 18),
                               ),
                               const SizedBox(width: 10),
                               Expanded(
@@ -240,7 +242,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                                     Text(
                                       "₹${it.sellingPrice.toStringAsFixed(0)} • ${it.unit}"
                                           "${it.gstEnabled ? " • GST ${it.gstRate}%" : " • Non-GST"}",
-                                      style: const TextStyle(color: GPColors.ink2),
+                                      style: TextStyle(color: GPColors.ink2),
                                     ),
                                   ],
                                 ),
@@ -273,7 +275,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: GPColors.surface,
                               borderRadius: BorderRadius.circular(999),
                               border: Border.all(color: GPColors.line),
                             ),
@@ -292,8 +294,8 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                               keyboardType: TextInputType.number,
                               onChanged: (v) => setState(() => _rate = double.tryParse(v) ?? _rate),
                               controller: TextEditingController(text: _rate.toStringAsFixed(0)),
-                              decoration: const InputDecoration(
-                                hintText: "Rate",
+                              decoration: InputDecoration(
+                                hintText: trs("Rate"),
                                 prefixIcon: Icon(Icons.currency_rupee_rounded),
                               ),
                             ),
@@ -320,7 +322,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                             height: 48,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: GPColors.line),
+                                side: BorderSide(color: GPColors.line),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                               ),
                               onPressed: () => setState(() => _discPercent = !_discPercent),
@@ -338,7 +340,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                           widget.gstEnabled && selected.gstEnabled
                               ? "GST ${selected.gstRate}% (from inventory)"
                               : "Non-GST invoice / item tax hidden",
-                          style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
+                          style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
                         ),
                       ),
                     ],
@@ -400,7 +402,7 @@ class _QtyStepper extends StatelessWidget {
     return Container(
       height: 48,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: GPColors.line),
       ),

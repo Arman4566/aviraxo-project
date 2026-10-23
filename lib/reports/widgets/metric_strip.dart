@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 
 class ReportMetric {
@@ -37,7 +38,7 @@ class _MetricCard extends StatelessWidget {
       width: 190,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),
@@ -62,7 +63,7 @@ class _MetricCard extends StatelessWidget {
           const Spacer(),
           Text(m.value, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
           const SizedBox(height: 4),
-          Text(m.sub, style: const TextStyle(color: GPColors.ink2)),
+          Text(m.sub, style: TextStyle(color: GPColors.ink2)),
         ],
       ),
     );

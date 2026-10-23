@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/gtext.dart';
 import '../../../theme/gp_colors.dart';
 import '../models/invoice_draft.dart';
 
@@ -22,7 +23,7 @@ class InvPartyCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: selected ? GPColors.tint.withOpacity(0.75) : Colors.white,
+          color: selected ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: selected ? GPColors.primary : GPColors.line, width: selected ? 1.6 : 1),
         ),
@@ -35,7 +36,7 @@ class InvPartyCard extends StatelessWidget {
                 color: GPColors.primary.withOpacity(0.18),
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: const Icon(Icons.person_rounded, color: GPColors.ink),
+              child: Icon(Icons.person_rounded, color: GPColors.ink),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -44,7 +45,7 @@ class InvPartyCard extends StatelessWidget {
                 children: [
                   Text(party.name, style: const TextStyle(fontWeight: FontWeight.w900)),
                   const SizedBox(height: 4),
-                  Text(party.phone, style: const TextStyle(color: GPColors.ink2)),
+                  Text(party.phone, style: TextStyle(color: GPColors.ink2)),
                 ],
               ),
             ),
@@ -55,7 +56,7 @@ class InvPartyCard extends StatelessWidget {
                   Text("₹${party.outstanding.toStringAsFixed(0)} due",
                       style: const TextStyle(fontWeight: FontWeight.w900))
                 else
-                  const Text("No due", style: TextStyle(color: GPColors.ink2)),
+                  Text("No due", style: TextStyle(color: GPColors.ink2)),
                 const SizedBox(height: 6),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

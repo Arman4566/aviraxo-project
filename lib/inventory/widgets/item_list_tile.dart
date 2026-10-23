@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
 import 'stock_badge.dart';
@@ -28,13 +30,13 @@ class ItemListTile extends StatelessWidget {
       background: _slideBg(
         alignLeft: true,
         icon: Icons.edit_rounded,
-        label: "Edit",
+        label: trs("Edit"),
         color: GPColors.tint.withOpacity(0.8),
       ),
       secondaryBackground: _slideBg(
         alignLeft: false,
         icon: Icons.delete_outline_rounded,
-        label: "Delete",
+        label: trs("Delete"),
         color: Colors.red.withOpacity(0.12),
       ),
       confirmDismiss: (direction) async {
@@ -73,7 +75,7 @@ class ItemListTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: GPColors.surface,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: GPColors.line),
           ),
@@ -99,7 +101,7 @@ class ItemListTile extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.w900)),
                     const SizedBox(height: 4),
                     Text("SKU: ${item.sku}",
-                        style: const TextStyle(color: GPColors.ink2)),
+                        style: TextStyle(color: GPColors.ink2)),
                     const SizedBox(height: 6),
                     Row(
                       children: [
@@ -119,7 +121,7 @@ class ItemListTile extends StatelessWidget {
                   const SizedBox(height: 6),
                   if (stockEnabled)
                     Text("${item.stockQty} ${item.unit}",
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: GPColors.ink2, fontWeight: FontWeight.w700)),
                   const SizedBox(height: 8),
                   StockBadge(status: status),

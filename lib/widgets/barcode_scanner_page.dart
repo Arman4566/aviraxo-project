@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../theme/gp_colors.dart';
@@ -46,8 +48,8 @@ class _ScannerPageState extends State<_ScannerPage> {
         foregroundColor: Colors.white,
         title: const Text("Scan barcode"),
         actions: [
-          IconButton(icon: const Icon(Icons.flash_on_rounded), tooltip: "Torch", onPressed: () => _controller.toggleTorch()),
-          IconButton(icon: const Icon(Icons.cameraswitch_rounded), tooltip: "Switch camera", onPressed: () => _controller.switchCamera()),
+          IconButton(icon: const Icon(Icons.flash_on_rounded), tooltip: trs("Torch"), onPressed: () => _controller.toggleTorch()),
+          IconButton(icon: const Icon(Icons.cameraswitch_rounded), tooltip: trs("Switch camera"), onPressed: () => _controller.switchCamera()),
         ],
       ),
       body: Stack(

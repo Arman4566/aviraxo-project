@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/gtext.dart';
 import '../../../core/outbox.dart';
 import '../../../l10n/strings.dart';
 import '../../../models/onboarding_data.dart';
@@ -96,7 +97,7 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: GPColors.surface,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
@@ -107,10 +108,10 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
                           style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
                       const SizedBox(height: 6),
                       Text("Invoice No: ${widget.draft.invoiceNo}",
-                          style: const TextStyle(color: GPColors.ink2)),
+                          style: TextStyle(color: GPColors.ink2)),
                       const SizedBox(height: 6),
                       Text("Date: ${_fmt(widget.draft.date)}",
-                          style: const TextStyle(color: GPColors.ink2)),
+                          style: TextStyle(color: GPColors.ink2)),
                       const Divider(height: 24),
 
                       const Text("Seller", style: TextStyle(fontWeight: FontWeight.w900)),
@@ -119,7 +120,7 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
                       // ✅ Now show actual business name from onboarding if exists
                       Text(
                         (widget.onboarding.businessName ?? "Your Business").trim(),
-                        style: const TextStyle(color: GPColors.ink2),
+                        style: TextStyle(color: GPColors.ink2),
                       ),
 
                       const SizedBox(height: 12),
@@ -127,13 +128,13 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
                       const SizedBox(height: 4),
                       Text(
                         party?.name ?? "Not selected",
-                        style: const TextStyle(color: GPColors.ink2),
+                        style: TextStyle(color: GPColors.ink2),
                       ),
                       if (gst) ...[
                         const SizedBox(height: 4),
                         Text(
                           "GST: ${(party?.gstRegistered ?? false) ? "Registered" : "Not Registered"}",
-                          style: const TextStyle(color: GPColors.ink2),
+                          style: TextStyle(color: GPColors.ink2),
                         ),
                       ],
 
@@ -143,7 +144,7 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
                       const SizedBox(height: 10),
 
                       if (widget.draft.lines.isEmpty)
-                        const Text("No items added.", style: TextStyle(color: GPColors.ink2))
+                        Text("No items added.", style: TextStyle(color: GPColors.ink2))
                       else
                         ...widget.draft.lines.map((l) {
                           final total = l.lineTotal(gstEnabled: gst);
@@ -200,11 +201,11 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
                       const Text("Additional Details", style: TextStyle(fontWeight: FontWeight.w900)),
                       const SizedBox(height: 6),
                       Text("Payment: ${widget.draft.paymentMethod}",
-                          style: const TextStyle(color: GPColors.ink2)),
+                          style: TextStyle(color: GPColors.ink2)),
                       if (widget.draft.paymentMethod == "Credit")
                         Text(
                           "Due: ${widget.draft.dueDate == null ? "Not set" : _fmt(widget.draft.dueDate!)}",
-                          style: const TextStyle(color: GPColors.ink2),
+                          style: TextStyle(color: GPColors.ink2),
                         ),
                     ],
                   ),
@@ -219,7 +220,7 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
               Expanded(
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: GPColors.line),
+                    side: BorderSide(color: GPColors.line),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     minimumSize: const Size(0, 52),
                   ),
@@ -264,7 +265,7 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
+              style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
             ),
           ),
           Text(

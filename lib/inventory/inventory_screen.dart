@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 import '../core/messenger.dart';
 import '../models/onboarding_data.dart';
 

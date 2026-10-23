@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
+import '../widgets/glass.dart';
 
 import '../core/messenger.dart';
 import '../core/money.dart';
@@ -29,12 +32,11 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   void _reload() => setState(() => _future = _load());
 
   Future<void> _add() async {
-    final saved = await showModalBottomSheet<bool>(
+    final saved = await showGlassSheet<bool>(
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (_) => const _ExpenseForm(),
-    );
+      builder: (_) => const _ExpenseForm(),);
     if (saved == true) _reload();
   }
 
@@ -176,11 +178,11 @@ class _ExpenseFormState extends State<_ExpenseForm> {
             onSelectionChanged: (s) => setState(() => _kind = s.first),
           ),
           const SizedBox(height: 12),
-          TextField(controller: _amount, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: const InputDecoration(labelText: 'Amount (₹)')),
+          TextField(controller: _amount, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: InputDecoration(labelText: trs('Amount (₹)'))),
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
             value: _cat,
-            decoration: const InputDecoration(labelText: 'Category'),
+            decoration: InputDecoration(labelText: trs('Category')),
             items: [for (final c in _cats) DropdownMenuItem(value: c, child: Text(c))],
             onChanged: (v) => setState(() => _cat = v ?? _cat),
           ),
@@ -189,18 +191,18 @@ class _ExpenseFormState extends State<_ExpenseForm> {
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: _mode,
-                decoration: const InputDecoration(labelText: 'Paid by'),
+                decoration: InputDecoration(labelText: trs('Paid by')),
                 items: [for (final m in ['cash', 'upi', 'card', 'bank', 'cheque', 'other']) DropdownMenuItem(value: m, child: Text(m))],
                 onChanged: (v) => setState(() => _mode = v ?? _mode),
               ),
             ),
             const SizedBox(width: 8),
-            Expanded(child: TextField(controller: _gst, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: const InputDecoration(labelText: 'GST included (₹)'))),
+            Expanded(child: TextField(controller: _gst, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: InputDecoration(labelText: trs('GST included (₹)')))),
           ]),
           const SizedBox(height: 12),
           DropdownButtonFormField<String?>(
             value: _recurring,
-            decoration: const InputDecoration(labelText: 'Repeats'),
+            decoration: InputDecoration(labelText: trs('Repeats')),
             items: const [
               DropdownMenuItem(value: null, child: Text('Does not repeat')),
               DropdownMenuItem(value: 'weekly', child: Text('Every week')),
@@ -210,7 +212,7 @@ class _ExpenseFormState extends State<_ExpenseForm> {
             onChanged: (v) => setState(() => _recurring = v),
           ),
           const SizedBox(height: 12),
-          TextField(controller: _note, decoration: const InputDecoration(labelText: 'Note (optional)')),
+          TextField(controller: _note, decoration: InputDecoration(labelText: trs('Note (optional)'))),
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.event),

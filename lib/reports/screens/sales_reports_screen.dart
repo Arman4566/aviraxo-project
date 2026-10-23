@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/invoice_repo.dart';
 import '../../data/models/invoice_entity.dart';
@@ -23,7 +24,7 @@ class SalesReportsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sales Reports", style: TextStyle(fontWeight: FontWeight.w900)),
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
       ),
       body: FutureBuilder<_SalesData>(
@@ -53,8 +54,8 @@ class SalesReportsScreen extends StatelessWidget {
                 title: "Sales Trend",
                 subtitle: rangeLabel,
                 child: d.trend.hasData
-                    ? LineChart(series: [d.trend.values], labels: d.trend.labels, colors: const [GPColors.primary])
-                    : const Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Center(child: Text("No sales in this range yet.", style: TextStyle(color: GPColors.ink2)))),
+                    ? LineChart(series: [d.trend.values], labels: d.trend.labels, colors: [GPColors.primary])
+                    : Padding(padding: EdgeInsets.symmetric(vertical: 24), child: Center(child: Text("No sales in this range yet.", style: TextStyle(color: GPColors.ink2)))),
               ),
               const SizedBox(height: 14),
 
@@ -69,7 +70,7 @@ class SalesReportsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
-                  child: const Text("No invoices found in this range.", style: TextStyle(color: GPColors.ink2)),
+                  child: Text("No invoices found in this range.", style: TextStyle(color: GPColors.ink2)),
                 )
               else
                 ...d.topInvoices.map((inv) {
@@ -91,7 +92,7 @@ class SalesReportsScreen extends StatelessWidget {
                 width: double.infinity,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: GPColors.line),
+                    side: BorderSide(color: GPColors.line),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AnalyticsScreen())),

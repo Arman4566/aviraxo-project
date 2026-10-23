@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 
 import '../core/money.dart';
 import '../theme/gp_colors.dart';
@@ -16,9 +17,9 @@ double _niceCeil(double v) {
   return nf * e;
 }
 
-void _text(Canvas c, String s, Offset at, {Color color = GPColors.ink2, double size = 10, TextAlign align = TextAlign.left, double maxWidth = 80}) {
+void _text(Canvas c, String s, Offset at, {Color? color, double size = 10, TextAlign align = TextAlign.left, double maxWidth = 80}) {
   final tp = TextPainter(
-    text: TextSpan(text: s, style: TextStyle(color: color, fontSize: size, fontWeight: FontWeight.w600)),
+    text: TextSpan(text: s, style: TextStyle(color: color ?? GPColors.ink2, fontSize: size, fontWeight: FontWeight.w600)),
     textDirection: TextDirection.ltr,
     textAlign: align,
     maxLines: 1,
@@ -33,7 +34,7 @@ class LineChart extends StatefulWidget {
     super.key,
     required this.series,
     required this.labels,
-    this.colors = const [GPColors.primary, GPColors.accent, GPColors.warning],
+    this.colors,
     this.height = 190,
     this.onSelect,
   });
@@ -41,7 +42,7 @@ class LineChart extends StatefulWidget {
   /// Each inner list has one value per label.
   final List<List<num>> series;
   final List<String> labels;
-  final List<Color> colors;
+  final List<Color>? colors;
   final double height;
   final ValueChanged<int?>? onSelect;
 
@@ -75,7 +76,7 @@ class _LineChartState extends State<LineChart> {
           height: widget.height,
           width: double.infinity,
           child: CustomPaint(
-            painter: _LinePainter(widget.series, widget.labels, widget.colors, _sel, Theme.of(context).dividerColor),
+            painter: _LinePainter(widget.series, widget.labels, widget.colors ?? [GPColors.primary, GPColors.accent, GPColors.warning], _sel, Theme.of(context).dividerColor),
           ),
         ),
       );
@@ -84,6 +85,7 @@ class _LineChartState extends State<LineChart> {
 }
 
 class _LinePainter extends CustomPainter {
+  final bool _paintedDark = GPColors.dark; // colours differ per mode; repaint when it changes
   _LinePainter(this.series, this.labels, this.colors, this.sel, this.grid);
   final List<List<num>> series;
   final List<String> labels;
@@ -177,7 +179,7 @@ class _LinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _LinePainter old) => old.series != series || old.sel != sel || old.labels != labels;
+  bool shouldRepaint(covariant _LinePainter old) => old.series != series || old.sel != sel || old.labels != labels || old._paintedDark != _paintedDark;
 }
 
 /// Grouped vertical bars: one group per label, one bar per series.
@@ -186,23 +188,24 @@ class BarChart extends StatelessWidget {
     super.key,
     required this.series,
     required this.labels,
-    this.colors = const [GPColors.primary, GPColors.danger],
+    this.colors,
     this.height = 180,
   });
   final List<List<num>> series;
   final List<String> labels;
-  final List<Color> colors;
+  final List<Color>? colors;
   final double height;
 
   @override
   Widget build(BuildContext context) => SizedBox(
         height: height,
         width: double.infinity,
-        child: CustomPaint(painter: _BarPainter(series, labels, colors, Theme.of(context).dividerColor)),
+        child: CustomPaint(painter: _BarPainter(series, labels, colors ?? [GPColors.primary, GPColors.danger], Theme.of(context).dividerColor)),
       );
 }
 
 class _BarPainter extends CustomPainter {
+  final bool _paintedDark = GPColors.dark; // colours differ per mode; repaint when it changes
   _BarPainter(this.series, this.labels, this.colors, this.grid);
   final List<List<num>> series;
   final List<String> labels;
@@ -248,7 +251,7 @@ class _BarPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _BarPainter old) => old.series != series || old.labels != labels;
+  bool shouldRepaint(covariant _BarPainter old) => old.series != series || old.labels != labels || old._paintedDark != _paintedDark;
 }
 
 class DonutSlice {
@@ -281,7 +284,7 @@ class DonutChart extends StatelessWidget {
             child: Center(
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Text(centerValue ?? compactInr(total), style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 15)),
-                Text(centerLabel, style: const TextStyle(fontSize: 10, color: GPColors.ink2)),
+                Text(centerLabel, style: TextStyle(fontSize: 10, color: GPColors.ink2)),
               ]),
             ),
           ),
@@ -310,6 +313,7 @@ class DonutChart extends StatelessWidget {
 }
 
 class _DonutPainter extends CustomPainter {
+  final bool _paintedDark = GPColors.dark; // colours differ per mode; repaint when it changes
   _DonutPainter(this.slices, this.total);
   final List<DonutSlice> slices;
   final num total;
@@ -345,20 +349,20 @@ class _DonutPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _DonutPainter old) => old.slices != slices;
+  bool shouldRepaint(covariant _DonutPainter old) => old.slices != slices || old._paintedDark != _paintedDark;
 }
 
 /// Ranked horizontal bars (top items, top customers): label, bar scaled to the biggest, value.
 class RankBars extends StatelessWidget {
-  const RankBars({super.key, required this.rows, this.color = GPColors.primary, this.emptyText = 'Nothing to show for this period.'});
+  const RankBars({super.key, required this.rows, this.color, this.emptyText = 'Nothing to show for this period.'});
   final List<({String label, num value, String? sub})> rows;
-  final Color color;
+  final Color? color;
   final String emptyText;
 
   @override
   Widget build(BuildContext context) {
     if (rows.isEmpty) {
-      return Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Text(emptyText, style: const TextStyle(color: GPColors.ink2)));
+      return Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: Text(emptyText, style: TextStyle(color: GPColors.ink2)));
     }
     final maxV = rows.fold<num>(0, (a, r) => r.value > a ? r.value : a);
     return Column(
@@ -377,11 +381,11 @@ class RankBars extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: maxV > 0 ? (r.value / maxV).toDouble() : 0,
                   minHeight: 8,
-                  color: color,
-                  backgroundColor: color.withValues(alpha: 0.12),
+                  color: color ?? GPColors.primary,
+                  backgroundColor: (color ?? GPColors.primary).withValues(alpha: 0.12),
                 ),
               ),
-              if (r.sub != null) Padding(padding: const EdgeInsets.only(top: 2), child: Text(r.sub!, style: const TextStyle(fontSize: 11, color: GPColors.ink2))),
+              if (r.sub != null) Padding(padding: const EdgeInsets.only(top: 2), child: Text(r.sub!, style: TextStyle(fontSize: 11, color: GPColors.ink2))),
             ]),
           ),
       ],
@@ -398,7 +402,7 @@ class DeltaChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (pct == null) {
-      return const Text('new', style: TextStyle(fontSize: 11, color: GPColors.ink2, fontWeight: FontWeight.w700));
+      return Text('new', style: TextStyle(fontSize: 11, color: GPColors.ink2, fontWeight: FontWeight.w700));
     }
     final up = pct! >= 0;
     final good = pct == 0 ? null : (up == upIsGood);

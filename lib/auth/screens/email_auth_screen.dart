@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../widgets/gp_buttons.dart';
 import '../auth_service.dart';
@@ -79,20 +81,20 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
             TextField(
               controller: emailC,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: "Email"),
+              decoration: InputDecoration(labelText: trs("Email")),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: passC,
               obscureText: true,
-              decoration: const InputDecoration(labelText: "Password"),
+              decoration: InputDecoration(labelText: trs("Password")),
             ),
             const SizedBox(height: 14),
 
             if (err != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: Text(err!, style: const TextStyle(color: GPColors.ink2)),
+                child: Text(err!, style: TextStyle(color: GPColors.ink2)),
               ),
 
             GPPrimaryButton(

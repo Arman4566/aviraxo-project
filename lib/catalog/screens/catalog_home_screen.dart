@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../controllers/catalog_controller.dart';
 import '../models/catalog_models.dart';
@@ -74,21 +76,21 @@ class _CatalogHomeScreenState extends State<CatalogHomeScreen> {
                     controller: _search,
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
-                      hintText: "Search name, description, category…",
+                      hintText: trs("Search name, description, category…"),
                       prefixIcon: const Icon(Icons.search_rounded),
                       filled: true,
                       fillColor: GPColors.tint.withOpacity(0.45),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: GPColors.line),
+                        borderSide: BorderSide(color: GPColors.line),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: GPColors.line),
+                        borderSide: BorderSide(color: GPColors.line),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: GPColors.line),
+                        borderSide: BorderSide(color: GPColors.line),
                       ),
                     ),
                   ),
@@ -111,7 +113,7 @@ class _CatalogHomeScreenState extends State<CatalogHomeScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                             decoration: BoxDecoration(
-                              color: selected ? GPColors.primary.withOpacity(0.28) : Colors.white,
+                              color: selected ? GPColors.primary.withOpacity(0.28) : GPColors.surface,
                               borderRadius: BorderRadius.circular(999),
                               border: Border.all(color: selected ? GPColors.primary : GPColors.line),
                             ),
@@ -174,7 +176,7 @@ class _EmptyCatalog extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: GPColors.line),
         ),
-        child: const Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.storefront_rounded, size: 48),
@@ -203,7 +205,7 @@ class _ProductCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: GPColors.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: GPColors.line),
         ),
@@ -233,7 +235,7 @@ class _ProductCard extends StatelessWidget {
             Text(p.category,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                     color: GPColors.ink2, fontWeight: FontWeight.w700, fontSize: 12)),
           ],
         ),

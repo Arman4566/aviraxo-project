@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 import '../theme/gp_colors.dart';
 
 class GPOptionCard extends StatelessWidget {
@@ -50,7 +51,7 @@ class GPOptionCard extends StatelessWidget {
                 children: [
                   Text(title, style: const TextStyle(fontWeight: FontWeight.w900)),
                   const SizedBox(height: 4),
-                  Text(subtitle, style: const TextStyle(color: GPColors.ink2)),
+                  Text(subtitle, style: TextStyle(color: GPColors.ink2)),
                 ],
               ),
             ),
@@ -124,7 +125,7 @@ class GPToggleCard extends StatelessWidget {
                 children: [
                   Text(title, style: const TextStyle(fontWeight: FontWeight.w900)),
                   const SizedBox(height: 4),
-                  Text(subtitle, style: const TextStyle(color: GPColors.ink2)),
+                  Text(subtitle, style: TextStyle(color: GPColors.ink2)),
                 ],
               ),
             ),

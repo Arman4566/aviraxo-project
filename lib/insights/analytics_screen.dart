@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 
 import '../core/money.dart';
 import '../data/repositories/extras_repo.dart';
@@ -104,7 +105,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           ]),
         ),
         const SizedBox(height: 4),
-        Text('${a['from']} to ${a['to']}, compared with the ${a['days']} days before', style: const TextStyle(fontSize: 12, color: GPColors.ink2)),
+        Text('${a['from']} to ${a['to']}, compared with the ${a['days']} days before', style: TextStyle(fontSize: 12, color: GPColors.ink2)),
         const SizedBox(height: 12),
         if (empty)
           const _Card(title: 'No activity yet', child: Text('Create an invoice or record a payment and your charts will fill in here.')),
@@ -131,11 +132,11 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           title: 'Sales and collections',
           trailing: _sel != null && _sel! < series.length
               ? Text('${labels[_sel!]}: ${compactInr(sales[_sel!])} sold, ${compactInr(coll[_sel!])} in', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))
-              : const Text('Touch the chart', style: TextStyle(fontSize: 12, color: GPColors.ink2)),
+              : Text('Touch the chart', style: TextStyle(fontSize: 12, color: GPColors.ink2)),
           child: Column(children: [
-            LineChart(series: [sales, coll], labels: labels, colors: const [GPColors.primary, GPColors.success], onSelect: (i) => setState(() => _sel = i)),
+            LineChart(series: [sales, coll], labels: labels, colors: [GPColors.primary, GPColors.success], onSelect: (i) => setState(() => _sel = i)),
             const SizedBox(height: 8),
-            const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               _Dot(GPColors.primary, 'Sales'),
               SizedBox(width: 16),
               _Dot(GPColors.success, 'Money received'),
@@ -151,10 +152,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 [for (final m in monthly) m['expenses'] as num],
               ],
               labels: [for (final m in monthly) _months[int.parse((m['month'] as String).substring(5)) - 1]],
-              colors: const [GPColors.primary, GPColors.warning],
+              colors: [GPColors.primary, GPColors.warning],
             ),
             const SizedBox(height: 8),
-            const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               _Dot(GPColors.primary, 'Sales'),
               SizedBox(width: 16),
               _Dot(GPColors.warning, 'Expenses'),
@@ -165,7 +166,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         _Card(
           title: 'How customers pay',
           child: modes.isEmpty
-              ? const Text('No payments in this period.', style: TextStyle(color: GPColors.ink2))
+              ? Text('No payments in this period.', style: TextStyle(color: GPColors.ink2))
               : DonutChart(
                   centerLabel: 'received',
                   slices: [for (var i = 0; i < modes.length; i++) DonutSlice(_title(modes[i]['mode'] as String), modes[i]['total'] as num, GPColors.series[i % GPColors.series.length])],
@@ -174,7 +175,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         _Card(
           title: 'Where the money goes',
           child: cats.isEmpty
-              ? const Text('No expenses in this period.', style: TextStyle(color: GPColors.ink2))
+              ? Text('No expenses in this period.', style: TextStyle(color: GPColors.ink2))
               : DonutChart(
                   centerLabel: 'spent',
                   slices: [for (var i = 0; i < cats.length; i++) DonutSlice(cats[i]['category'] as String, cats[i]['total'] as num, GPColors.series[(i + 2) % GPColors.series.length])],
@@ -193,7 +194,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         ),
         _Card(
           title: 'Busiest days',
-          trailing: best == null ? null : Text('Best: ${_days[best]}', style: const TextStyle(fontWeight: FontWeight.w800, color: GPColors.primary)),
+          trailing: best == null ? null : Text('Best: ${_days[best]}', style: TextStyle(fontWeight: FontWeight.w800, color: GPColors.primary)),
           child: BarChart(
             height: 140,
             series: [[for (final d in weekdays) d['sales'] as num]],
@@ -218,7 +219,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
       title: 'Money still to collect',
       trailing: Text(compactInr(total), style: const TextStyle(fontWeight: FontWeight.w900)),
       child: total <= 0
-          ? const Text('Nobody owes you money right now.', style: TextStyle(color: GPColors.ink2))
+          ? Text('Nobody owes you money right now.', style: TextStyle(color: GPColors.ink2))
           : Column(children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
@@ -292,11 +293,11 @@ class _Kpi extends StatelessWidget {
               child: Icon(icon, size: 16, color: color),
             ),
             const SizedBox(width: 8),
-            Expanded(child: Text(label, style: const TextStyle(fontWeight: FontWeight.w700, color: GPColors.ink2))),
+            Expanded(child: Text(label, style: TextStyle(fontWeight: FontWeight.w700, color: GPColors.ink2))),
             if (label != 'GST collected') DeltaChip(pct: pct, upIsGood: upIsGood),
           ]),
           FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900))),
-          Text(sub ?? ' ', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11, color: GPColors.ink2)),
+          Text(sub ?? ' ', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, color: GPColors.ink2)),
         ]),
       );
 }

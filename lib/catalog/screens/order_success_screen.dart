@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../theme/gp_colors.dart';
 import '../controllers/catalog_controller.dart';
@@ -68,7 +69,7 @@ class OrderSuccessScreen extends StatelessWidget {
               const Text("Order placed successfully",
                   style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
               const SizedBox(height: 8),
-              Text("Order ID: $orderId", style: const TextStyle(color: GPColors.ink2)),
+              Text("Order ID: $orderId", style: TextStyle(color: GPColors.ink2)),
               const SizedBox(height: 18),
 
               SizedBox(
@@ -93,7 +94,7 @@ class OrderSuccessScreen extends StatelessWidget {
                 height: 52,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: GPColors.line),
+                    side: BorderSide(color: GPColors.line),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: () {

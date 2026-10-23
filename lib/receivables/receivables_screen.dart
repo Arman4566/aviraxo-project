@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 
 import '../core/money.dart';
 import '../core/messenger.dart';
@@ -257,7 +258,7 @@ class _PartyTile extends StatelessWidget {
         ]),
         trailing: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
           Text(inr(p['balance'] as num), style: const TextStyle(fontWeight: FontWeight.w900)),
-          const Text('Remind', style: TextStyle(color: GPColors.primaryDeep, fontWeight: FontWeight.w800, fontSize: 12)),
+          Text('Remind', style: TextStyle(color: GPColors.primaryDeep, fontWeight: FontWeight.w800, fontSize: 12)),
         ]),
         onTap: () async {
           final done = await showReminderSheet(context, partyId: pid, partyName: '${p['name']}');

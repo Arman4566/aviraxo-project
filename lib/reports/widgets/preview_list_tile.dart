@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 
 class PreviewListTile extends StatelessWidget {
@@ -21,7 +22,7 @@ class PreviewListTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),
@@ -43,7 +44,7 @@ class PreviewListTile extends StatelessWidget {
               children: [
                 Text(title, style: const TextStyle(fontWeight: FontWeight.w900)),
                 const SizedBox(height: 4),
-                Text(subtitle, style: const TextStyle(color: GPColors.ink2)),
+                Text(subtitle, style: TextStyle(color: GPColors.ink2)),
               ],
             ),
           ),

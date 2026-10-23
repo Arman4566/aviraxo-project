@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import '../../core/messenger.dart';
 import '../../data/models/app_settings.dart';
 import '../../data/repositories/app_settings_repo.dart';
@@ -98,7 +100,7 @@ class _BillingSettingsScreenState extends State<BillingSettingsScreen> {
                   "compact" => "Small, dense layout. Fits more lines per page.",
                   _ => "Traditional boxed layout with all details.",
                 },
-                style: const TextStyle(color: GPColors.ink2),
+                style: TextStyle(color: GPColors.ink2),
               ),
 
               const Divider(height: 32),
@@ -126,7 +128,7 @@ class _BillingSettingsScreenState extends State<BillingSettingsScreen> {
               const SizedBox(height: 4),
               Text(
                 "Prices are entered ${pricingStyle.toLowerCase()} of tax. This was chosen during setup.",
-                style: const TextStyle(color: GPColors.ink2),
+                style: TextStyle(color: GPColors.ink2),
               ),
 
               const Divider(height: 32),
@@ -138,11 +140,11 @@ class _BillingSettingsScreenState extends State<BillingSettingsScreen> {
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
                 decoration: InputDecoration(
-                  labelText: "Your UPI ID",
-                  hintText: "shop@okaxis",
-                  helperText: "Added to payment reminders as a tap-to-pay link",
+                  labelText: trs("Your UPI ID"),
+                  hintText: trs("shop@okaxis"),
+                  helperText: trs("Added to payment reminders as a tap-to-pay link"),
                   errorText: _upiError,
-                  suffixIcon: IconButton(icon: const Icon(Icons.check_circle_outline), tooltip: "Save", onPressed: _saveUpi),
+                  suffixIcon: IconButton(icon: const Icon(Icons.check_circle_outline), tooltip: trs("Save"), onPressed: _saveUpi),
                 ),
                 onSubmitted: (_) => _saveUpi(),
               ),

@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 
 import '../../theme/gp_colors.dart';
 
@@ -65,7 +67,7 @@ class _AdjustDialogState extends State<_AdjustDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Current: ${widget.current} ${widget.unit}', style: const TextStyle(color: GPColors.ink2)),
+            Text('Current: ${widget.current} ${widget.unit}', style: TextStyle(color: GPColors.ink2)),
             const SizedBox(height: 10),
             SegmentedButton<bool>(
               segments: const [
@@ -79,17 +81,17 @@ class _AdjustDialogState extends State<_AdjustDialog> {
             TextField(
               controller: _qty,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Quantity (${widget.unit})', errorText: _error),
+              decoration: InputDecoration(labelText: trs('Quantity (${widget.unit})'), errorText: _error),
             ),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
               value: _reason,
-              decoration: const InputDecoration(labelText: 'Reason'),
+              decoration: InputDecoration(labelText: trs('Reason')),
               items: _reasons.map((r) => DropdownMenuItem(value: r, child: Text(r))).toList(),
               onChanged: (v) => setState(() => _reason = v ?? 'correction'),
             ),
             const SizedBox(height: 10),
-            TextField(controller: _note, decoration: const InputDecoration(labelText: 'Note (optional)')),
+            TextField(controller: _note, decoration: InputDecoration(labelText: trs('Note (optional)'))),
           ],
         ),
       ),

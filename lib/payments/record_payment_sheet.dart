@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
+import '../widgets/glass.dart';
 
 import '../core/messenger.dart';
 import '../l10n/strings.dart';
@@ -17,17 +20,15 @@ Future<bool> showRecordPaymentSheet(
   double? suggestedAmount,
   int? invoiceId,
 }) async {
-  final ok = await showModalBottomSheet<bool>(
+  final ok = await showGlassSheet<bool>(
     context: context,
     isScrollControlled: true,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(22))),
     builder: (_) => _RecordPaymentSheet(
       partyId: partyId,
       partyName: partyName,
       suggestedAmount: suggestedAmount,
       invoiceId: invoiceId,
-    ),
-  );
+    ),);
   return ok == true;
 }
 
@@ -125,13 +126,13 @@ class _RecordPaymentSheetState extends State<_RecordPaymentSheet> {
           const SizedBox(height: 14),
           const Text('Record Payment', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
           const SizedBox(height: 4),
-          Text('From ${widget.partyName}', style: const TextStyle(color: GPColors.ink2)),
+          Text('From ${widget.partyName}', style: TextStyle(color: GPColors.ink2)),
           const SizedBox(height: 14),
           TextField(
             controller: _amount,
             autofocus: true,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(labelText: 'Amount received (₹)'),
+            decoration: InputDecoration(labelText: trs('Amount received (₹)')),
           ),
           const SizedBox(height: 12),
           Wrap(
@@ -147,7 +148,7 @@ class _RecordPaymentSheetState extends State<_RecordPaymentSheet> {
           const SizedBox(height: 12),
           TextField(
             controller: _ref,
-            decoration: const InputDecoration(labelText: 'Reference / UTR / cheque no. (optional)'),
+            decoration: InputDecoration(labelText: trs('Reference / UTR / cheque no. (optional)')),
           ),
           const SizedBox(height: 8),
           TextButton.icon(

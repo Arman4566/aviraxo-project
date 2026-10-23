@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../base/base_screen.dart';

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../core/api_client.dart';
@@ -114,7 +116,7 @@ class _ScanBillScreenState extends State<ScanBillScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('Take a photo of a supplier bill or price list. The AI reads the items; you check them and add them to your stock.', style: TextStyle(color: GPColors.ink2)),
+          Text('Take a photo of a supplier bill or price list. The AI reads the items; you check them and add them to your stock.', style: TextStyle(color: GPColors.ink2)),
           const SizedBox(height: 14),
           Row(children: [
             Expanded(child: FilledButton.icon(onPressed: _busy ? null : () => _pick(ImageSource.camera), icon: const Icon(Icons.photo_camera_rounded), label: const Text('Take photo'))),
@@ -141,7 +143,7 @@ class _ScanBillScreenState extends State<ScanBillScreen> {
             TextField(
               controller: _markup,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(labelText: 'Selling price markup % over bill price', helperText: 'You can change each selling price later in Inventory'),
+              decoration: InputDecoration(labelText: trs('Selling price markup % over bill price'), helperText: trs('You can change each selling price later in Inventory')),
             ),
             const SizedBox(height: 14),
             FilledButton(onPressed: selected == 0 ? null : _add, child: Text('Add $selected items to inventory')),

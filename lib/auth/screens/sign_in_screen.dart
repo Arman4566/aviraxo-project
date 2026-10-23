@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../widgets/gp_buttons.dart';
 import '../auth_service.dart';
@@ -66,7 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 "Sign in to keep your invoices, parties and stock safely on the server and use them on any device.",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: GPColors.ink2, height: 1.35),
@@ -81,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(color: GPColors.line),
                   ),
-                  child: Text(err!, style: const TextStyle(color: GPColors.ink2)),
+                  child: Text(err!, style: TextStyle(color: GPColors.ink2)),
                 ),
                 const SizedBox(height: 12),
               ],

@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
 import 'package:printing/printing.dart';
 
 import '../core/messenger.dart';
@@ -90,7 +92,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
             const Text('Stock goes back to inventory and the amount stops counting as a sale. '
                 'Money already received from a customer stays on their account as an advance.'),
             const SizedBox(height: 12),
-            TextField(controller: reason, decoration: const InputDecoration(labelText: 'Reason (required)')),
+            TextField(controller: reason, decoration: InputDecoration(labelText: trs('Reason (required)'))),
           ],
         ),
         actions: [
@@ -146,7 +148,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: GPColors.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: GPColors.line),
         ),
@@ -196,10 +198,10 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
               Text(inv.cashCustomer ? 'Cash Customer' : (inv.partyName.isEmpty ? '—' : inv.partyName),
                   style: const TextStyle(fontWeight: FontWeight.w700)),
               Text('${inv.docType} • ${_date(inv.date)} • ${inv.paymentMethod}',
-                  style: const TextStyle(color: GPColors.ink2)),
+                  style: TextStyle(color: GPColors.ink2)),
               if (inv.dueDateMs != null)
                 Text('Due ${_date(DateTime.fromMillisecondsSinceEpoch(inv.dueDateMs!))}',
-                    style: const TextStyle(color: GPColors.ink2)),
+                    style: TextStyle(color: GPColors.ink2)),
               if (inv.isCancelled && inv.cancelReason.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 6),
@@ -226,7 +228,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                           children: [
                             Text(l.name, style: const TextStyle(fontWeight: FontWeight.w700)),
                             Text('${l.qty} ${l.unit} × ${_money(l.rate)}${l.gstSlab > 0 && inv.gstEnabled ? ' • GST ${l.gstSlab}%' : ''}',
-                                style: const TextStyle(color: GPColors.ink2, fontSize: 12)),
+                                style: TextStyle(color: GPColors.ink2, fontSize: 12)),
                           ],
                         ),
                       ),

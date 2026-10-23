@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/auto_translate.dart';
+import '../l10n/gtext.dart';
 
 import '../core/api_client.dart';
 import '../data/repositories/ai_repo.dart';
@@ -85,11 +87,11 @@ class _AskScreenState extends State<AskScreen> {
                     padding: const EdgeInsets.all(16),
                     children: [
                       const SizedBox(height: 12),
-                      const Icon(Icons.auto_awesome_rounded, size: 40, color: GPColors.primary),
+                      Icon(Icons.auto_awesome_rounded, size: 40, color: GPColors.primary),
                       const SizedBox(height: 12),
                       const Text('Ask anything about your business', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
                       const SizedBox(height: 6),
-                      const Text('Answers come from your own sales, dues and stock. You can ask in English or Hindi.', textAlign: TextAlign.center, style: TextStyle(color: GPColors.ink2)),
+                      Text('Answers come from your own sales, dues and stock. You can ask in English or Hindi.', textAlign: TextAlign.center, style: TextStyle(color: GPColors.ink2)),
                       const SizedBox(height: 20),
                       for (final s in _suggestions)
                         Padding(
@@ -138,7 +140,7 @@ class _AskScreenState extends State<AskScreen> {
                     maxLength: 500,
                     textInputAction: TextInputAction.send,
                     onSubmitted: _send,
-                    decoration: const InputDecoration(hintText: 'Type your question…', counterText: ''),
+                    decoration: InputDecoration(hintText: trs('Type your question…'), counterText: trs('')),
                   ),
                 ),
                 const SizedBox(width: 8),

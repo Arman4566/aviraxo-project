@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/auto_translate.dart';
+import '../../../l10n/gtext.dart';
 import '../../../theme/gp_colors.dart';
 import '../models/invoice_draft.dart';
 
@@ -30,7 +32,7 @@ class InvItemRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),
@@ -55,8 +57,8 @@ class InvItemRow extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   onChanged: (v) => onRateChanged(double.tryParse(v) ?? line.rate),
                   controller: TextEditingController(text: line.rate.toStringAsFixed(0)),
-                  decoration: const InputDecoration(
-                    hintText: "Rate",
+                  decoration: InputDecoration(
+                    hintText: trs("Rate"),
                     prefixIcon: Icon(Icons.currency_rupee_rounded),
                   ),
                 ),
@@ -84,7 +86,7 @@ class InvItemRow extends StatelessWidget {
                 height: 48,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: GPColors.line),
+                    side: BorderSide(color: GPColors.line),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   ),
                   onPressed: onToggleDiscountMode,
@@ -101,7 +103,7 @@ class InvItemRow extends StatelessWidget {
               Expanded(
                 child: Text(
                   gstEnabled ? "GST ${line.gstSlab}% • ${line.item.unit}" : "Non-GST • ${line.item.unit}",
-                  style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
+                  style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700),
                 ),
               ),
               Text(

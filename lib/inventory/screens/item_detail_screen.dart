@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
@@ -26,7 +28,7 @@ class ItemDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
         title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w900)),
         actions: [
@@ -36,7 +38,7 @@ class ItemDetailScreen extends StatelessWidget {
             icon: const Icon(Icons.delete_outline_rounded),
           ),
           IconButton(
-            tooltip: "Share item",
+            tooltip: trs("Share item"),
             icon: const Icon(Icons.share_rounded),
             onPressed: () => Share.share(
               "${item.name}\nPrice: ₹${item.sellingPrice.toStringAsFixed(0)} / ${item.unit}"
@@ -60,9 +62,9 @@ class ItemDetailScreen extends StatelessWidget {
               children: [
                 Text(item.name, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
                 const SizedBox(height: 6),
-                Text("Category: ${item.category}", style: const TextStyle(color: GPColors.ink2)),
+                Text("Category: ${item.category}", style: TextStyle(color: GPColors.ink2)),
                 const SizedBox(height: 6),
-                Text("Unit: ${item.unit}", style: const TextStyle(color: GPColors.ink2)),
+                Text("Unit: ${item.unit}", style: TextStyle(color: GPColors.ink2)),
                 const SizedBox(height: 10),
                 Row(
                   children: [
@@ -145,7 +147,7 @@ class ItemDetailScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: GPColors.line),
       ),
@@ -158,13 +160,13 @@ class ItemDetailScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: GPColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),
       child: Row(
         children: [
-          Expanded(child: Text(k, style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700))),
+          Expanded(child: Text(k, style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700))),
           Text(v, style: const TextStyle(fontWeight: FontWeight.w900)),
         ],
       ),
@@ -176,7 +178,7 @@ class ItemDetailScreen extends StatelessWidget {
       height: 52,
       child: OutlinedButton.icon(
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: GPColors.line),
+          side: BorderSide(color: GPColors.line),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
         onPressed: onTap,

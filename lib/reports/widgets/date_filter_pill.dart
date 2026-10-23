@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 
 class DateFilterPill extends StatelessWidget {
@@ -21,7 +22,7 @@ class DateFilterPill extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: selected ? GPColors.tint.withOpacity(0.75) : Colors.white,
+          color: selected ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
           borderRadius: BorderRadius.circular(999),
           border: Border.all(color: selected ? GPColors.primary : GPColors.line),
         ),

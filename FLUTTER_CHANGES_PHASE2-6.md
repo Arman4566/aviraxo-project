@@ -50,3 +50,11 @@ Expect a few small analyzer fixes (imports, nullability). Run `npm run migrate` 
 - lib/ai/scan_bill_screen.dart: photo of a supplier bill -> checked item list -> added to inventory with stock. Drawer > Scan Bill (AI).
 - New dependency: image_picker. iOS Info.plist needs NSCameraUsageDescription and NSPhotoLibraryUsageDescription.
 - Server needs GEMINI_API_KEY (Render > Environment).
+
+## Hindi, dark mode and glass look
+- **Glass look (light + dark):** gradient backdrop on every page (lib/widgets/glass.dart), see-through cards, frosted app bar / bottom bar / sheets (`showGlassSheet`), iPhone-style page slide. Colours live in lib/theme/gp_colors.dart; both modes come from one builder in lib/theme/app_theme.dart.
+- **Dark mode:** Settings > App Preferences or the switch at the top of the drawer (sun/moon button). "System" follows the phone. All `GPColors` are now mode-aware getters, so widgets that use them are no longer `const`.
+- **Hindi:** language switch in the same two places. Every `Text` is now `lib/l10n/gtext.dart`, which looks the string up in `lib/l10n/hi_phrases.dart` (about 930 phrases, 110 sentence patterns, Privacy Policy and Terms). Text with no Hindi entry shows in English. Hindi date pickers/dialogs come from flutter_localizations.
+- To add or fix a Hindi word, edit `hi_phrases.dart` (`'English text': 'हिन्दी'`). Sentences with numbers/names use `{0}`, `{1}` in `hiPatterns`.
+- Not translated: invoice PDFs, text coming from your own data (item/customer names), and AI answers (the AI answers in the language you ask in).
+- Switching language/theme rebuilds every widget in place (see `_changed` in lib/app.dart), so you stay on the same screen.

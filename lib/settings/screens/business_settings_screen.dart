@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/auto_translate.dart';
+import '../../l10n/gtext.dart';
+import '../../widgets/glass.dart';
 import '../../core/messenger.dart';
 import '../../data/repositories/app_settings_repo.dart';
 import '../../models/onboarding_data.dart';
@@ -17,7 +20,7 @@ class BusinessSettingsScreen extends StatelessWidget {
     final pin = TextEditingController(text: data.pinCode ?? "");
     final gstin = TextEditingController(text: data.gstin ?? "");
     String? err;
-    final ok = await showModalBottomSheet<bool>(
+    final ok = await showGlassSheet<bool>(
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
@@ -28,13 +31,13 @@ class BusinessSettingsScreen extends StatelessWidget {
             child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text("Edit business details", style: Theme.of(c).textTheme.titleLarge),
               const SizedBox(height: 12),
-              TextField(controller: name, decoration: const InputDecoration(labelText: "Business name *")),
+              TextField(controller: name, decoration: InputDecoration(labelText: trs("Business name *"))),
               const SizedBox(height: 12),
-              TextField(controller: addr, maxLines: 2, decoration: const InputDecoration(labelText: "Address")),
+              TextField(controller: addr, maxLines: 2, decoration: InputDecoration(labelText: trs("Address"))),
               const SizedBox(height: 12),
-              TextField(controller: pin, keyboardType: TextInputType.number, maxLength: 6, decoration: const InputDecoration(labelText: "PIN code", counterText: "")),
+              TextField(controller: pin, keyboardType: TextInputType.number, maxLength: 6, decoration: InputDecoration(labelText: trs("PIN code"), counterText: trs(""))),
               const SizedBox(height: 12),
-              TextField(controller: gstin, textCapitalization: TextCapitalization.characters, decoration: const InputDecoration(labelText: "GSTIN (optional)")),
+              TextField(controller: gstin, textCapitalization: TextCapitalization.characters, decoration: InputDecoration(labelText: trs("GSTIN (optional)"))),
               if (err != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text(err!, style: const TextStyle(color: GPColors.danger))),
               const SizedBox(height: 12),
               SizedBox(
@@ -53,8 +56,7 @@ class BusinessSettingsScreen extends StatelessWidget {
             ]),
           ),
         ),
-      ),
-    );
+      ),);
     if (ok != true) return;
     await AppSettingsRepo.I.update((s) {
       final d = s.draft!;
@@ -108,7 +110,7 @@ class BusinessSettingsScreen extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(label, style: const TextStyle(fontWeight: FontWeight.w800)),
               const SizedBox(height: 4),
-              Text(value, style: const TextStyle(color: GPColors.ink2)),
+              Text(value, style: TextStyle(color: GPColors.ink2)),
             ]),
           ),
           if (locked)

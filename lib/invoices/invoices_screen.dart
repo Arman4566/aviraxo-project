@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../l10n/gtext.dart';
 
 import '../models/onboarding_data.dart';
 import '../theme/gp_colors.dart';
@@ -74,7 +75,7 @@ class InvoicesScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(18),
                         border: Border.all(color: GPColors.line),
                       ),
-                      child: const Column(
+                      child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.receipt_long_rounded, size: 42),
@@ -109,7 +110,7 @@ class InvoicesScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: GPColors.surface,
                           borderRadius: BorderRadius.circular(18),
                           border: Border.all(color: GPColors.line),
                         ),
@@ -122,7 +123,7 @@ class InvoicesScreen extends StatelessWidget {
                                 color: GPColors.primary.withOpacity(0.18),
                                 borderRadius: BorderRadius.circular(14),
                               ),
-                              child: const Icon(Icons.description_rounded, color: GPColors.ink),
+                              child: Icon(Icons.description_rounded, color: GPColors.ink),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -131,7 +132,7 @@ class InvoicesScreen extends StatelessWidget {
                                 children: [
                                   Text(inv.invoiceNo, style: const TextStyle(fontWeight: FontWeight.w900)),
                                   const SizedBox(height: 4),
-                                  Text("$party • $date", style: const TextStyle(color: GPColors.ink2)),
+                                  Text("$party • $date", style: TextStyle(color: GPColors.ink2)),
                                 ],
                               ),
                             ),

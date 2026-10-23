@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/inventory_repo.dart';
 import '../../data/models/item_entity.dart';
@@ -15,7 +16,7 @@ class InventoryReportsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Inventory Reports", style: TextStyle(fontWeight: FontWeight.w900)),
-        backgroundColor: Colors.white,
+        backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
       ),
       body: FutureBuilder<_InvData>(
@@ -40,7 +41,7 @@ class InventoryReportsScreen extends StatelessWidget {
                 title: "Stock Status",
                 subtitle: "${d.total} items",
                 child: d.total == 0
-                    ? const Text("Add items to see your stock split.", style: TextStyle(color: GPColors.ink2))
+                    ? Text("Add items to see your stock split.", style: TextStyle(color: GPColors.ink2))
                     : DonutChart(
                         centerValue: "${d.total}",
                         centerLabel: "items",
@@ -63,7 +64,7 @@ class InventoryReportsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
-                  child: const Text("No low stock items right now.", style: TextStyle(color: GPColors.ink2)),
+                  child: Text("No low stock items right now.", style: TextStyle(color: GPColors.ink2)),
                 )
               else
                 ...d.lowItems.take(5).map((it) {
@@ -181,7 +182,7 @@ class _MetricStrip extends StatelessWidget {
             width: 190,
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: GPColors.surface,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: GPColors.line),
             ),
@@ -204,7 +205,7 @@ class _MetricStrip extends StatelessWidget {
                 const Spacer(),
                 Text(m.value, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
                 const SizedBox(height: 4),
-                Text(m.sub, style: const TextStyle(color: GPColors.ink2)),
+                Text(m.sub, style: TextStyle(color: GPColors.ink2)),
               ],
             ),
           );

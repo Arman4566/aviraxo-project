@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import '../../../l10n/auto_translate.dart';
+import '../../../l10n/gtext.dart';
+import '../../../widgets/glass.dart';
 import '../../../models/onboarding_data.dart';
 import '../../../theme/gp_colors.dart';
 import '../models/invoice_draft.dart';
@@ -28,18 +31,13 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
   bool get _gstEnabled => widget.draft.isGst(widget.onboarding);
 
   void _openAddItemSheet() async {
-    final line = await showModalBottomSheet<InvoiceLine>(
+    final line = await showGlassSheet<InvoiceLine>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-      ),
       builder: (_) => InvAddItemSheet(
         onboarding: widget.onboarding,
         gstEnabled: _gstEnabled,
-      ),
-    );
+      ),);
 
     if (line != null) {
       setState(() {
@@ -71,7 +69,7 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
                   ),
                   TextButton(
                     onPressed: widget.onContinue,
-                    child: const Text("Preview", style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.primaryDeep)),
+                    child: Text("Preview", style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.primaryDeep)),
                   ),
                 ],
               ),
@@ -91,7 +89,7 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
                   children: [
                     Expanded(
                       child: _HeaderMini(
-                        label: "Invoice No",
+                        label: trs("Invoice No"),
                         value: widget.draft.invoiceNo,
                         icon: Icons.confirmation_number_rounded,
                       ),
@@ -99,7 +97,7 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: _HeaderMini(
-                        label: "Date",
+                        label: trs("Date"),
                         value: _formatDate(widget.draft.date),
                         icon: Icons.calendar_month_rounded,
                       ),
@@ -139,14 +137,9 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
               onboarding: widget.onboarding,
               draft: widget.draft,
               onViewSummary: () {
-                showModalBottomSheet(
+                showGlassSheet(
                   context: context,
-                  backgroundColor: Colors.white,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-                  ),
-                  builder: (_) => _SummarySheet(onboarding: widget.onboarding, draft: widget.draft),
-                );
+                  builder: (_) => _SummarySheet(onboarding: widget.onboarding, draft: widget.draft),);
               },
               onAddItem: _openAddItemSheet,
               onContinue: widget.onContinue,
@@ -185,7 +178,7 @@ class _HeaderMini extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: const TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700)),
+              Text(label, style: TextStyle(color: GPColors.ink2, fontWeight: FontWeight.w700)),
               const SizedBox(height: 2),
               Text(value, style: const TextStyle(fontWeight: FontWeight.w900)),
             ],
@@ -213,11 +206,11 @@ class _EmptyItems extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.playlist_add_rounded, size: 40, color: GPColors.ink),
+            Icon(Icons.playlist_add_rounded, size: 40, color: GPColors.ink),
             const SizedBox(height: 10),
             const Text("Add items to invoice", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
             const SizedBox(height: 6),
-            const Text("Tap below to search and add items.", style: TextStyle(color: GPColors.ink2)),
+            Text("Tap below to search and add items.", style: TextStyle(color: GPColors.ink2)),
             const SizedBox(height: 12),
             SizedBox(
               height: 48,
@@ -267,7 +260,7 @@ class _SummarySheet extends StatelessWidget {
           const Divider(height: 24),
           _row("Grand Total", "₹ ${total.toStringAsFixed(0)}", bold: true),
           const SizedBox(height: 8),
-          const Text("Final totals, tax and discounts are calculated on the next step.", style: TextStyle(color: GPColors.ink2)),
+          Text("Final totals, tax and discounts are calculated on the next step.", style: TextStyle(color: GPColors.ink2)),
           const SizedBox(height: 10),
         ],
       ),
