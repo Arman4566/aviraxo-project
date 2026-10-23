@@ -10,7 +10,7 @@ module.exports = {
   devAuth: !isProd && String(process.env.DEV_AUTH).toLowerCase() === 'true',
   // AI features (Google Gemini). Leave the key empty to switch AI off; the rest of the app keeps working.
   geminiApiKey: process.env.GEMINI_API_KEY || '',
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.8-flash',
   aiHourlyLimit: Number(process.env.AI_HOURLY_LIMIT || 40),
   isProd,
 };
