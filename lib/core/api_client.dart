@@ -59,9 +59,10 @@ class ApiClient {
     return Uri.parse('$baseUrl/api$path').replace(queryParameters: q.isEmpty ? null : q);
   }
 
-  Future<Map<String, dynamic>> get(String path, {Map<String, dynamic>? query}) =>
-      _send('GET', path, query: query);
-  Future<Map<String, dynamic>> post(String path, [Object? body]) => _send('POST', path, body: body ?? {});
+  Future<Map<String, dynamic>> get(String path, {Map<String, dynamic>? query, Duration? timeout}) =>
+      _send('GET', path, query: query, timeout: timeout);
+  Future<Map<String, dynamic>> post(String path, [Object? body, Duration? timeout]) =>
+      _send('POST', path, body: body ?? {}, timeout: timeout);
   /// POST that survives being offline: on a network failure the request is stored on the phone (with a client_ref so the
   /// server can ignore a duplicate) and the result has `queued: true`. Used for invoices, payments and expenses.
   Future<Map<String, dynamic>> postQueued(String path, Map<String, dynamic> body) async {
@@ -81,7 +82,7 @@ class ApiClient {
   Future<Map<String, dynamic>> delete(String path) => _send('DELETE', path);
 
   Future<Map<String, dynamic>> _send(String method, String path,
-      {Map<String, dynamic>? query, Object? body}) async {
+      {Map<String, dynamic>? query, Object? body, Duration? timeout}) async {
     final headers = await _headers();
     final uri = _uri(path, query);
     final req = http.Request(method, uri)..headers.addAll(headers);
@@ -89,7 +90,7 @@ class ApiClient {
 
     http.Response res;
     try {
-      res = await http.Response.fromStream(await _http.send(req).timeout(_timeout));
+      res = await http.Response.fromStream(await _http.send(req).timeout(timeout ?? _timeout));
     } on TimeoutException {
       throw ApiException('The server took too long to respond. Check your internet and try again.', isNetwork: true);
     } catch (_) {

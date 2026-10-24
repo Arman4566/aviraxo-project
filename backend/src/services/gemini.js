@@ -24,9 +24,10 @@ async function generate({ system, contents, json = false, temperature = 0.3, max
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-goog-api-key': config.geminiApiKey },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(55000),
     });
   } catch (e) {
+    console.warn(`[ai] request to Gemini failed (model ${config.geminiModel}): ${e.name}: ${e.message}${e.cause ? ' / ' + (e.cause.code || e.cause.message) : ''}`);
     throw new AppError(504, 'The AI service did not respond. Please try again.');
   }
   if (!res.ok) {
