@@ -18,25 +18,32 @@ async function generate({ system, contents, json = false, temperature = 0.3, max
     generationConfig: { temperature, maxOutputTokens: maxTokens, ...(json ? { responseMimeType: 'application/json' } : {}) },
   };
   if (system) body.systemInstruction = { parts: [{ text: system }] };
-  let res;
-  try {
-    res = await fetchImpl(`${BASE}/${encodeURIComponent(config.geminiModel)}:generateContent`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': config.geminiApiKey },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(55000),
-    });
-  } catch (e) {
-    console.warn(`[ai] request to Gemini failed (model ${config.geminiModel}): ${e.name}: ${e.message}${e.cause ? ' / ' + (e.cause.code || e.cause.message) : ''}`);
-    throw new AppError(504, 'The AI service did not respond. Please try again.');
+  const models = [config.geminiModel, ...(config.geminiFallbackModels || [])].filter((m, i, all) => all.indexOf(m) === i);
+  let res = null;
+  let failure = new AppError(502, 'The AI service returned an error. Please try again.');
+  for (let i = 0; i < models.length; i++) {
+    const model = models[i];
+    try {
+      const r = await fetchImpl(`${BASE}/${encodeURIComponent(model)}:generateContent`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': config.geminiApiKey },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(40000),
+      });
+      if (r.ok) { res = r; break; }
+      let detail = '';
+      try { detail = (await r.text()).slice(0, 300); } catch { /* ignore */ }
+      console.warn(`[ai] Gemini HTTP ${r.status} (model ${model})${i < models.length - 1 ? ', trying next model' : ''}: ${detail}`);
+      failure = r.status === 429
+        ? new AppError(429, 'AI usage limit reached for now. Please try again in a minute.')
+        : new AppError(502, 'The AI service returned an error. Please try again.');
+    } catch (e) {
+      console.warn(`[ai] request to Gemini failed (model ${model}): ${e.name}: ${e.message}${e.cause ? ' / ' + (e.cause.code || e.cause.message) : ''}`);
+      failure = new AppError(504, 'The AI service did not respond. Please try again.');
+    }
+    if (i < models.length - 1) await new Promise((r) => setTimeout(r, 300));
   }
-  if (!res.ok) {
-    if (res.status === 429) throw new AppError(429, 'AI usage limit reached for now. Please try again in a minute.');
-    let detail = '';
-    try { detail = (await res.text()).slice(0, 400); } catch { /* ignore */ }
-    console.warn(`[ai] Gemini HTTP ${res.status} (model ${config.geminiModel}): ${detail}`);
-    throw new AppError(502, 'The AI service returned an error. Please try again.');
-  }
+  if (!res) throw failure;
   const data = await res.json();
   const text = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('').trim();
   if (!text) throw new AppError(502, 'The AI gave an empty answer. Please rephrase and try again.');
