@@ -77,6 +77,30 @@ async function summary(db, businessId) {
   };
 }
 
+/**
+ * Monthly money position: what customers owe us ("lent") and what we owe suppliers ("borrowed"), plus what moved this month.
+ * Amounts are paise. Positive party balance = they owe us; negative = we owe them.
+ */
+async function monthly(db, businessId) {
+  const { rows: [b] } = await db.query(
+    `SELECT COALESCE(SUM(GREATEST(bal, 0)) FILTER (WHERE type IN ('customer','both')), 0) AS to_collect,
+            COALESCE(SUM(-LEAST(bal, 0)) FILTER (WHERE type IN ('supplier','both')), 0) AS to_pay,
+            COUNT(*) FILTER (WHERE bal > 0 AND type IN ('customer','both')) AS customers_owing,
+            COUNT(*) FILTER (WHERE bal < 0 AND type IN ('supplier','both')) AS suppliers_owed
+       FROM (SELECT p.type, (${BALANCE_SQL}) AS bal FROM parties p WHERE p.business_id = $1 AND p.is_active) x`, [businessId]);
+  const { rows: [m] } = await db.query(
+    `SELECT COALESCE(SUM(amount) FILTER (WHERE direction = 'in'), 0) AS collected,
+            COALESCE(SUM(amount) FILTER (WHERE direction = 'out'), 0) AS paid,
+            to_char(date_trunc('month', ${TODAY_SQL}), 'YYYY-MM') AS month
+       FROM payments WHERE business_id = $1 AND payment_date >= date_trunc('month', ${TODAY_SQL})::date`, [businessId]);
+  return {
+    month: m.month,
+    to_collect: Number(b.to_collect), to_pay: Number(b.to_pay),
+    customers_owing: Number(b.customers_owing), suppliers_owed: Number(b.suppliers_owed),
+    collected_this_month: Number(m.collected), paid_this_month: Number(m.paid),
+  };
+}
+
 /** Aging report: totals per bucket plus one row per customer. `other` = opening balance net of unallocated advances. */
 async function aging(db, businessId) {
   const { rows } = await db.query(
@@ -143,4 +167,4 @@ async function outstandingParties(db, businessId, { sort = 'overdue', bucket = n
   return { parties: list, total: list.reduce((s, p) => s + p.balance, 0) };
 }
 
-module.exports = { OPEN_INVOICES, BUCKETS, summary, aging, outstandingParties, behaviourByParty };
+module.exports = { OPEN_INVOICES, BUCKETS, summary, monthly, aging, outstandingParties, behaviourByParty };

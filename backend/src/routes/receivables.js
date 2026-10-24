@@ -13,6 +13,11 @@ router.get('/summary', asyncHandler(async (req, res) => {
   res.json({ as_of: todayIST(), ...(await rec.summary({ query }, req.business.id)) });
 }));
 
+// Monthly position: money to collect from customers and money we owe suppliers, plus this month's movement.
+router.get('/monthly', asyncHandler(async (req, res) => {
+  res.json({ as_of: todayIST(), ...(await rec.monthly({ query }, req.business.id)) });
+}));
+
 // Aging report: not due, 1-30, 31-60, 61-90, 90+ days past due, in total and per customer.
 router.get('/aging', asyncHandler(async (req, res) => {
   const a = await rec.aging({ query }, req.business.id);

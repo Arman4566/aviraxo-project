@@ -26,7 +26,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
         builder: (context, snap) {
           if (snap.connectionState != ConnectionState.done) return const Center(child: CircularProgressIndicator());
           if (snap.hasError) {
-            return Center(child: TextButton(onPressed: () => setState(() => _future = Future.wait([_repo.insights(), _repo.forecast()])), child: Text('${snap.error}. ${tr('retry')}')));
+            return Center(child: TextButton(onPressed: () => setState(() { _future = Future.wait([_repo.insights(), _repo.forecast()]); }), child: Text('${snap.error}. ${tr('retry')}')));
           }
           final cards = List<Map<String, dynamic>>.from(snap.data![0]['insights'] as List);
           final f = snap.data![1];

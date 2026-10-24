@@ -38,7 +38,7 @@ class _ReceivablesScreenState extends State<ReceivablesScreen> {
     );
   }
 
-  void _refresh() => setState(() => _future = _load());
+  void _refresh() => setState(() { _future = _load(); });
 
   @override
   Widget build(BuildContext context) {

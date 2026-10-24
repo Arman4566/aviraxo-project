@@ -15,16 +15,12 @@ class AppPreferencesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = AppPrefs.I;
     return Scaffold(
-      appBar: AppBar(title: Text('${tr('language')} & ${tr('theme')}', style: const TextStyle(fontWeight: FontWeight.w900))),
+      appBar: AppBar(title: Text(tr('theme'), style: const TextStyle(fontWeight: FontWeight.w900))),
       body: ValueListenableBuilder<String>(
         valueListenable: p.language,
         builder: (_, lang, __) => ValueListenableBuilder<ThemeMode>(
           valueListenable: p.themeMode,
           builder: (_, mode, __) => ListView(padding: const EdgeInsets.all(16), children: [
-            Text(tr('language'), style: const TextStyle(fontWeight: FontWeight.w900)),
-            RadioListTile<String>(value: 'en', groupValue: lang, onChanged: (v) => p.setLanguage(v!), title: const Text('English')),
-            RadioListTile<String>(value: 'hi', groupValue: lang, onChanged: (v) => p.setLanguage(v!), title: const Text('हिन्दी (Hindi)')),
-            const Divider(),
             Text(tr('theme'), style: const TextStyle(fontWeight: FontWeight.w900)),
             RadioListTile<ThemeMode>(value: ThemeMode.light, groupValue: mode, onChanged: (v) => p.setThemeMode(v!), title: Text(tr('light'))),
             RadioListTile<ThemeMode>(value: ThemeMode.dark, groupValue: mode, onChanged: (v) => p.setThemeMode(v!), title: Text(tr('dark'))),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart' hide Text;
 import '../l10n/gtext.dart';
+import '../l10n/auto_translate.dart';
 import '../core/outbox.dart';
 import '../insights/analytics_screen.dart';
 import '../ai/ai_summary_card.dart';
 import '../ai/ask_screen.dart';
 import '../ai/scan_bill_screen.dart';
 import 'sales_trend_card.dart';
+import 'monthly_summary_card.dart';
 import '../receivables/receivables_screen.dart';
 import '../expenses/expenses_screen.dart';
 import '../inventory/low_stock_screen.dart';
@@ -23,7 +25,9 @@ import '../data/models/invoice_entity.dart';
 
 class DashboardScreen extends StatefulWidget {
   final OnboardingData data;
-  const DashboardScreen({super.key, required this.data});
+  /// Switches the bottom-bar tab ("Reports", "Inventory"...). Provided by the base screen.
+  final void Function(String tab)? onOpenTab;
+  const DashboardScreen({super.key, required this.data, this.onOpenTab});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -43,7 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _reload() {
     Outbox.I.flush();
-    setState(() => _future = _DashDataLoader.load(isServices: _isServices));
+    setState(() { _future = _DashDataLoader.load(isServices: _isServices); });
   }
 
   bool get _isServices => (widget.data.businessType ?? "").toLowerCase() == "services";
@@ -134,10 +138,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const AiSummaryCard(),
               const SizedBox(height: 16),
 
+              const MonthlySummaryCard(),
+              const SizedBox(height: 16),
+
               _QuickActions(
                 variant: _variant,
                 isServices: _isServices,
                 onNewInvoice: _openNewInvoice,
+                onOpenTab: widget.onOpenTab,
               ),
               const SizedBox(height: 16),
 
@@ -337,7 +345,7 @@ class _QuickStats extends StatelessWidget {
         const _SectionTitle(title: "Live Overview"),
         const SizedBox(height: 10),
         SizedBox(
-          height: 118,
+          height: 150,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: cards.length,
@@ -360,7 +368,7 @@ class _FirstTimeBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: GPColors.tint.withOpacity(0.55),
+        color: GPColors.tint,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),
@@ -539,7 +547,7 @@ class _WorkspaceConfigStrip extends StatelessWidget {
         const _SectionTitle(title: "Workspace Settings"),
         const SizedBox(height: 10),
         SizedBox(
-          height: 118,
+          height: 150,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: cards.length,
@@ -595,7 +603,7 @@ class _MetricCard extends StatelessWidget {
           const Spacer(),
           Text(d.value, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
           const SizedBox(height: 4),
-          Text(d.sub, style: TextStyle(color: GPColors.ink2)),
+          Text(d.sub, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: GPColors.ink2, fontSize: 12.5)),
         ],
       ),
     );
@@ -622,8 +630,6 @@ Widget? _screenFor(String title) {
     case "Stock Summary":
     case "Raw Stock":
       return const LowStockScreen();
-    case "Reports":
-    case "View Reports":
     case "Day Report":
       return const FinanceReportsScreen();
   }
@@ -635,11 +641,13 @@ class _QuickActions extends StatelessWidget {
   final String variant;
   final bool isServices;
   final VoidCallback onNewInvoice;
+  final void Function(String tab)? onOpenTab;
 
   const _QuickActions({
     required this.variant,
     required this.isServices,
     required this.onNewInvoice,
+    this.onOpenTab,
   });
 
   @override
@@ -649,41 +657,32 @@ class _QuickActions extends StatelessWidget {
     if (variant == "Retailer") {
       actions = [
         _ActionItem("New Invoice", Icons.add_circle_rounded, primary: true),
-        _ActionItem("Add Item", Icons.add_box_rounded),
         _ActionItem("Stock Summary", Icons.inventory_rounded),
         _ActionItem("Day Report", Icons.receipt_rounded),
-        _ActionItem("Add Customer", Icons.person_add_alt_rounded),
         _ActionItem("Reports", Icons.bar_chart_rounded),
       ];
     } else if (variant == "Wholesale/Distribution") {
       actions = [
         _ActionItem("New Invoice", Icons.add_circle_rounded, primary: true),
-        _ActionItem("Add Customer", Icons.person_add_alt_rounded),
         _ActionItem("Purchase Entry", Icons.shopping_cart_rounded),
         _ActionItem("Overdue List", Icons.warning_rounded),
         _ActionItem("Reports", Icons.bar_chart_rounded),
       ];
     } else if (variant == "Manufacturer") {
       actions = [
-        _ActionItem("Production Entry", Icons.factory_rounded, primary: true),
-        _ActionItem("New Invoice", Icons.add_circle_rounded),
-        _ActionItem("Purchase Raw", Icons.shopping_bag_rounded),
+        _ActionItem("New Invoice", Icons.add_circle_rounded, primary: true),
+        _ActionItem("Purchase Entry", Icons.shopping_cart_rounded),
         _ActionItem("Raw Stock", Icons.inventory_2_rounded),
-        _ActionItem("Finished Goods", Icons.widgets_rounded),
-        _ActionItem("Dispatch", Icons.local_shipping_rounded),
       ];
     } else if (variant == "Services") {
       actions = [
         _ActionItem("New Invoice", Icons.add_circle_rounded, primary: true),
-        _ActionItem("Add Client", Icons.person_add_alt_rounded),
         _ActionItem("Pending Invoices", Icons.schedule_rounded),
         _ActionItem("Reports", Icons.bar_chart_rounded),
       ];
     } else {
       actions = [
         _ActionItem("New Invoice", Icons.add_circle_rounded, primary: true),
-        if (!isServices) _ActionItem("Add Item", Icons.add_box_rounded),
-        _ActionItem("Add Customer", Icons.person_add_alt_rounded),
         _ActionItem("View Reports", Icons.bar_chart_rounded),
         if (!isServices) _ActionItem("Purchase Entry", Icons.shopping_cart_rounded),
         if (!isServices) _ActionItem("Stock Summary", Icons.inventory_rounded),
@@ -724,8 +723,16 @@ class _QuickActions extends StatelessWidget {
           itemBuilder: (_, i) => _ActionTile(
             actions[i],
             onTap: () {
-              if (actions[i].title == "New Invoice") {
+              final title = actions[i].title;
+              if (title == "New Invoice") {
                 onNewInvoice();
+              } else if (title == "Reports" || title == "View Reports") {
+                onOpenTab?.call("Reports");
+              } else if (title == "Purchase Entry") {
+                onOpenTab?.call("Inventory");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(trs("Open an item and choose Purchase to add stock"))),
+                );
               } else {
                 final screen = _screenFor(actions[i].title);
                 if (screen != null) {
@@ -759,7 +766,7 @@ class _ActionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = item.primary ? GPColors.primary.withOpacity(0.26) : Colors.white;
+    final bg = item.primary ? GPColors.primary.withOpacity(0.26) : GPColors.surface;
     final border = item.primary ? GPColors.primary : GPColors.line;
 
     return InkWell(
@@ -779,7 +786,7 @@ class _ActionTile extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: GPColors.tint.withOpacity(0.55),
+                color: GPColors.tint,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(item.icon, color: GPColors.ink),
@@ -956,7 +963,7 @@ class _TipCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: GPColors.tint.withOpacity(0.45),
+        color: GPColors.tint,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),

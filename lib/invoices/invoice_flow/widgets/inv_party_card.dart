@@ -23,7 +23,7 @@ class InvPartyCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: selected ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
+          color: selected ? GPColors.tint : GPColors.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: selected ? GPColors.primary : GPColors.line, width: selected ? 1.6 : 1),
         ),
@@ -61,7 +61,7 @@ class InvPartyCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: GPColors.tint.withOpacity(0.55),
+                    color: GPColors.tint,
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(color: GPColors.line),
                   ),

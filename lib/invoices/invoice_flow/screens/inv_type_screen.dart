@@ -74,7 +74,7 @@ class _InvTypeScreenState extends State<InvTypeScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: selected ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
+                      color: selected ? GPColors.tint : GPColors.surface,
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(
                         color: selected ? GPColors.primary : GPColors.line,

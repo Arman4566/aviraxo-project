@@ -132,7 +132,7 @@ class _InvPartyScreenState extends State<InvPartyScreen> {
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: widget.draft.cashCustomer ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
+                  color: widget.draft.cashCustomer ? GPColors.tint : GPColors.surface,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: widget.draft.cashCustomer ? GPColors.primary : GPColors.line),
                 ),
@@ -274,7 +274,7 @@ class _EmptyState extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: GPColors.tint.withOpacity(0.55),
+          color: GPColors.tint,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: GPColors.line),
         ),

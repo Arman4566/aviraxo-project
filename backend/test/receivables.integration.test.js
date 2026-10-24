@@ -58,6 +58,11 @@ test('Payment tracking and reminders on PostgreSQL', { skip }, async (t) => {
     assert.equal(sum.due_today, 100000);
     assert.equal(sum.due_next_7_days, 60000);
     assert.equal(sum.overdue_parties, 3);
+    const mo = await rec.monthly(s, b.id);
+    assert.equal(mo.to_collect, sum.total_receivable);
+    assert.equal(mo.to_pay, 0);
+    assert.match(mo.month, /^\d{4}-\d{2}$/);
+    assert.equal((await rec.monthly(s, b2.id)).to_collect, (await rec.summary(s, b2.id)).total_receivable);
     const a = await rec.aging(s, b.id);
     assert.equal(a.buckets.not_due, 160000);        // Asha today + Dev in 2 days
     assert.equal(a.buckets.d1_30, 330000);          // Bharat 3d + Chitra 17d

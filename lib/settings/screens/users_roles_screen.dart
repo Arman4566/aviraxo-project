@@ -17,7 +17,7 @@ class UsersRolesScreen extends StatefulWidget {
 class _UsersRolesScreenState extends State<UsersRolesScreen> {
   final _repo = ExtrasRepo();
   late Future<Map<String, dynamic>> _future = _repo.staff();
-  void _reload() => setState(() => _future = _repo.staff());
+  void _reload() => setState(() { _future = _repo.staff(); });
 
   static const _roleHelp = {
     'manager': 'Everything except team and restore',

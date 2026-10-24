@@ -122,7 +122,7 @@ class InvItemRow extends StatelessWidget {
       height: 48,
       width: 140,
       decoration: BoxDecoration(
-        color: GPColors.tint.withOpacity(0.45),
+        color: GPColors.tint,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: GPColors.line),
       ),

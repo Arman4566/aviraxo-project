@@ -53,7 +53,7 @@ class ItemDetailScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: GPColors.tint.withOpacity(0.55),
+              color: GPColors.tint,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: GPColors.line),
             ),

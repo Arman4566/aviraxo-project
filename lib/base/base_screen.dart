@@ -45,6 +45,13 @@ class _BaseScreenState extends State<BaseScreen> {
   static Color get _accent => GPColors.primary;
 
   final _repo = WorkspaceRepo();
+  List<_TabItem> _lastTabs = const [];
+
+  /// Switch to a bottom-bar tab by its English name (used by dashboard shortcuts and the side panel).
+  void _goTab(String label) {
+    final idx = _lastTabs.indexWhere((t) => t.label == trs(label));
+    if (idx != -1 && mounted) setState(() => _index = idx);
+  }
 
   bool _isServicesFrom(OnboardingData d) =>
       (d.businessType ?? "").toLowerCase() == "services";
@@ -57,7 +64,7 @@ class _BaseScreenState extends State<BaseScreen> {
         label: trs("Dashboard"),
         iconOutlined: Icons.home_outlined,
         iconFilled: Icons.home_rounded,
-        screen: DashboardScreen(data: data),
+        screen: DashboardScreen(data: data, onOpenTab: _goTab),
       ),
       _TabItem(
         label: trs("Invoices"),
@@ -151,6 +158,7 @@ class _BaseScreenState extends State<BaseScreen> {
 
         final isServices = _isServicesFrom(data);
         final tabs = _tabsFor(data);
+        _lastTabs = tabs;
 
         return Scaffold(
           appBar: AppBar(
@@ -251,7 +259,7 @@ class _BaseScreenState extends State<BaseScreen> {
                 return;
               }
 
-              final idx = tabs.indexWhere((t) => t.label == routeLabel);
+              final idx = tabs.indexWhere((t) => t.label == trs(routeLabel));
               if (idx != -1) {
                 setState(() => _index = idx);
                 return;
@@ -352,16 +360,7 @@ class _AppDrawer extends StatelessWidget {
       _DrawerItem("Ask AI", Icons.auto_awesome_rounded),
       if (!isServices) _DrawerItem("Scan Bill (AI)", Icons.document_scanner_rounded),
       _DrawerItem("Collect Payments", Icons.account_balance_wallet_rounded),
-      _DrawerItem("Expenses", Icons.money_off_csred_rounded),
-      if (!isServices) _DrawerItem("Low Stock", Icons.warning_amber_rounded),
-      _DrawerItem("Insights & Forecast", Icons.auto_graph_rounded),
-      _DrawerItem("Profit, Cash & GST", Icons.assessment_outlined),
       _DrawerItem("Settings", Icons.settings_rounded),
-
-      // ✅ ADDED:
-      _DrawerItem("Privacy Policy", Icons.privacy_tip_outlined),
-      _DrawerItem("Terms & Conditions", Icons.gavel_outlined),
-      _DrawerItem("Contact", Icons.email_outlined),
     ];
 
     return Drawer(
@@ -374,7 +373,13 @@ class _AppDrawer extends StatelessWidget {
               color: accent,
               border: Border(bottom: BorderSide(color: GPColors.line)),
             ),
-            child: const Column(
+            child: Row(children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset('assets/images/galla_pro.png', width: 46, height: 46, fit: BoxFit.cover),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -394,7 +399,8 @@ class _AppDrawer extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
+            )),
+            ]),
           ),
           // Quick switches: language and light/dark.
           Padding(

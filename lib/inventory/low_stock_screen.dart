@@ -24,7 +24,7 @@ class _LowStockScreenState extends State<LowStockScreen> {
         builder: (context, snap) {
           if (snap.connectionState != ConnectionState.done) return const Center(child: CircularProgressIndicator());
           if (snap.hasError) {
-            return Center(child: TextButton(onPressed: () => setState(() => _future = ExtrasRepo().lowStock()), child: Text('${snap.error}. ${tr('retry')}')));
+            return Center(child: TextButton(onPressed: () => setState(() { _future = ExtrasRepo().lowStock(); }), child: Text('${snap.error}. ${tr('retry')}')));
           }
           final d = snap.data!;
           final alerts = List<Map<String, dynamic>>.from(d['alerts'] as List);

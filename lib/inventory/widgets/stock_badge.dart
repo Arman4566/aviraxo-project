@@ -25,7 +25,7 @@ class StockBadge extends StatelessWidget {
         text = "Out of Stock";
         break;
       default:
-        bg = GPColors.tint.withOpacity(0.55);
+        bg = GPColors.tint;
         text = "N/A";
     }
 

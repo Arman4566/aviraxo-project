@@ -59,7 +59,7 @@ class OrderSuccessScreen extends StatelessWidget {
                 width: 88,
                 height: 88,
                 decoration: BoxDecoration(
-                  color: GPColors.tint.withOpacity(0.6),
+                  color: GPColors.tint,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(color: GPColors.line),
                 ),

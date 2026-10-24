@@ -219,7 +219,7 @@ class _SafeDropdownField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hint,
             filled: true,
-            fillColor: GPColors.tint.withOpacity(0.45),
+            fillColor: GPColors.tint,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 16,

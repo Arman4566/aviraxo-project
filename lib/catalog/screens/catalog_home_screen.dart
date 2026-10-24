@@ -79,7 +79,7 @@ class _CatalogHomeScreenState extends State<CatalogHomeScreen> {
                       hintText: trs("Search name, description, category…"),
                       prefixIcon: const Icon(Icons.search_rounded),
                       filled: true,
-                      fillColor: GPColors.tint.withOpacity(0.45),
+                      fillColor: GPColors.tint,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(color: GPColors.line),
@@ -172,7 +172,7 @@ class _EmptyCatalog extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: GPColors.tint.withOpacity(0.45),
+          color: GPColors.tint,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: GPColors.line),
         ),
@@ -217,7 +217,7 @@ class _ProductCard extends StatelessWidget {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: GPColors.tint.withOpacity(0.55),
+                  color: GPColors.tint,
                   border: Border.all(color: GPColors.line),
                 ),
                 child: const Center(child: Icon(Icons.image_rounded, size: 36)),

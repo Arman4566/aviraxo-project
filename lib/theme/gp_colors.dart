@@ -12,14 +12,14 @@ class GPColors {
   // Brand
   static Color get primary => dark ? const Color(0xFF6366F1) : const Color(0xFF4F46E5);       // buttons, selected states
   static Color get primaryDeep => dark ? const Color(0xFFA5B4FC) : const Color(0xFF3730A3);   // emphasis text
-  static Color get tint => dark ? const Color(0x336366F1) : const Color(0x1F4F46E5);          // selected cards, chips (see-through wash)
+  static Color get tint => dark ? const Color(0x406366F1) : const Color(0x264F46E5);          // selected cards, chips (see-through wash)
   static const Color onPrimary = Colors.white;         // text/icons placed on primary
   static const Color accent = Color(0xFF14B8A6);       // teal: second series in charts, highlights
   static const Color white = Colors.white;
 
   // Neutrals (text, lines, glass surfaces)
   static Color get ink => dark ? const Color(0xFFF1F5F9) : const Color(0xFF0F172A);           // main text
-  static Color get ink2 => dark ? const Color(0xFFA3AEC4) : const Color(0xFF5B6B84);          // secondary text
+  static Color get ink2 => dark ? const Color(0xFFB8C2D6) : const Color(0xFF55657E);          // secondary text
   static Color get line => dark ? const Color(0x2EFFFFFF) : const Color(0x1F0F172A);         // dividers and thin borders
   static Color get surface => dark ? const Color(0x991E2748) : const Color(0xB8FFFFFF);       // glass cards (see-through)
   static Color get bg => dark ? const Color(0xFF0B1020) : const Color(0xFFF3F4FA);            // base colour behind the glass
@@ -30,10 +30,10 @@ class GPColors {
   static Color get glassShadow => dark ? const Color(0x66000000) : const Color(0x1A1E2A5A);
 
   // Meaning (readable in both modes)
-  static const Color success = Color(0xFF059669);      // money in, paid, healthy
-  static const Color danger = Color(0xFFDC2626);       // overdue, out of stock, errors
-  static const Color warning = Color(0xFFD97706);      // due soon, low stock
-  static const Color info = Color(0xFF0284C7);         // neutral information
+  static const Color success = Color(0xFF0F9F6E);      // money in, paid, healthy
+  static const Color danger = Color(0xFFE5484D);       // overdue, out of stock, errors
+  static const Color warning = Color(0xFFE08A00);      // due soon, low stock
+  static const Color info = Color(0xFF0A8FD6);         // neutral information
 
   // Chart series (colour-blind friendly order)
   static const List<Color> series = [

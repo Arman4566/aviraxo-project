@@ -58,7 +58,7 @@ class PartyReportsScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: GPColors.tint.withOpacity(0.45),
+                    color: GPColors.tint,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
@@ -153,7 +153,7 @@ class _sum extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: GPColors.tint.withOpacity(0.45),
+        color: GPColors.tint,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),

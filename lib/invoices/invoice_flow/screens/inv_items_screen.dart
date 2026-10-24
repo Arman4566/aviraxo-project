@@ -81,7 +81,7 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: GPColors.tint.withOpacity(0.55),
+                  color: GPColors.tint,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: GPColors.line),
                 ),
@@ -199,7 +199,7 @@ class _EmptyItems extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: GPColors.tint.withOpacity(0.55),
+          color: GPColors.tint,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: GPColors.line),
         ),

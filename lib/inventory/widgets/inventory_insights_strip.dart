@@ -48,7 +48,7 @@ class _Card extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: GPColors.tint.withOpacity(0.45),
+        color: GPColors.tint,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: GPColors.line),
       ),

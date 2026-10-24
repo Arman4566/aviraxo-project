@@ -22,7 +22,7 @@ class DateFilterPill extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: selected ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
+          color: selected ? GPColors.tint : GPColors.surface,
           borderRadius: BorderRadius.circular(999),
           border: Border.all(color: selected ? GPColors.primary : GPColors.line),
         ),

@@ -119,7 +119,7 @@ class SettingsHomeScreen extends StatelessWidget {
           SettingsTile(
             icon: Icons.palette_rounded,
             title: "App Preferences",
-            subtitle: "Language & appearance",
+            subtitle: "Light & dark appearance",
             onTap: () => _open(context, const AppPreferencesScreen()),
           ),
           SettingsTile(

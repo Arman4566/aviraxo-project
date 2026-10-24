@@ -18,7 +18,7 @@ class _ReminderRulesScreenState extends State<ReminderRulesScreen> {
   final _repo = ReceivablesRepo();
   late Future<List<Map<String, dynamic>>> _future = _repo.rules();
 
-  void _reload() => setState(() => _future = _repo.rules());
+  void _reload() => setState(() { _future = _repo.rules(); });
 
   String _describe(Map<String, dynamic> r) {
     final n = r['offset_days'];

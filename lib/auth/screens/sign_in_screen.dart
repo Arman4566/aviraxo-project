@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Text;
 import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
+import '../../widgets/language_picker.dart';
 import '../../widgets/gp_buttons.dart';
 import '../auth_service.dart';
 import 'email_auth_screen.dart';
@@ -46,17 +47,16 @@ class _SignInScreenState extends State<SignInScreen> {
           padding: const EdgeInsets.fromLTRB(20, 26, 20, 20),
           child: Column(
             children: [
-              const SizedBox(height: 18),
+              const Align(alignment: Alignment.centerRight, child: LanguagePicker()),
+              const SizedBox(height: 14),
               Container(
-                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(28),
-                  border: Border.all(color: GPColors.line.withOpacity(0.6)),
+                  borderRadius: BorderRadius.circular(26),
+                  boxShadow: [BoxShadow(color: GPColors.glassShadow, blurRadius: 24, offset: const Offset(0, 10))],
                 ),
-                child: Image.asset(
-                  'assets/images/galla_pro.png',
-                  height: 88,
-                  fit: BoxFit.contain,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(26),
+                  child: Image.asset('assets/images/galla_pro.png', height: 104, width: 104, fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(height: 18),

@@ -124,7 +124,7 @@ class _InventoryFiltersSheetState extends State<InventoryFiltersSheet> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color: on ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
+                  color: on ? GPColors.tint : GPColors.surface,
                   borderRadius: BorderRadius.circular(999),
                   border: Border.all(color: on ? GPColors.primary : GPColors.line),
                 ),

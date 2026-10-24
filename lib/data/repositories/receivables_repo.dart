@@ -6,6 +6,7 @@ String ymd(DateTime d) =>
 /// Everything about "who owes me money and how do I get it": summary, aging, reminders, promises.
 class ReceivablesRepo {
   Future<Map<String, dynamic>> summary() => ApiClient.I.get('/receivables/summary');
+  Future<Map<String, dynamic>> monthly() => ApiClient.I.get('/receivables/monthly');
   Future<Map<String, dynamic>> aging() => ApiClient.I.get('/receivables/aging');
 
   Future<List<Map<String, dynamic>>> parties({String sort = 'overdue', String? bucket}) async {

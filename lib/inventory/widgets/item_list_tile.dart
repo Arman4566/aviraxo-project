@@ -31,7 +31,7 @@ class ItemListTile extends StatelessWidget {
         alignLeft: true,
         icon: Icons.edit_rounded,
         label: trs("Edit"),
-        color: GPColors.tint.withOpacity(0.8),
+        color: GPColors.tint,
       ),
       secondaryBackground: _slideBg(
         alignLeft: false,
@@ -138,7 +138,7 @@ class ItemListTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: GPColors.tint.withOpacity(0.55),
+        color: GPColors.tint,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: GPColors.line),
       ),

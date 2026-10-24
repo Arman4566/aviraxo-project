@@ -120,7 +120,7 @@ class _AskScreenState extends State<AskScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.82),
                           decoration: BoxDecoration(
-                            color: m.mine ? GPColors.primary : (m.error ? const Color(0xFFFEE2E2) : GPColors.tint),
+                            color: m.mine ? GPColors.primary : (m.error ? GPColors.danger.withOpacity(0.16) : GPColors.tint),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: SelectableText(m.text, style: TextStyle(color: m.mine ? Colors.white : (m.error ? GPColors.danger : GPColors.ink), height: 1.35)),

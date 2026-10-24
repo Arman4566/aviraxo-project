@@ -28,9 +28,14 @@ class _FinanceReportsScreenState extends State<FinanceReportsScreen> {
     _run();
   }
 
-  void _run() => setState(() => _future = _report == 'day-book'
-      ? _repo.report('day-book', date: ymd(_to))
-      : _repo.report(_report, from: ymd(_from), to: ymd(_to)));
+  void _run() {
+    final f = _report == 'day-book'
+        ? _repo.report('day-book', date: ymd(_to))
+        : _repo.report(_report, from: ymd(_from), to: ymd(_to));
+    setState(() {
+      _future = f;
+    });
+  }
 
   Future<void> _pick(bool from) async {
     final d = await showDatePicker(context: context, initialDate: from ? _from : _to, firstDate: DateTime(2020), lastDate: DateTime.now());

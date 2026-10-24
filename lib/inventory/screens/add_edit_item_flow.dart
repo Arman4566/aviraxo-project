@@ -411,7 +411,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: on ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
+                    color: on ? GPColors.tint : GPColors.surface,
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(color: on ? GPColors.primary : GPColors.line),
                   ),
@@ -424,7 +424,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: GPColors.tint.withOpacity(0.55),
+              color: GPColors.tint,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: GPColors.line),
             ),
@@ -447,7 +447,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: GPColors.tint.withOpacity(0.55),
+              color: GPColors.tint,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: GPColors.line),
             ),
@@ -500,7 +500,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: on ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
+          color: on ? GPColors.tint : GPColors.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: on ? GPColors.primary : GPColors.line),
         ),

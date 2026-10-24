@@ -43,9 +43,13 @@ flutter:
 
   assets:
     - assets/images/galla_pro.png
+    - assets/images/galla_pro_foreground.png
 
 flutter_launcher_icons:
   android: true
   ios: true
   image_path: assets/images/galla_pro.png
+  remove_alpha_ios: true
+  adaptive_icon_background: "#4F46E5"
+  adaptive_icon_foreground: assets/images/galla_pro_foreground.png
   min_sdk_android: 21

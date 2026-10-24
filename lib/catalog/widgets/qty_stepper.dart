@@ -29,7 +29,7 @@ class QtyStepper extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: enabled ? GPColors.tint.withOpacity(0.6) : Colors.grey.shade100,
+            color: enabled ? GPColors.tint : GPColors.line,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: GPColors.line),
           ),

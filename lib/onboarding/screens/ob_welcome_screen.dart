@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Text;
 import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
+import '../../widgets/language_picker.dart';
 import '../../widgets/gp_buttons.dart';
 
 class OBWelcomeScreen extends StatelessWidget {
@@ -20,22 +21,18 @@ class OBWelcomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 24),
+          const Align(alignment: Alignment.centerRight, child: LanguagePicker()),
+          const SizedBox(height: 16),
 
           // ✅ BIGGER, CLEAN LOGO
           Container(
-            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: Colors.transparent, // ❌ removed yellowish area
-              borderRadius: BorderRadius.circular(28),
-              border: Border.all(
-                color: GPColors.line.withOpacity(0.6),
-              ),
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [BoxShadow(color: GPColors.glassShadow, blurRadius: 26, offset: const Offset(0, 12))],
             ),
-            child: Image.asset(
-              'assets/images/galla_pro.png',
-              height: 110, // ✅ bigger logo
-              fit: BoxFit.contain,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.asset('assets/images/galla_pro.png', height: 120, width: 120, fit: BoxFit.cover),
             ),
           ),
 

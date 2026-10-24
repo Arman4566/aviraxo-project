@@ -45,7 +45,7 @@ class CartScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: GPColors.tint.withOpacity(0.45),
+                color: GPColors.tint,
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(color: GPColors.line),
               ),
@@ -79,7 +79,7 @@ class CartScreen extends StatelessWidget {
                         width: 54,
                         height: 54,
                         decoration: BoxDecoration(
-                          color: GPColors.tint.withOpacity(0.55),
+                          color: GPColors.tint,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(color: GPColors.line),
                         ),
@@ -161,7 +161,7 @@ class _Summary extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: GPColors.tint.withOpacity(0.45),
+        color: GPColors.tint,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: GPColors.line),
       ),

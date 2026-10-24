@@ -36,6 +36,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
 
   int _qty = 1;
   double _rate = 0;
+  final _rateCtl = TextEditingController();
   bool _discPercent = true;
   double _discVal = 0;
 
@@ -47,6 +48,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
   @override
   void dispose() {
     _search.dispose();
+    _rateCtl.dispose();
     super.dispose();
   }
 
@@ -81,6 +83,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
       _selectedId = e.id;
       _qty = 1;
       _rate = e.sellingPrice;
+      _rateCtl.text = _rate.toStringAsFixed(0);
       _discPercent = true;
       _discVal = 0;
     });
@@ -117,6 +120,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
       _selectedId = newId;
       _qty = 1;
       _rate = created.sellingPrice;
+      _rateCtl.text = _rate.toStringAsFixed(0);
       _discPercent = true;
       _discVal = 0;
     });
@@ -153,7 +157,9 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
             16,
             16 + MediaQuery.of(context).viewInsets.bottom,
           ),
-          child: Column(
+          child: SingleChildScrollView(
+           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(width: 46, height: 5, decoration: BoxDecoration(color: GPColors.line, borderRadius: BorderRadius.circular(999))),
@@ -192,7 +198,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: GPColors.tint.withOpacity(0.55),
+                    color: GPColors.tint,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
@@ -217,7 +223,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: isSelected ? GPColors.tint.withOpacity(0.75) : GPColors.surface,
+                            color: isSelected ? GPColors.tint : GPColors.surface,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: isSelected ? GPColors.primary : GPColors.line),
                           ),
@@ -263,7 +269,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: GPColors.tint.withOpacity(0.45),
+                    color: GPColors.tint,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: GPColors.line),
                   ),
@@ -293,7 +299,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                             child: TextField(
                               keyboardType: TextInputType.number,
                               onChanged: (v) => setState(() => _rate = double.tryParse(v) ?? _rate),
-                              controller: TextEditingController(text: _rate.toStringAsFixed(0)),
+                              controller: _rateCtl,
                               decoration: InputDecoration(
                                 hintText: trs("Rate"),
                                 prefixIcon: Icon(Icons.currency_rupee_rounded),
@@ -384,6 +390,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                 ),
               ),
             ],
+          ),
           ),
         );
       },

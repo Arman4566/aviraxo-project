@@ -76,7 +76,7 @@ class TaxReportsScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: GPColors.tint.withOpacity(0.45),
+                  color: GPColors.tint,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: GPColors.line),
                 ),

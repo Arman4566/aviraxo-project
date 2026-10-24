@@ -29,7 +29,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   }
 
   Future<List<Map<String, dynamic>>> _load() => _repo.expenses(from: ymd(_from), to: ymd(DateTime.now()));
-  void _reload() => setState(() => _future = _load());
+  void _reload() => setState(() { _future = _load(); });
 
   Future<void> _add() async {
     final saved = await showGlassSheet<bool>(

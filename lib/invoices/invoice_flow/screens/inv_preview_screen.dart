@@ -177,7 +177,7 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: GPColors.tint.withOpacity(0.55),
+                          color: GPColors.tint,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(color: GPColors.line),
                         ),

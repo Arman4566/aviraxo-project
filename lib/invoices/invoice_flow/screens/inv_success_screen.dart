@@ -55,7 +55,7 @@ class _InvSuccessScreenState extends State<InvSuccessScreen> {
               width: 92,
               height: 92,
               decoration: BoxDecoration(
-                color: GPColors.tint.withOpacity(0.6),
+                color: GPColors.tint,
                 borderRadius: BorderRadius.circular(26),
                 border: Border.all(color: GPColors.line),
               ),
