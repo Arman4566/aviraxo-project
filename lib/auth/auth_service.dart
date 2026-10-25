@@ -9,7 +9,7 @@ class AuthService {
 
   /// ✅ Web OAuth client id (client_type: 3) from google-services.json
   static const String _webClientId =
-      "736964508316-b5fkqba4evbji42a4i9aht4rgfcp4rp6.apps.googleusercontent.com";
+      "751621069614-e44f64p2sq2p6flpb5ouimvfbniiqgff.apps.googleusercontent.com";
 
   bool _googleInitialized = false;
 
