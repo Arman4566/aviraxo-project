@@ -57,7 +57,7 @@ async function columnsOf(db, table) {
  * dates are kept exactly as they were. Runs in the caller's transaction, so a bad file changes nothing.
  */
 async function restore(c, { biz, userId, data }) {
-  if (!data || data.app !== 'aviraxo' || data.version !== VERSION) throw badRequest('This is not a Galla Pro backup file');
+  if (!data || data.app !== 'aviraxo' || data.version !== VERSION) throw badRequest('This is not an Aviraxo backup file');
   if (!(await isEmpty(c, biz.id))) throw conflict('Restore is only allowed into a business with no data yet. Create a new firm and restore there.');
 
   const idMap = Object.fromEntries(TABLES.map((t) => [t.table, new Map()]));

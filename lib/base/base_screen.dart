@@ -185,7 +185,7 @@ class _BaseScreenState extends State<BaseScreen> {
             ),
             centerTitle: true,
             title: const Text(
-              "Galla Pro",
+              "Aviraxo",
               style: TextStyle(fontWeight: FontWeight.w900),
             ),
             actions: [
@@ -383,7 +383,7 @@ class _AppDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Galla Pro",
+                  "Aviraxo",
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 18,

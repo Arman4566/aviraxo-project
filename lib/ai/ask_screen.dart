@@ -6,7 +6,7 @@ import '../core/api_client.dart';
 import '../data/repositories/ai_repo.dart';
 import '../theme/gp_colors.dart';
 
-/// "Ask Galla": a chat that answers questions about the shop's own numbers (sales, dues, stock, expenses).
+/// "Ask Aviraxo": a chat that answers questions about the shop's own numbers (sales, dues, stock, expenses).
 /// The server hands the AI a fresh summary of the business each time; it is told never to invent figures.
 class AskScreen extends StatefulWidget {
   const AskScreen({super.key});
@@ -78,7 +78,7 @@ class _AskScreenState extends State<AskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ask Galla AI')),
+      appBar: AppBar(title: const Text('Ask Aviraxo AI')),
       body: Column(
         children: [
           Expanded(

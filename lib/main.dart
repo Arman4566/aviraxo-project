@@ -27,7 +27,7 @@ class _StartupError extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Galla Pro could not start',
+                const Text('Aviraxo could not start',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: Colors.black)),
                 const SizedBox(height: 12),
                 SelectableText('$error\n\n${stack ?? ''}',

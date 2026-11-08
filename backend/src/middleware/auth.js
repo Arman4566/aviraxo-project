@@ -39,7 +39,8 @@ const requireAuth = asyncHandler(async (req, _res, next) => {
   } else {
     try {
       claims = await verifyFirebaseIdToken(token, { projectId: config.firebaseProjectId });
-    } catch {
+    } catch (e) {
+      console.warn(`[auth] token rejected: ${e.message} (expected project ${config.firebaseProjectId})`);
       throw unauthorized('Invalid or expired token');
     }
   }

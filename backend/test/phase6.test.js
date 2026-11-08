@@ -34,7 +34,9 @@ test('forecast, risk and draft checks on PostgreSQL', { skip: DB ? false : 'set 
   const s = new PsqlSession(DB);
   t.after(() => s.close());
   const q = (text, params) => s.query(text, params);
-  const TODAY = '2026-10-18';
+  const { todayIST } = require('../src/utils/time');
+  const TODAY = todayIST();
+  const d = (n) => { const x = new Date(TODAY + 'T00:00:00Z'); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };
   await s.run('TRUNCATE users, businesses, parties, items, invoices, payments, expenses, audit_logs RESTART IDENTITY CASCADE');
   const { rows: [u] } = await q(`INSERT INTO users (firebase_uid, email) VALUES ('i1','a@b.c') RETURNING id`);
   const { rows: [b] } = await q(`INSERT INTO businesses (owner_user_id, name, gst_registered, state_code) VALUES ($1,'Shop',true,'27') RETURNING *`, [u.id]);
@@ -45,13 +47,13 @@ test('forecast, risk and draft checks on PostgreSQL', { skip: DB ? false : 'set 
      VALUES ($1,'gstInvoice',true,$2,$3,$4,$5,$6,$6,$6,$7) RETURNING id`, [b.id, `INV-${++no}`, date, due, partyId, total, status])).rows[0].id;
   const asha = await party('Asha'), bharat = await party('Bharat');
   // Asha has always paid on the due date
-  const old = await inv(asha, 50000, '2026-08-01', '2026-08-15', 'paid');
+  const old = await inv(asha, 50000, d(-78), d(-64), 'paid');
   await q(`UPDATE invoices SET amount_paid = 50000 WHERE id = $1`, [old]);
-  const pay = (await q(`INSERT INTO payments (business_id, party_id, payment_date, amount, mode) VALUES ($1,$2,'2026-08-15',50000,'upi') RETURNING id`, [b.id, asha])).rows[0].id;
+  const pay = (await q(`INSERT INTO payments (business_id, party_id, payment_date, amount, mode) VALUES ($1,$2,'${d(-64)}',50000,'upi') RETURNING id`, [b.id, asha])).rows[0].id;
   await q(`INSERT INTO payment_allocations (payment_id, invoice_id, amount) VALUES ($1,$2,50000)`, [pay, old]);
-  await inv(asha, 100000, '2026-10-10', '2026-10-23');          // due in 5 days
-  await inv(bharat, 200000, '2026-09-01', '2026-10-08');        // 10 days overdue, no history
-  await q(`INSERT INTO expenses (business_id, category, amount, entry_date, recurring, next_due, mode) VALUES ($1,'Rent',50000,'2026-09-25','monthly','2026-10-25','bank')`, [b.id]);
+  await inv(asha, 100000, d(-8), d(5));          // due in 5 days
+  await inv(bharat, 200000, d(-47), d(-10));        // 10 days overdue, no history
+  await q(`INSERT INTO expenses (business_id, category, amount, entry_date, recurring, next_due, mode) VALUES ($1,'Rent',50000,'${d(-23)}','monthly','${d(7)}','bank')`, [b.id]);
 
   await t.test('risk detail explains itself', async () => {
     const a = await ins.partyRisk(s, b.id, asha);

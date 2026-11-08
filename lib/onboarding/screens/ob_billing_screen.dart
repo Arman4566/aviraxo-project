@@ -60,7 +60,7 @@ class _OBBillingScreenState extends State<OBBillingScreen> {
             padding: const EdgeInsets.fromLTRB(18, 8, 18, 18),
             child: ListView(
               children: [
-                Text("What do you want to create in Galla Pro?",
+                Text("What do you want to create in Aviraxo?",
                     style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 10),
                 Wrap(

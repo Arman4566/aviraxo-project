@@ -1,4 +1,4 @@
-# Galla Pro – Phase 1 Flutter changes (backend = source of truth)
+# Aviraxo – Phase 1 Flutter changes (backend = source of truth)
 
 1. Copy this `lib/` over your project's `lib/` and this `pubspec.yaml` additions (`http: ^1.2.2`). Run `flutter pub get`.
 2. DELETE if still present: `lib/data/models/*.g.dart`, `lib/data/isar_service.dart`, `lib/auth/backup/`.

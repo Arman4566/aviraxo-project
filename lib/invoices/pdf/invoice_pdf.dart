@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
+import '../../core/upi.dart';
 import '../../data/local_db.dart';
 import '../../data/models/invoice_entity.dart';
 
@@ -208,7 +209,24 @@ class InvoicePdf {
 
     final footer = <pw.Widget>[
       if (upi.isNotEmpty && inv.affectsBooks && !inv.isCancelled && inv.balanceDue > 0)
-        pw.Padding(padding: const pw.EdgeInsets.only(top: 10), child: pw.Text("Pay by UPI: $upi", style: pw.TextStyle(fontSize: base, fontWeight: pw.FontWeight.bold, color: accent))),
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(top: 10),
+          child: pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
+            // Scan with any UPI app: opens a payment for exactly the balance due, with the invoice number as the note.
+            pw.BarcodeWidget(
+              barcode: pw.Barcode.qrCode(),
+              data: upiPayUrl(upiId: upi, payeeName: inv.businessName, amount: inv.balanceDue, note: inv.invoiceNo),
+              width: compact ? 70 : 90,
+              height: compact ? 70 : 90,
+            ),
+            pw.SizedBox(width: 10),
+            pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+              pw.Text("Scan to pay by UPI", style: pw.TextStyle(fontSize: base, fontWeight: pw.FontWeight.bold, color: accent)),
+              pw.Text(upi, style: pw.TextStyle(fontSize: base)),
+              pw.Text("Amount: ${money(inv.balanceDue)}", style: pw.TextStyle(fontSize: base)),
+            ]),
+          ]),
+        ),
       if (showNotes && inv.notes.isNotEmpty) pw.Padding(padding: const pw.EdgeInsets.only(top: 8), child: pw.Text("Notes: ${inv.notes}", style: pw.TextStyle(fontSize: base))),
       if (showTerms && inv.terms.isNotEmpty) pw.Padding(padding: const pw.EdgeInsets.only(top: 4), child: pw.Text("Terms: ${inv.terms}", style: pw.TextStyle(fontSize: base - 1))),
       pw.SizedBox(height: 14),

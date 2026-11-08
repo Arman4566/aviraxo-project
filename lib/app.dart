@@ -62,7 +62,7 @@ class _GallaProAppState extends State<GallaProApp> with WidgetsBindingObserver {
     GPColors.dark = _isDark; // must be set before the theme and any screen reads GPColors
     final lang = AppPrefs.I.language.value;
     return MaterialApp(
-      title: 'Galla Pro',
+      title: 'Aviraxo',
       scaffoldMessengerKey: AppMessenger.key,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.build(),

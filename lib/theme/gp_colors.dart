@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Galla Pro palette with two modes (light / dark) and a frosted-glass look.
+/// Aviraxo palette with two modes (light / dark) and a frosted-glass look.
 ///
 /// Colours that change with the mode are getters, so they always return the value for the mode that is active
 /// ([dark] is set by the app root before anything is built). Because they are not compile-time constants, widgets that

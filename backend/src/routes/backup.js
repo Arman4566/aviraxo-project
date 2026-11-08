@@ -11,7 +11,7 @@ const svc = require('../services/backup');
 // Download everything as one JSON file. Keep it somewhere safe (Drive, email to yourself).
 router.get('/export', asyncHandler(async (req, res) => {
   const data = await svc.exportAll({ query }, req.business);
-  res.setHeader('Content-Disposition', `attachment; filename="galla-pro-backup-${todayIST()}.json"`);
+  res.setHeader('Content-Disposition', `attachment; filename="aviraxo-backup-${todayIST()}.json"`);
   res.json(data);
 }));
 

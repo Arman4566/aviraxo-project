@@ -18,6 +18,7 @@ import '../../inventory/low_stock_screen.dart';
 import '../../insights/insights_screen.dart';
 import '../../reports/finance_reports_screen.dart';
 import 'backup_screen.dart';
+import '../../recurring/recurring_screen.dart';
 
 class SettingsHomeScreen extends StatelessWidget {
   final OnboardingData data;
@@ -103,6 +104,12 @@ class SettingsHomeScreen extends StatelessWidget {
             title: "Profit, Cash & GST Reports",
             subtitle: "P&L, day book, GSTR-1, GSTR-3B",
             onTap: () => _open(context, const FinanceReportsScreen()),
+          ),
+          SettingsTile(
+            icon: Icons.repeat_rounded,
+            title: "Recurring invoices",
+            subtitle: "Auto-create rent, retainers & subscriptions",
+            onTap: () => _open(context, const RecurringScreen()),
           ),
           SettingsTile(
             icon: Icons.backup_outlined,

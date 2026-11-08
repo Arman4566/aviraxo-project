@@ -25,7 +25,7 @@ class OrderSuccessScreen extends StatelessWidget {
         .map((l) => "- ${l.product.name} x${l.qty} = ₹${l.lineTotal.toStringAsFixed(0)}")
         .join("\n");
 
-    return "New Order (Galla Pro)\n"
+    return "New Order (Aviraxo)\n"
         "Order ID: $orderId\n"
         "Buyer: $buyerPhone\n"
         "Address: $buyerAddress\n\n"

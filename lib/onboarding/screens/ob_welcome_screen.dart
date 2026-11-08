@@ -52,7 +52,7 @@ class OBWelcomeScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12),
             child: Text(
-              "Galla Pro configures billing & inventory based on your business.",
+              "Aviraxo configures billing & inventory based on your business.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: GPColors.ink2,

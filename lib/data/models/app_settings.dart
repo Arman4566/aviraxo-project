@@ -29,6 +29,10 @@ class AppSettings {
   /// Shown on payment reminders as a tap-to-pay UPI link (the server reads settings.upiId).
   String upiId = "";
 
+  /// Books lock: invoices, payments and expenses dated on or before this day (YYYY-MM-DD) cannot be changed. Empty = off.
+  /// The server enforces it (settings.booksLockedUntil).
+  String booksLockedUntil = "";
+
   // Pricing is from onboardingDraft.pricingStyle, so no extra field here.
 
   // ============================================================
@@ -75,6 +79,7 @@ class AppSettings {
         'showTerms': showTerms,
         'invoiceTemplate': invoiceTemplate,
         'upiId': upiId,
+        'booksLockedUntil': booksLockedUntil,
         'enableStockTracking': enableStockTracking,
         'lowStockAlerts': lowStockAlerts,
         'allowNegativeStock': allowNegativeStock,
@@ -104,6 +109,7 @@ class AppSettings {
     s.showTerms = g('showTerms', s.showTerms);
     s.invoiceTemplate = g('invoiceTemplate', s.invoiceTemplate);
     s.upiId = g('upiId', s.upiId);
+    s.booksLockedUntil = g('booksLockedUntil', s.booksLockedUntil);
     s.enableStockTracking = g('enableStockTracking', s.enableStockTracking);
     s.lowStockAlerts = g('lowStockAlerts', s.lowStockAlerts);
     s.allowNegativeStock = g('allowNegativeStock', s.allowNegativeStock);

@@ -3,14 +3,19 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart' hide Text;
 import '../l10n/auto_translate.dart';
 import '../l10n/gtext.dart';
+import 'package:pdf/pdf.dart' show PdfPageFormat;
 import 'package:printing/printing.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../core/messenger.dart';
+import '../data/local_db.dart';
 import '../data/models/invoice_entity.dart';
 import '../data/repositories/invoice_repo.dart';
 import '../payments/record_payment_sheet.dart';
+import '../recurring/repeat_invoice_sheet.dart';
 import '../theme/gp_colors.dart';
 import 'pdf/invoice_pdf.dart';
+import 'pdf/receipt_pdf.dart';
 
 /// One invoice: totals, lines, payments received, and actions (record payment, PDF, cancel).
 class InvoiceDetailScreen extends StatefulWidget {
@@ -62,6 +67,48 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
     try {
       final b = await _pdf();
       await Printing.sharePdf(bytes: b, filename: '${_inv!.invoiceNo}.pdf');
+    } catch (e) {
+      AppMessenger.error(e);
+    }
+  }
+
+  /// Thermal receipt (58 mm or 80 mm roll) through the system print dialog.
+  Future<void> _printReceipt(int widthMm) async {
+    try {
+      final inv = _inv!;
+      final b = await ReceiptPdf.build(inv: inv, lines: inv.lines, widthMm: widthMm);
+      await Printing.layoutPdf(
+        name: '${inv.invoiceNo}-receipt',
+        format: PdfPageFormat(widthMm * PdfPageFormat.mm, double.infinity, marginAll: 2 * PdfPageFormat.mm),
+        onLayout: (_) async => b,
+      );
+    } catch (e) {
+      AppMessenger.error(e);
+    }
+  }
+
+  /// One tap: opens WhatsApp with a ready message to the customer (the PDF can be attached with Share PDF).
+  Future<void> _whatsApp() async {
+    try {
+      final inv = _inv!;
+      final upi = ((await LocalDb.I.getSettings())?.upiId ?? '').trim();
+      final due = inv.affectsBooks && !inv.isCancelled && inv.balanceDue > 0;
+      final msg = StringBuffer()
+        ..writeln('Hello${inv.cashCustomer || inv.partyName.isEmpty ? '' : ' ${inv.partyName}'},')
+        ..writeln('Your ${inv.docType} ${inv.invoiceNo} from ${inv.businessName.isEmpty ? 'us' : inv.businessName} is ready.')
+        ..writeln('Total: Rs ${inv.grandTotal.toStringAsFixed(2)}');
+      if (due) {
+        msg.writeln('Balance due: Rs ${inv.balanceDue.toStringAsFixed(2)}');
+        if (upi.isNotEmpty) msg.writeln('Pay by UPI: $upi');
+      }
+      msg.write('Thank you!');
+      var phone = inv.partyPhone.replaceAll(RegExp(r'\D'), '');
+      if (phone.length == 10) phone = '91$phone';
+      final text = Uri.encodeComponent(msg.toString());
+      final uri = Uri.parse(phone.isEmpty ? 'https://wa.me/?text=$text' : 'https://wa.me/$phone?text=$text');
+      if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+        AppMessenger.info('Could not open WhatsApp.');
+      }
     } catch (e) {
       AppMessenger.error(e);
     }
@@ -294,6 +341,38 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
             Expanded(child: OutlinedButton.icon(onPressed: _share, icon: const Icon(Icons.ios_share_rounded), label: const Text('Share PDF'))),
           ],
         ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(child: OutlinedButton.icon(onPressed: _whatsApp, icon: const Icon(Icons.chat_rounded), label: const Text('WhatsApp'))),
+            const SizedBox(width: 10),
+            Expanded(
+              child: PopupMenuButton<int>(
+                tooltip: 'Thermal receipt',
+                onSelected: _printReceipt,
+                itemBuilder: (_) => const [
+                  PopupMenuItem(value: 80, child: Text('Receipt 80 mm')),
+                  PopupMenuItem(value: 58, child: Text('Receipt 58 mm')),
+                ],
+                child: IgnorePointer(
+                  child: OutlinedButton.icon(onPressed: () {}, icon: const Icon(Icons.receipt_long_rounded), label: const Text('Receipt')),
+                ),
+              ),
+            ),
+          ],
+        ),
+        if (!inv.isCancelled && inv.partyId != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => showRepeatInvoiceSheet(context, inv),
+                icon: const Icon(Icons.repeat_rounded),
+                label: const Text('Repeat'),
+              ),
+            ),
+          ),
         if (!inv.isCancelled)
           Padding(
             padding: const EdgeInsets.only(top: 6),

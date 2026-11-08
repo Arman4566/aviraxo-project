@@ -41,6 +41,26 @@ class _BillingSettingsScreenState extends State<BillingSettingsScreen> {
     AppMessenger.info(v.isEmpty ? "UPI ID removed" : "UPI ID saved. It will appear on payment reminders.");
   }
 
+  Future<void> _setLock(String ymd) async {
+    await _repo.update((s) => s.booksLockedUntil = ymd);
+    AppMessenger.info(ymd.isEmpty ? "Books unlocked" : "Books locked up to $ymd");
+  }
+
+  Future<void> _pickLock(String current) async {
+    final now = DateTime.now();
+    final cur = DateTime.tryParse(current);
+    final d = await showDatePicker(
+      context: context,
+      initialDate: cur ?? DateTime(now.year, now.month, 0),
+      firstDate: DateTime(2020),
+      lastDate: now,
+      helpText: trs("Lock books up to"),
+    );
+    if (d == null) return;
+    final ymd = "${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}";
+    await _setLock(ymd);
+  }
+
   @override
   Widget build(BuildContext context) {
     final pricingStyle = (widget.data.pricingStyle ?? "Inclusive");
@@ -147,6 +167,31 @@ class _BillingSettingsScreenState extends State<BillingSettingsScreen> {
                   suffixIcon: IconButton(icon: const Icon(Icons.check_circle_outline), tooltip: trs("Save"), onPressed: _saveUpi),
                 ),
                 onSubmitted: (_) => _saveUpi(),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                "A UPI QR code is printed on unpaid invoices so customers can scan and pay.",
+                style: TextStyle(color: GPColors.ink2, fontSize: 12.5),
+              ),
+
+              const Divider(height: 32),
+
+              const Text("Lock books", style: TextStyle(fontWeight: FontWeight.w900)),
+              const SizedBox(height: 4),
+              Text(
+                "Stops anyone from adding, changing or cancelling invoices, payments and expenses dated on or before the lock date. Use it after your GST return or accountant review.",
+                style: TextStyle(color: GPColors.ink2),
+              ),
+              const SizedBox(height: 8),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon((s?.booksLockedUntil ?? "").isEmpty ? Icons.lock_open_rounded : Icons.lock_rounded, color: GPColors.primary),
+                title: Text((s?.booksLockedUntil ?? "").isEmpty ? trs("Not locked") : "${trs("Locked up to")} ${s!.booksLockedUntil}", style: const TextStyle(fontWeight: FontWeight.w800)),
+                trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                  if ((s?.booksLockedUntil ?? "").isNotEmpty)
+                    TextButton(onPressed: () => _setLock(""), child: Text(trs("Unlock"))),
+                  TextButton(onPressed: () => _pickLock(s?.booksLockedUntil ?? ""), child: Text(trs("Set date"))),
+                ]),
               ),
             ],
           ),

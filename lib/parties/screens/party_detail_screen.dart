@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart' hide Text;
 import '../../l10n/gtext.dart';
 
+import 'package:printing/printing.dart';
+
 import '../../core/messenger.dart';
+import '../../data/local_db.dart';
+import '../pdf/statement_pdf.dart';
 import '../../data/models/party_entity.dart';
 import '../../data/repositories/party_repo.dart';
 import '../../data/repositories/workspace_repo.dart';
@@ -123,6 +127,19 @@ class _PartyDetailScreenState extends State<PartyDetailScreen> {
   String _d(DateTime d) =>
       '${d.day.toString().padLeft(2, '0')}-${d.month.toString().padLeft(2, '0')}-${d.year}';
 
+  Future<void> _shareStatement() async {
+    final p = _party;
+    final l = _ledger;
+    if (p == null || l == null) return;
+    try {
+      final name = (await LocalDb.I.getSettings())?.draft?.businessName ?? '';
+      final bytes = await StatementPdf.build(businessName: name, party: p, ledger: l);
+      await Printing.sharePdf(bytes: bytes, filename: 'statement-${p.name.replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_')}.pdf');
+    } catch (e) {
+      AppMessenger.error(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_loading) {
@@ -146,8 +163,12 @@ class _PartyDetailScreenState extends State<PartyDetailScreen> {
           PopupMenuButton<String>(
             onSelected: (v) {
               if (v == "delete") _delete(party);
+              if (v == "statement") _shareStatement();
             },
-            itemBuilder: (_) => const [PopupMenuItem(value: "delete", child: Text("Delete"))],
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: "statement", child: Text("Share statement (PDF)")),
+              PopupMenuItem(value: "delete", child: Text("Delete")),
+            ],
           )
         ],
       ),

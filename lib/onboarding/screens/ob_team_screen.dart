@@ -57,7 +57,7 @@ class _OBTeamScreenState extends State<OBTeamScreen> {
             padding: const EdgeInsets.fromLTRB(18, 8, 18, 18),
             child: ListView(
               children: [
-                Text("Who will use Galla Pro?",
+                Text("Who will use Aviraxo?",
                     style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 12),
 

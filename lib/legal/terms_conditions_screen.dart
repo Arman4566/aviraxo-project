@@ -4,15 +4,15 @@ import '../l10n/gtext.dart';
 class TermsConditionsScreen extends StatelessWidget {
   const TermsConditionsScreen({super.key});
 
-  static const String _text = """Terms & Conditions – Galla Pro
+  static const String _text = """Terms & Conditions – Aviraxo
 
 Last updated: 4th February 2026.
 
-By using Galla Pro, you agree to the following Terms & Conditions.
+By using Aviraxo, you agree to the following Terms & Conditions.
 
 1. Nature of the Application
 
-Galla Pro is a calculation and data-management tool.
+Aviraxo is a calculation and data-management tool.
 
 The app performs calculations only based on user input.
 
@@ -28,7 +28,7 @@ Generated invoices
 
 Tax values, totals, and calculations
 
-Galla Pro does not provide legal, tax, or financial advice.
+Aviraxo does not provide legal, tax, or financial advice.
 
 3. Data Loss Disclaimer
 
@@ -54,7 +54,7 @@ The app is not liable for disputes arising from incorrect invoices.
 
 5. MVP Limitation
 
-Galla Pro is currently provided as an MVP (Minimum Viable Product).
+Aviraxo is currently provided as an MVP (Minimum Viable Product).
 
 Features, data handling, and performance may change in future updates.
 
@@ -64,13 +64,13 @@ Temporary issues or feature limitations may exist.
 
 To the maximum extent permitted by law:
 
-Galla Pro and its developers are not liable for any direct or indirect damages.
+Aviraxo and its developers are not liable for any direct or indirect damages.
 
 The app is used at the user’s own risk.
 
 7. Acceptance
 
-By installing or using Galla Pro, you confirm that you:
+By installing or using Aviraxo, you confirm that you:
 
 Understand these terms
 

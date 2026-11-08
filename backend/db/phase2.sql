@@ -107,3 +107,25 @@ CREATE UNIQUE INDEX IF NOT EXISTS staff_invites_pending ON staff_invites (busine
 
 -- One owner may now run several firms (Vyapar's "multi-firm"). The app picks one with the X-Business-Id header.
 DROP INDEX IF EXISTS businesses_one_per_owner;
+
+-- ---------- Recurring invoices (rent, retainers, subscriptions: the same bill every week / month / quarter / year) ----------
+-- A schedule remembers the customer and the lines. When next_date arrives the server creates a normal invoice for it.
+CREATE TABLE IF NOT EXISTS recurring_invoices (
+  id            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  business_id   UUID NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
+  party_id      BIGINT NOT NULL REFERENCES parties(id) ON DELETE RESTRICT,
+  name          TEXT NOT NULL,
+  frequency     TEXT NOT NULL CHECK (frequency IN ('weekly','monthly','quarterly','yearly')),
+  next_date     DATE NOT NULL,
+  end_date      DATE,
+  anchor_day    INT NOT NULL DEFAULT 1 CHECK (anchor_day BETWEEN 1 AND 31),   -- day of month of the first run, so Jan 31 -> Feb 28 -> Mar 31
+  is_active     BOOLEAN NOT NULL DEFAULT TRUE,
+  template      JSONB NOT NULL,                                               -- doc_type, payment_method, gst_enabled, notes, terms, due_days, lines[]
+  last_run_date DATE,
+  run_count     INT NOT NULL DEFAULT 0,
+  last_error    TEXT NOT NULL DEFAULT '',
+  created_by    UUID REFERENCES users(id),
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS recurring_invoices_due ON recurring_invoices (business_id, is_active, next_date);

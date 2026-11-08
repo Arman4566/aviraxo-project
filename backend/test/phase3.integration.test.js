@@ -208,7 +208,7 @@ test('Phase 3-5 services on PostgreSQL', { skip }, async (t) => {
     assert.equal(next.invoice_no, 'INV-00006');
     await assert.rejects(tx((c) => backup.restore(c, { biz: b2, userId: u.id, data })), /no data yet/);
     const { rows: [b3] } = await q(`INSERT INTO businesses (owner_user_id, name, state_code) VALUES ($1,'Empty firm','27') RETURNING *`, [u.id]);
-    await assert.rejects(tx((c) => backup.restore(c, { biz: b3, userId: u.id, data: { app: 'other' } })), /not a Galla Pro backup/);
+    await assert.rejects(tx((c) => backup.restore(c, { biz: b3, userId: u.id, data: { app: 'other' } })), /not an Aviraxo backup/);
     await assert.rejects(tx((c) => backup.restore(c, { biz: b3, userId: u.id, data: { ...data, invoice_lines: [{ id: 1, invoice_id: 99999, name: 'x', qty: 1, rate: 1, line_base: 1, taxable_value: 1, line_total: 1 }] } })), /inconsistent/);
     assert.equal(await count('invoices', b3), 0, 'a failed restore leaves nothing behind');
   });

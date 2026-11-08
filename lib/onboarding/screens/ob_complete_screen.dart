@@ -33,7 +33,7 @@ class OBCompleteScreen extends StatelessWidget {
             child: const Icon(Icons.check_circle_rounded, size: 52, color: GPColors.success),
           ),
           const SizedBox(height: 18),
-          Text("Your Galla Pro workspace is ready",
+          Text("Your Aviraxo workspace is ready",
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center),
           const SizedBox(height: 10),

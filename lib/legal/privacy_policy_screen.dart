@@ -4,15 +4,15 @@ import '../l10n/gtext.dart';
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
 
-  static const String _text = """Privacy Policy – Galla Pro
+  static const String _text = """Privacy Policy – Aviraxo
 
 Last updated: 4th February 2026.
 
-Galla Pro is a simple inventory, billing, and invoice management application designed to help businesses manage basic data and calculations. This Privacy Policy explains how we handle user data at the MVP (Minimum Viable Product) stage.
+Aviraxo is a simple inventory, billing, and invoice management application designed to help businesses manage basic data and calculations. This Privacy Policy explains how we handle user data at the MVP (Minimum Viable Product) stage.
 
 1. Data Collection & Usage
 
-Galla Pro may collect and store the following data entered by the user:
+Aviraxo may collect and store the following data entered by the user:
 
 Business details
 
@@ -34,7 +34,7 @@ Server storage is provided as a convenience feature, not as guaranteed permanent
 
 3. Offline Usage
 
-Galla Pro can be used offline.
+Aviraxo can be used offline.
 
 When used offline:
 
@@ -66,7 +66,7 @@ The app allows users to create invoices and generate PDFs.
 
 Users are strongly advised to download and save invoice PDFs to their own devices or external storage.
 
-Galla Pro is not responsible for loss of invoices if they are not saved by the user.
+Aviraxo is not responsible for loss of invoices if they are not saved by the user.
 
 6. Third-Party Services
 

@@ -61,7 +61,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 18),
               Text(
-                "Welcome to Galla Pro",
+                "Welcome to Aviraxo",
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),

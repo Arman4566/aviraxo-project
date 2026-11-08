@@ -2,6 +2,8 @@ import 'package:flutter/material.dart' hide Text;
 import '../l10n/gtext.dart';
 import '../l10n/auto_translate.dart';
 import '../core/outbox.dart';
+import '../core/messenger.dart';
+import '../data/repositories/recurring_repo.dart';
 import '../insights/analytics_screen.dart';
 import '../ai/ai_summary_card.dart';
 import '../ai/ask_screen.dart';
@@ -40,9 +42,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _future = _DashDataLoader.load(isServices: _isServices);
+    _runRecurring();
     Outbox.I.flush().then((n) {
       if (n > 0 && mounted) _reload(); // offline entries were sent: refresh the numbers
     });
+  }
+
+  /// Raises any recurring invoices that fell due; stays silent unless something was created.
+  Future<void> _runRecurring() async {
+    try {
+      final n = await RecurringRepo().runDue();
+      if (n > 0 && mounted) {
+        AppMessenger.info('${trs("Recurring invoices created")}: $n');
+        _reload();
+      }
+    } catch (_) {/* offline or no permission: try again next time */}
   }
 
   void _reload() {

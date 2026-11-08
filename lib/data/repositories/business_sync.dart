@@ -40,6 +40,7 @@ class BusinessSync {
         'showTerms': s.showTerms,
         'invoiceTemplate': s.invoiceTemplate,
         'upiId': s.upiId.trim(),
+        'booksLockedUntil': s.booksLockedUntil,
         'enableStockTracking': s.enableStockTracking,
         'prefLowStockAlerts': s.lowStockAlerts,
         'allowNegativeStock': s.allowNegativeStock, // the server reads this one when selling
@@ -91,6 +92,7 @@ class BusinessSync {
 
     s.language = pick<String>('language', s.language);
     s.theme = pick<String>('theme', s.theme);
+    s.booksLockedUntil = pick<String>('booksLockedUntil', s.booksLockedUntil);
     s.showItemDiscount = pick<bool>('showItemDiscount', s.showItemDiscount);
     s.showNotes = pick<bool>('showNotes', s.showNotes);
     s.showTerms = pick<bool>('showTerms', s.showTerms);

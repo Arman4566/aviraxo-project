@@ -15,7 +15,7 @@ class MonthlySummaryCard extends StatefulWidget {
 }
 
 class _MonthlySummaryCardState extends State<MonthlySummaryCard> {
-  late Future<Map<String, dynamic>> _future = ReceivablesRepo().monthly();
+  late final Future<Map<String, dynamic>> _future = ReceivablesRepo().monthly();
 
   static const _months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 

@@ -24,7 +24,7 @@ class ApiException implements Exception {
   String toString() => message;
 }
 
-/// Thin HTTP client for the Galla Pro backend. Every call carries the Firebase ID token.
+/// Thin HTTP client for the Aviraxo backend. Every call carries the Firebase ID token.
 ///
 /// Set the server address at build time:
 ///   flutter run --dart-define=API_BASE_URL=http://192.168.1.10:4000

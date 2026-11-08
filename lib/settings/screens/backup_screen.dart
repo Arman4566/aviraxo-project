@@ -27,10 +27,10 @@ class _BackupScreenState extends State<BackupScreen> {
       final data = await ExtrasRepo().backupExport();
       final dir = await getTemporaryDirectory();
       final now = DateTime.now();
-      final name = 'galla-pro-backup-${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}.json';
+      final name = 'aviraxo-backup-${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}.json';
       final f = File('${dir.path}/$name');
       await f.writeAsString(const JsonEncoder.withIndent('  ').convert(data));
-      await Share.shareXFiles([XFile(f.path)], subject: 'Galla Pro backup');
+      await Share.shareXFiles([XFile(f.path)], subject: 'Aviraxo backup');
     } catch (e) {
       AppMessenger.error(e);
     } finally {
