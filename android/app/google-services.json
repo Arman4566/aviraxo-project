@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "751621069614-20fe3ej4ado77ocpn45boqsirg85vctd.apps.googleusercontent.com",
+          "client_id": "751621069614-q7dfhe3nk17uejtil0t7erkukf15n7n2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.galla_pro",
-            "certificate_hash": "9b8a6913faaaef9a789b819b05b0bb6c690e76f9"
+            "certificate_hash": "684ee452d6191f08c7958735f926eccdbe5a2645"
           }
         },
         {
