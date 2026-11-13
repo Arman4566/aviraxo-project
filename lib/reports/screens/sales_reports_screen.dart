@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Text;
+import '../export_sheet.dart';
 import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/invoice_repo.dart';
@@ -26,6 +27,7 @@ class SalesReportsScreen extends StatelessWidget {
         title: const Text("Sales Reports", style: TextStyle(fontWeight: FontWeight.w900)),
         backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
+        actions: [ExportButton(spec: const ExportSpec('sales', 'Sales', group: 'day'))],
       ),
       body: FutureBuilder<_SalesData>(
         future: _load(),

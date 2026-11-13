@@ -11,7 +11,7 @@ import '../../data/models/invoice_entity.dart';
 ///  - what to show: item discount, notes, terms, GST breakup, HSN/SAC
 /// The standard PDF font has no rupee sign, so amounts are written as "Rs".
 class InvoicePdf {
-  static const _indigo = PdfColor.fromInt(0xFF4F46E5);
+  static const _indigo = PdfColor.fromInt(0xFF2563EB);
   static const _tint = PdfColor.fromInt(0xFFEEF2FF);
 
   static Future<Uint8List> build({

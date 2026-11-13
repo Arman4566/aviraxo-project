@@ -1,4 +1,5 @@
 import '../../core/money.dart';
+import '../../inventory/models/packaging.dart';
 
 /// An item as returned by the server (money converted from paise to rupees).
 class ItemEntity {
@@ -30,6 +31,8 @@ class ItemEntity {
   int stockInTotal = 0;
   int stockOutTotal = 0;
 
+  List<PackTier> packaging = Packaging.normalize(null);
+
   int updatedAtMs = 0;
 
   String get nameLower => name.toLowerCase();
@@ -56,6 +59,7 @@ class ItemEntity {
     e.stockQty = ((j['stock_qty'] ?? 0) as num).round();
     e.lowStockLevel = ((j['low_stock_level'] ?? 0) as num).round();
     e.location = (j['location'] ?? '') as String;
+    e.packaging = Packaging.fromJson(j['packaging']);
     e.stockInTotal = ((j['stock_in_total'] ?? 0) as num).round();
     e.stockOutTotal = ((j['stock_out_total'] ?? 0) as num).round();
     e.updatedAtMs = DateTime.tryParse('${j['updated_at']}')?.millisecondsSinceEpoch ?? 0;

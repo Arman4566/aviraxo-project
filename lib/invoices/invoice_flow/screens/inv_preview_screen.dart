@@ -222,7 +222,7 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: GPColors.line),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    minimumSize: const Size(0, 52),
+                    minimumSize: const Size(0, 54),
                   ),
                   onPressed: _saving ? null : widget.onEdit,
                   child: const Text("Edit", style: TextStyle(fontWeight: FontWeight.w900)),
@@ -232,11 +232,11 @@ class _InvPreviewScreenState extends State<InvPreviewScreen> {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: GPColors.primary,
+                    backgroundColor: GPColors.commit, // terminal action = green
                     foregroundColor: GPColors.onPrimary,
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    minimumSize: const Size(0, 52),
+                    minimumSize: const Size(0, 54),
                   ),
                   onPressed: _saving ? null : _handleSave,
                   child: _saving

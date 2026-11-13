@@ -3,6 +3,7 @@ import '../../l10n/auto_translate.dart';
 import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
+import '../models/packaging.dart';
 
 class PurchaseEntryResult {
   final int purchasedQty;
@@ -34,6 +35,7 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
   final _qty = TextEditingController();
   final _purchase = TextEditingController();
   final _selling = TextEditingController();
+  String _tier = 'piece'; // what the quantity is counted in; stock is saved in pieces
 
   @override
   void initState() {
@@ -55,10 +57,13 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
     super.dispose();
   }
 
+  int get _piecesPer => Packaging.normalize(widget.item.packaging).firstWhere((t) => t.tier == _tier, orElse: () => PackTier(tier: 'piece', name: 'Piece')).pieces;
+
   void _save() {
     FocusScope.of(context).unfocus();
 
-    final addQty = int.tryParse(_qty.text.trim()) ?? 0;
+    final entered = int.tryParse(_qty.text.trim()) ?? 0;
+    final addQty = entered * _piecesPer;
     final p = double.tryParse(_purchase.text.trim()) ?? widget.item.purchasePrice;
     final s = double.tryParse(_selling.text.trim()) ?? widget.item.sellingPrice;
 
@@ -123,12 +128,28 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
           ),
           const SizedBox(height: 14),
 
+          if (Packaging.isActive(widget.item.packaging)) ...[
+            DropdownButtonFormField<String>(
+              initialValue: _tier,
+              decoration: InputDecoration(labelText: trs("Count in")),
+              items: [
+                for (final t in Packaging.enabledTiers(widget.item.packaging))
+                  DropdownMenuItem(value: t.tier, child: Text('${t.name}${t.tier == 'piece' ? '' : '  (${t.pieces} pcs)'}')),
+              ],
+              onChanged: (v) => setState(() { _tier = v ?? 'piece'; }),
+            ),
+            const SizedBox(height: 10),
+          ],
           TextField(
             controller: _qty,
             keyboardType: TextInputType.number,
+            onChanged: (_) => setState(() {}),
             decoration: InputDecoration(
               hintText: trs("Purchased quantity"),
               prefixIcon: Icon(Icons.add_circle_outline_rounded),
+              helperText: _tier != 'piece' && (int.tryParse(_qty.text.trim()) ?? 0) > 0
+                  ? '= ${(int.tryParse(_qty.text.trim()) ?? 0) * _piecesPer} ${trs("pieces added to stock")}'
+                  : null,
             ),
           ),
           const SizedBox(height: 10),
@@ -154,11 +175,11 @@ class _PurchaseEntryFlowState extends State<PurchaseEntryFlow> {
 
           const SizedBox(height: 16),
           SizedBox(
-            height: 52,
+            height: 54,
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: GPColors.primary,
+                backgroundColor: GPColors.commit, // terminal action = green
                 foregroundColor: GPColors.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

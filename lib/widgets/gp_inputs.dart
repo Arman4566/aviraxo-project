@@ -70,7 +70,7 @@ class GPDropdownField extends StatelessWidget {
         Text(label, style: const TextStyle(fontWeight: FontWeight.w900)),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           decoration: InputDecoration(hintText: hint),
           items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: onChanged,

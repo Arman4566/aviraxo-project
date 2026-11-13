@@ -363,7 +363,7 @@ class _QuickStats extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: cards.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (_, i) => _MetricCard(cards[i]),
           ),
         ),
@@ -392,7 +392,7 @@ class _FirstTimeBanner extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: GPColors.primary.withOpacity(0.20),
+              color: GPColors.primary.withValues(alpha: 0.20),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(Icons.auto_awesome_rounded, color: GPColors.ink),
@@ -565,7 +565,7 @@ class _WorkspaceConfigStrip extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: cards.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (_, i) => _MetricCard(cards[i]),
           ),
         ),
@@ -780,7 +780,7 @@ class _ActionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = item.primary ? GPColors.primary.withOpacity(0.26) : GPColors.surface;
+    final bg = item.primary ? GPColors.primary.withValues(alpha: 0.26) : GPColors.surface;
     final border = item.primary ? GPColors.primary : GPColors.line;
 
     return InkWell(
@@ -854,7 +854,7 @@ class _InvoiceTile extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: GPColors.primary.withOpacity(0.18),
+              color: GPColors.primary.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(Icons.receipt_long_rounded, color: GPColors.ink),
@@ -897,7 +897,7 @@ class _EmptyActivity extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: GPColors.primary.withOpacity(0.18),
+              color: GPColors.primary.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(Icons.history_rounded, color: GPColors.ink),
@@ -987,7 +987,7 @@ class _TipCard extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: GPColors.primary.withOpacity(0.18),
+              color: GPColors.primary.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(t.icon, color: GPColors.ink),

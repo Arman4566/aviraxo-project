@@ -69,8 +69,11 @@ class _InvoiceFlowState extends State<InvoiceFlow> {
   }
 
   void back() {
-    if (_index > 0) go(_index - 1);
-    else Navigator.pop(context);
+    if (_index > 0) {
+      go(_index - 1);
+    } else {
+      Navigator.pop(context);
+    }
   }
 
   @override

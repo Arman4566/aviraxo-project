@@ -91,7 +91,7 @@ class InvoicesScreen extends StatelessWidget {
 
                 return ListView.separated(
                   itemCount: list.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
                   itemBuilder: (_, i) {
                     final inv = list[i];
                     final d = DateTime.fromMillisecondsSinceEpoch(inv.dateMs);
@@ -120,7 +120,7 @@ class InvoicesScreen extends StatelessWidget {
                               width: 44,
                               height: 44,
                               decoration: BoxDecoration(
-                                color: GPColors.primary.withOpacity(0.18),
+                                color: GPColors.primary.withValues(alpha: 0.18),
                                 borderRadius: BorderRadius.circular(14),
                               ),
                               child: Icon(Icons.description_rounded, color: GPColors.ink),

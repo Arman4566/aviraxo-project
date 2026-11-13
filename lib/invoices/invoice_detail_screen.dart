@@ -144,7 +144,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Keep invoice')),
-          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Cancel invoice')),
+          TextButton(onPressed: () => Navigator.pop(ctx, true), style: TextButton.styleFrom(foregroundColor: GPColors.danger), child: const Text('Cancel invoice')),
         ],
       ),
     );
@@ -231,7 +231,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: _statusColor(inv.status).withOpacity(0.12),
+                      color: _statusColor(inv.status).withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
@@ -375,10 +375,16 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
           ),
         if (!inv.isCancelled)
           Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: TextButton(
-              onPressed: _cancel,
-              child: const Text('Cancel invoice', style: TextStyle(color: Colors.red)),
+            padding: const EdgeInsets.only(top: 28),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              // Destructive action: kept away from the main buttons, neutral until the confirm dialog.
+              child: OutlinedButton.icon(
+                onPressed: _cancel,
+                icon: const Icon(Icons.block_rounded, size: 18),
+                label: const Text('Cancel invoice'),
+                style: OutlinedButton.styleFrom(foregroundColor: GPColors.ink2, minimumSize: const Size(0, 44)),
+              ),
             ),
           ),
         const SizedBox(height: 24),

@@ -3,6 +3,7 @@ import '../l10n/auto_translate.dart';
 import '../l10n/gtext.dart';
 
 import '../core/money.dart';
+import 'export_sheet.dart';
 import '../data/repositories/extras_repo.dart';
 import '../data/repositories/receivables_repo.dart' show ymd;
 import '../l10n/strings.dart';
@@ -86,10 +87,13 @@ class _FinanceReportsScreenState extends State<FinanceReportsScreen> {
       'gstr3b': 'GSTR-3B',
     };
     return Scaffold(
-      appBar: AppBar(title: const Text('Financial reports')),
+      appBar: AppBar(
+        title: const Text('Financial reports'),
+        actions: [if (_report == 'profit-loss') const ExportButton(spec: ExportSpec('profit-loss', 'Profit & Loss'))],
+      ),
       body: ListView(padding: const EdgeInsets.all(16), children: [
         DropdownButtonFormField<String>(
-          value: _report,
+          initialValue: _report,
           decoration: InputDecoration(labelText: trs('Report')),
           items: [for (final e in reports.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
           onChanged: (v) {

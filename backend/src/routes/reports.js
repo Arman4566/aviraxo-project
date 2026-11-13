@@ -9,10 +9,32 @@ const { PARTY_SELECT, partyJson } = require('../services/partyQueries');
 const fin = require('../services/finance');
 const { forbidden } = require('../utils/errors');
 const { can } = require('../utils/permissions');
+const exporter = require('../services/exporter');
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD');
 const range = z.object({ from: isoDate, to: isoDate, group: z.enum(['day', 'party', 'item']).default('day') });
 const num = (r) => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, typeof v === 'string' && /^\d+$/.test(v) ? Number(v) : v]));
+
+// One endpoint for every export: json (the app makes PDFs from it), csv and xlsx.
+const exportQuery = z.object({
+  report: z.enum(exporter.REPORTS), format: z.enum(['json', 'csv', 'xlsx']).default('json'),
+  from: isoDate.optional(), to: isoDate.optional(), group: z.enum(['day', 'party', 'item']).default('day'),
+});
+router.get('/export', validate(exportQuery, 'query'), asyncHandler(async (req, res) => {
+  const { report, format, group } = req.query;
+  if ((report === 'profit-loss' || report === 'tax-summary') && !can(req.business.role, 'reports.gst')) {
+    throw forbidden('This report is only available to the owner, manager and accountant');
+  }
+  if (report === 'stock' && !can(req.business.role, 'items.see_cost')) throw forbidden('The stock report shows cost prices, which your role cannot see');
+  const today = new Date().toISOString().slice(0, 10);
+  const from = req.query.from || `${today.slice(0, 8)}01`, to = req.query.to || today;
+  const t = await exporter.table({ query }, req.business, report, { from, to, group });
+  const out = exporter.render(t, format);
+  if (!out) return res.json(t);
+  res.setHeader('Content-Type', out.type);
+  res.setHeader('Content-Disposition', `attachment; filename="${report}-${from}-${to}.${out.ext}"`);
+  res.send(out.body);
+}));
 
 router.get('/sales', validate(range, 'query'), asyncHandler(async (req, res) => {
   const { from, to, group } = req.query;

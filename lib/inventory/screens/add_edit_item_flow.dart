@@ -5,6 +5,8 @@ import '../../widgets/glass.dart';
 import '../../widgets/barcode_scanner_page.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
+import '../models/packaging.dart';
+import '../widgets/packaging_editor.dart';
 
 class AddEditItemFlow extends StatefulWidget {
   final bool gstEnabled;
@@ -40,6 +42,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
   int _gst = 18;
 
   // Step 3
+  List<PackTier> _packaging = Packaging.normalize(null);
   final _openingStock = TextEditingController();
   final _lowStock = TextEditingController();
   final _location = TextEditingController();
@@ -66,6 +69,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
       _gst = it.gstRate;
 
       _openingStock.text = it.stockQty.toString();
+      _packaging = Packaging.normalize(it.packaging);
       _lowStock.text = it.lowStockLevel.toString();
       _location.text = it.location;
     } else {
@@ -154,6 +158,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
       stockOutTotal: widget.initial?.stockOutTotal ?? 0,
 
       updatedAt: DateTime.now(),
+      packaging: _packaging,
     );
 
     await showGlassSheet(
@@ -332,7 +337,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
         ),
         const SizedBox(height: 10),
         DropdownButtonFormField<String>(
-          value: _category,
+          initialValue: _category,
           items: categories
               .map((c) => DropdownMenuItem(value: c, child: Text(c)))
               .toList(),
@@ -344,7 +349,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
         ),
         const SizedBox(height: 10),
         DropdownButtonFormField<String>(
-          value: _unit,
+          initialValue: _unit,
           items: units
               .map((u) => DropdownMenuItem(value: u, child: Text(u)))
               .toList(),
@@ -480,6 +485,12 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
             hintText: trs("Low stock alert level"),
             prefixIcon: Icon(Icons.warning_amber_rounded),
           ),
+        ),
+        const SizedBox(height: 10),
+        PackagingEditor(
+          value: _packaging,
+          unit: _unit,
+          onChanged: (v) => setState(() { _packaging = v; }),
         ),
         const SizedBox(height: 10),
         TextField(

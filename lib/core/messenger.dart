@@ -19,7 +19,7 @@ class AppMessenger {
     s.hideCurrentSnackBar();
     s.showSnackBar(SnackBar(
       content: Text(m),
-      backgroundColor: isError ? const Color(0xFFB3261E) : null,
+      backgroundColor: isError ? const Color(0xFFDC2626) : null,
       behavior: SnackBarBehavior.floating,
     ));
   }

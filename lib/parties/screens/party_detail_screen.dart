@@ -228,7 +228,7 @@ class _PartyDetailScreenState extends State<PartyDetailScreen> {
                       }
                     : null,
                 leading: CircleAvatar(
-                  backgroundColor: (en.isInvoice ? GPColors.primary : GPColors.success).withOpacity(0.15),
+                  backgroundColor: (en.isInvoice ? GPColors.primary : GPColors.success).withValues(alpha: 0.15),
                   child: Icon(
                     en.isInvoice ? Icons.receipt_long_rounded : Icons.payments_rounded,
                     color: en.isInvoice ? GPColors.ink : GPColors.success,

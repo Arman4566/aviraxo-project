@@ -197,7 +197,7 @@ class _SafeDropdownField extends StatelessWidget {
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(18),
-      borderSide: BorderSide(color: GPColors.line.withOpacity(0.9)),
+      borderSide: BorderSide(color: GPColors.line.withValues(alpha: 0.9)),
     );
 
     return Column(
@@ -213,7 +213,7 @@ class _SafeDropdownField extends StatelessWidget {
         const SizedBox(height: 8),
 
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           isExpanded: true, // ✅ KEY: prevents row overflow
           icon: const Icon(Icons.arrow_drop_down_rounded),
           decoration: InputDecoration(
@@ -226,7 +226,7 @@ class _SafeDropdownField extends StatelessWidget {
             ),
             enabledBorder: border,
             focusedBorder: border.copyWith(
-              borderSide: BorderSide(color: GPColors.ink.withOpacity(0.18)),
+              borderSide: BorderSide(color: GPColors.ink.withValues(alpha: 0.18)),
             ),
           ),
 

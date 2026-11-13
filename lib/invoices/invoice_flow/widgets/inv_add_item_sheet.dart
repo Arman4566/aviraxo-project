@@ -212,7 +212,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                   height: 160,
                   child: ListView.separated(
                     itemCount: items.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    separatorBuilder: (_, _) => const SizedBox(height: 10),
                     itemBuilder: (_, i) {
                       final it = items[i];
                       final isSelected = _selectedId == it.id;
@@ -233,7 +233,7 @@ class _InvAddItemSheetState extends State<InvAddItemSheet> {
                                 width: 40,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: GPColors.primary.withOpacity(0.18),
+                                  color: GPColors.primary.withValues(alpha: 0.18),
                                   borderRadius: BorderRadius.circular(14),
                                 ),
                                 child: Icon(Icons.inventory_2_rounded, color: GPColors.ink, size: 18),

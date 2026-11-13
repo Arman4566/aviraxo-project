@@ -34,7 +34,7 @@ class ReportCategoryCard extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: GPColors.primary.withOpacity(0.18),
+                color: GPColors.primary.withValues(alpha: 0.18),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(icon),

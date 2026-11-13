@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Text;
+import '../export_sheet.dart';
 import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/invoice_repo.dart';
@@ -18,6 +19,7 @@ class TaxReportsScreen extends StatelessWidget {
         title: const Text("Tax Reports (GST)", style: TextStyle(fontWeight: FontWeight.w900)),
         backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
+        actions: [ExportButton(spec: const ExportSpec('tax-summary', 'GST summary'))],
       ),
       body: FutureBuilder<_TaxData>(
         future: _load(),
@@ -137,7 +139,7 @@ class _MetricStrip extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: metrics.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (_, i) {
           final m = metrics[i];
           return Container(
@@ -156,7 +158,7 @@ class _MetricStrip extends StatelessWidget {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: GPColors.primary.withOpacity(0.18),
+                      color: GPColors.primary.withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(m.icon, size: 20),

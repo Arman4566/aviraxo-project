@@ -2,6 +2,7 @@ import '../../core/api_client.dart';
 import '../../core/money.dart';
 import '../models/item_entity.dart';
 import '../../inventory/models/inventory_item.dart';
+import '../../inventory/models/packaging.dart';
 import 'cached_list.dart';
 
 /// Items live on the server. Stock numbers are computed there from the stock ledger.
@@ -48,6 +49,7 @@ class InventoryRepo {
         'stock_qty': m.stockQty,
         'low_stock_level': m.lowStockLevel,
         'location': m.location.trim(),
+        'packaging': Packaging.toJson(m.packaging),
       };
 
   /// Creates (id == 0) or updates an item. When editing, `stockQty` is the new absolute stock.
@@ -110,6 +112,7 @@ class InventoryRepo {
       stockInTotal: e.stockInTotal,
       stockOutTotal: e.stockOutTotal,
       updatedAt: DateTime.fromMillisecondsSinceEpoch(e.updatedAtMs),
+      packaging: e.packaging,
     );
   }
 }

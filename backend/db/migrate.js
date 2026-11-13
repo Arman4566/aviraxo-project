@@ -17,7 +17,8 @@ const { Pool } = require('pg');
     }
     console.log('Schema applied.');
   } catch (e) {
-    console.error('Migration failed:', e.message);
+    console.error('Migration failed:', e.message || e.code || (e.errors && e.errors[0] && e.errors[0].code) || e);
+    if (!process.env.DATABASE_URL) console.error('DATABASE_URL is not set. Put your Postgres connection string in .env, or let Render run this for you.');
     process.exitCode = 1;
   } finally {
     await pool.end();

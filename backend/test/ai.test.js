@@ -37,7 +37,7 @@ test('scanBill cleans the model output (paise, valid GST slab, junk rows dropped
     items: [{ name: ' Pen ', qty: 10, unit: 'pcs', rate: 12.5, gst_percent: 18, hsn: '9608-10' }, { name: '', qty: 1, rate: 5 }, { name: 'Odd', qty: 0, rate: 'x', gst_percent: 7 }],
   })) });
   assert.equal(out.items.length, 2);
-  assert.deepEqual(out.items[0], { name: 'Pen', qty: 10, unit: 'pcs', rate: 1250, gst_percent: 18, hsn: '960810' });
+  assert.deepEqual(out.items[0], { name: 'Pen', qty: 10, unit: 'pcs', rate: 1250, gst_percent: 18, hsn: '960810', cases: null, units_per_case: null, line_total: null, needs_check: false });
   assert.equal(out.items[1].gst_percent, 0); assert.equal(out.items[1].qty, 1); assert.equal(out.items[1].rate, 0);
   assert.equal(out.date, '2026-10-10');
 });

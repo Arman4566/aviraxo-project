@@ -25,7 +25,7 @@ class PartyListTile extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: GPColors.primary.withOpacity(0.25),
+              backgroundColor: GPColors.primary.withValues(alpha: 0.25),
               child: const Icon(Icons.person_rounded),
             ),
             const SizedBox(width: 12),

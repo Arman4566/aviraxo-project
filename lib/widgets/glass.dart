@@ -14,8 +14,8 @@ class GlassBackdrop extends StatelessWidget {
   Widget build(BuildContext context) {
     final d = GPColors.dark;
     final base = d
-        ? const [Color(0xFF070B18), Color(0xFF0E1530), Color(0xFF0A1224)]
-        : const [Color(0xFFE9EEFF), Color(0xFFF6F1FF), Color(0xFFE4F6F3)];
+        ? const [Color(0xFF0B0F19), Color(0xFF0B0F19), Color(0xFF0D1220)]
+        : const [Color(0xFFF8FAFC), Color(0xFFF8FAFC), Color(0xFFF1F5F9)];
     Widget glow(Alignment at, Color c, double radius) => DecoratedBox(
           decoration: BoxDecoration(gradient: RadialGradient(center: at, radius: radius, colors: [c, c.withValues(alpha: 0)])),
           child: const SizedBox.expand(),
@@ -25,9 +25,9 @@ class GlassBackdrop extends StatelessWidget {
         decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: base)),
         child: const SizedBox.expand(),
       ),
-      glow(const Alignment(0.9, -0.85), d ? const Color(0x664F46E5) : const Color(0x554F46E5), 0.9),
-      glow(const Alignment(-1.0, 0.75), d ? const Color(0x4014B8A6) : const Color(0x4414B8A6), 0.85),
-      glow(const Alignment(0.8, 1.0), d ? const Color(0x40A855F7) : const Color(0x33EC4899), 0.7),
+      glow(const Alignment(0.9, -0.85), d ? const Color(0x182563EB) : const Color(0x0F2563EB), 0.9),
+      glow(const Alignment(-1.0, 0.75), d ? const Color(0x0C14B8A6) : const Color(0x0A14B8A6), 0.85),
+      glow(const Alignment(0.8, 1.0), d ? const Color(0x0C3B82F6) : const Color(0x082563EB), 0.7),
     ]);
   }
 }

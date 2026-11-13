@@ -29,6 +29,7 @@ dependencies:
   path_provider: ^2.1.5      # temp file for backup export
   mobile_scanner: ^6.0.2     # barcode scanning at billing and in the item form
   image_picker: ^1.1.2       # photo of a bill for AI bill scan
+  file_picker: ^8.1.2         # pick a PDF / Excel / CSV purchase file to import
 
 
 

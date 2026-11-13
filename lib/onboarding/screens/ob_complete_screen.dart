@@ -43,7 +43,7 @@ class OBCompleteScreen extends StatelessWidget {
             style: TextStyle(color: GPColors.ink2, height: 1.35),
           ),
           const Spacer(),
-          GPPrimaryButton(text: "Go to Dashboard", onPressed: onGoDashboard),
+          GPPrimaryButton(commit: true, text: "Go to Dashboard", onPressed: onGoDashboard),
           const SizedBox(height: 12),
           GPSecondaryButton(text: "Add First Item", onPressed: onAddFirstItem),
           const SizedBox(height: 12),

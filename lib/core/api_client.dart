@@ -78,6 +78,27 @@ class ApiClient {
     }
   }
 
+  /// GET a file (csv / xlsx) and return its bytes.
+  Future<List<int>> getBytes(String path, {Map<String, dynamic>? query, Duration timeout = const Duration(seconds: 60)}) async {
+    final headers = await _headers();
+    final req = http.Request('GET', _uri(path, query))..headers.addAll(headers)..headers['Accept'] = '*/*';
+    http.Response res;
+    try {
+      res = await http.Response.fromStream(await _http.send(req).timeout(timeout));
+    } on TimeoutException {
+      throw ApiException('The server took too long to respond. Check your internet and try again.', isNetwork: true);
+    } catch (_) {
+      throw ApiException('Cannot reach the server. Check your internet connection.', isNetwork: true);
+    }
+    if (res.statusCode >= 200 && res.statusCode < 300) return res.bodyBytes;
+    String msg = 'Something went wrong (${res.statusCode}).';
+    try {
+      final d = jsonDecode(utf8.decode(res.bodyBytes));
+      if (d is Map && d['error'] is String) msg = d['error'] as String;
+    } catch (_) {}
+    throw ApiException(msg, status: res.statusCode);
+  }
+
   Future<Map<String, dynamic>> put(String path, Object body) => _send('PUT', path, body: body);
   Future<Map<String, dynamic>> delete(String path) => _send('DELETE', path);
 

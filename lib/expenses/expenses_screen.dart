@@ -181,7 +181,7 @@ class _ExpenseFormState extends State<_ExpenseForm> {
           TextField(controller: _amount, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: InputDecoration(labelText: trs('Amount (₹)'))),
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
-            value: _cat,
+            initialValue: _cat,
             decoration: InputDecoration(labelText: trs('Category')),
             items: [for (final c in _cats) DropdownMenuItem(value: c, child: Text(c))],
             onChanged: (v) => setState(() => _cat = v ?? _cat),
@@ -190,7 +190,7 @@ class _ExpenseFormState extends State<_ExpenseForm> {
           Row(children: [
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _mode,
+                initialValue: _mode,
                 decoration: InputDecoration(labelText: trs('Paid by')),
                 items: [for (final m in ['cash', 'upi', 'card', 'bank', 'cheque', 'other']) DropdownMenuItem(value: m, child: Text(m))],
                 onChanged: (v) => setState(() => _mode = v ?? _mode),
@@ -201,7 +201,7 @@ class _ExpenseFormState extends State<_ExpenseForm> {
           ]),
           const SizedBox(height: 12),
           DropdownButtonFormField<String?>(
-            value: _recurring,
+            initialValue: _recurring,
             decoration: InputDecoration(labelText: trs('Repeats')),
             items: const [
               DropdownMenuItem(value: null, child: Text('Does not repeat')),
@@ -223,7 +223,7 @@ class _ExpenseFormState extends State<_ExpenseForm> {
             },
           ),
           if (_err != null) Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(_err!, style: const TextStyle(color: GPColors.danger))),
-          SizedBox(width: double.infinity, child: FilledButton(onPressed: _busy ? null : _save, child: Text(tr('save')))),
+          SizedBox(width: double.infinity, child: FilledButton(style: FilledButton.styleFrom(backgroundColor: GPColors.commit, minimumSize: const Size(0, 54)), onPressed: _busy ? null : _save, child: Text(tr('save')))),
         ]),
       ),
     );

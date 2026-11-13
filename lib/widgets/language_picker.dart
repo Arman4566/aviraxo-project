@@ -11,7 +11,7 @@ class LanguagePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<String>(
       valueListenable: AppPrefs.I.language,
-      builder: (_, lang, __) => SegmentedButton<String>(
+      builder: (_, lang, _) => SegmentedButton<String>(
         showSelectedIcon: false,
         style: const ButtonStyle(visualDensity: VisualDensity.compact),
         segments: const [

@@ -32,4 +32,8 @@ class AiRepo {
 
   Future<Map<String, dynamic>> scanBill(String base64Image, String mime) =>
       ApiClient.I.post('/ai/scan-bill', {'image_base64': base64Image, 'mime_type': mime}, _aiTimeout);
+
+  /// PDF / Excel / CSV purchase file -> the same checked item list as a photo scan.
+  Future<Map<String, dynamic>> importFile(String base64File, String fileName, String mime) =>
+      ApiClient.I.post('/ai/import-file', {'file_base64': base64File, 'file_name': fileName, 'mime_type': mime}, const Duration(seconds: 120));
 }

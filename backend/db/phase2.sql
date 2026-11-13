@@ -129,3 +129,6 @@ CREATE TABLE IF NOT EXISTS recurring_invoices (
   updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS recurring_invoices_due ON recurring_invoices (business_id, is_active, next_date);
+
+-- 5-level packaging (case / carton / box / mini box / piece); stock stays in pieces
+ALTER TABLE items ADD COLUMN IF NOT EXISTS packaging JSONB NOT NULL DEFAULT '[]'::jsonb;

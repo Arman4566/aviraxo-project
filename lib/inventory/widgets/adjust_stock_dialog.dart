@@ -85,7 +85,7 @@ class _AdjustDialogState extends State<_AdjustDialog> {
             ),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              value: _reason,
+              initialValue: _reason,
               decoration: InputDecoration(labelText: trs('Reason')),
               items: _reasons.map((r) => DropdownMenuItem(value: r, child: Text(r))).toList(),
               onChanged: (v) => setState(() => _reason = v ?? 'correction'),

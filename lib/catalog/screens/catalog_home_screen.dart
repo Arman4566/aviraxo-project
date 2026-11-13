@@ -102,7 +102,7 @@ class _CatalogHomeScreenState extends State<CatalogHomeScreen> {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: c.categories.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: 10),
+                      separatorBuilder: (_, _) => const SizedBox(width: 10),
                       itemBuilder: (_, i) {
                         final label = c.categories[i];
                         final selected = c.category == label;
@@ -113,7 +113,7 @@ class _CatalogHomeScreenState extends State<CatalogHomeScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                             decoration: BoxDecoration(
-                              color: selected ? GPColors.primary.withOpacity(0.28) : GPColors.surface,
+                              color: selected ? GPColors.primary.withValues(alpha: 0.28) : GPColors.surface,
                               borderRadius: BorderRadius.circular(999),
                               border: Border.all(color: selected ? GPColors.primary : GPColors.line),
                             ),

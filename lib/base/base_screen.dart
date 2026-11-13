@@ -409,7 +409,7 @@ class _AppDrawer extends StatelessWidget {
               Expanded(
                 child: ValueListenableBuilder<String>(
                   valueListenable: AppPrefs.I.language,
-                  builder: (_, lang, __) => SegmentedButton<String>(
+                  builder: (_, lang, _) => SegmentedButton<String>(
                     showSelectedIcon: false,
                     segments: const [
                       ButtonSegment(value: 'en', label: Text('English')),
@@ -423,7 +423,7 @@ class _AppDrawer extends StatelessWidget {
               const SizedBox(width: 8),
               ValueListenableBuilder<ThemeMode>(
                 valueListenable: AppPrefs.I.themeMode,
-                builder: (_, mode, __) => IconButton.filledTonal(
+                builder: (_, mode, _) => IconButton.filledTonal(
                   tooltip: trs('Theme'),
                   onPressed: () => AppPrefs.I.setThemeMode(GPColors.dark ? ThemeMode.light : ThemeMode.dark),
                   icon: Icon(GPColors.dark ? Icons.light_mode_rounded : Icons.dark_mode_rounded),

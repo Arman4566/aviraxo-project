@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'packaging.dart';
 
 class InventoryItem {
   final int id; // Isar Id
@@ -32,6 +33,9 @@ class InventoryItem {
 
   DateTime updatedAt;
 
+  /// Five packaging levels (case / carton / box / mini box / piece). Stock itself is always in pieces.
+  List<PackTier> packaging;
+
   InventoryItem({
     required this.id,
     required this.name,
@@ -52,7 +56,8 @@ class InventoryItem {
     required this.stockInTotal,
     required this.stockOutTotal,
     required this.updatedAt,
-  });
+    List<PackTier>? packaging,
+  }) : packaging = Packaging.normalize(packaging);
 
   InventoryItem copy() => InventoryItem(
     id: id,
@@ -74,6 +79,7 @@ class InventoryItem {
     stockInTotal: stockInTotal,
     stockOutTotal: stockOutTotal,
     updatedAt: updatedAt,
+    packaging: packaging,
   );
 
   String get stockStatus {

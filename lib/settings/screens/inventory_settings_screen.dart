@@ -79,7 +79,7 @@ class _InventorySettingsScreenState extends State<InventorySettingsScreen> {
 
   Widget _dropdown(String label, List<String> items, String value) {
     return DropdownButtonFormField(
-      value: value,
+      initialValue: value,
       items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
       onChanged: (_) {},
       decoration: InputDecoration(labelText: label),

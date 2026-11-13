@@ -39,7 +39,7 @@ class OrderSuccessScreen extends StatelessWidget {
     final uri = Uri.parse("https://wa.me/$phone?text=$text");
 
     final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    if (!ok) {
+    if (!ok && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Could not open WhatsApp.")),
       );

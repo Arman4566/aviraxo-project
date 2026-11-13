@@ -221,7 +221,7 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
                   total: c.total,
                 );
 
-                if (!mounted) return;
+                if (!mounted || !context.mounted) return;
 
                 Navigator.pushReplacement(
                   context,
@@ -236,7 +236,7 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
                   ),
                 );
               } catch (e) {
-                if (!mounted) return;
+                if (!mounted || !context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Failed to place order: $e")),
                 );

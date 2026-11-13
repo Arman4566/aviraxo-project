@@ -29,7 +29,7 @@ class _PartiesScreenState extends State<PartiesScreen> {
       context,
       MaterialPageRoute(builder: (_) => const AddEditPartyFlow(initial: null)),
     );
-    if (p != null) {
+    if (p != null && mounted) {
       // Stream will update automatically; no need setState on list
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("${p.name} saved")),

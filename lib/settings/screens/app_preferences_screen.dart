@@ -18,17 +18,23 @@ class AppPreferencesScreen extends StatelessWidget {
       appBar: AppBar(title: Text(tr('theme'), style: const TextStyle(fontWeight: FontWeight.w900))),
       body: ValueListenableBuilder<String>(
         valueListenable: p.language,
-        builder: (_, lang, __) => ValueListenableBuilder<ThemeMode>(
+        builder: (_, lang, _) => ValueListenableBuilder<ThemeMode>(
           valueListenable: p.themeMode,
-          builder: (_, mode, __) => ListView(padding: const EdgeInsets.all(16), children: [
+          builder: (_, mode, _) => ListView(padding: const EdgeInsets.all(16), children: [
             Text(tr('theme'), style: const TextStyle(fontWeight: FontWeight.w900)),
-            RadioListTile<ThemeMode>(value: ThemeMode.light, groupValue: mode, onChanged: (v) => p.setThemeMode(v!), title: Text(tr('light'))),
-            RadioListTile<ThemeMode>(value: ThemeMode.dark, groupValue: mode, onChanged: (v) => p.setThemeMode(v!), title: Text(tr('dark'))),
-            RadioListTile<ThemeMode>(value: ThemeMode.system, groupValue: mode, onChanged: (v) => p.setThemeMode(v!), title: Text(tr('system'))),
+            RadioGroup<ThemeMode>(
+              groupValue: mode,
+              onChanged: (v) => p.setThemeMode(v!),
+              child: Column(children: [
+                RadioListTile<ThemeMode>(value: ThemeMode.light, title: Text(tr('light'))),
+                RadioListTile<ThemeMode>(value: ThemeMode.dark, title: Text(tr('dark'))),
+                RadioListTile<ThemeMode>(value: ThemeMode.system, title: Text(tr('system'))),
+              ]),
+            ),
             const Divider(),
             ValueListenableBuilder<int>(
               valueListenable: Outbox.I.pending,
-              builder: (_, n, __) => ListTile(
+              builder: (_, n, _) => ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.sync),
                 title: Text(n == 0 ? 'Everything is synced' : tr('pending_sync', {'n': '$n'})),

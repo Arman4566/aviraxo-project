@@ -10,18 +10,23 @@ import 'gp_colors.dart';
 /// Look: screens are transparent so the glass backdrop shows through; cards, bars and fields are see-through
 /// "glass" with a thin bright rim; sheets, dialogs and the drawer blur what is behind them.
 class AppTheme {
+  // Tabular figures keep digits the same width, so amounts line up and do not jiggle as they change.
+  static const _tab = [FontFeature.tabularFigures()];
   static const _text = TextTheme(
-    headlineSmall: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
-    titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-    titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-    bodyLarge: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-    bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+    headlineSmall: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, fontFeatures: _tab),
+    titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, fontFeatures: _tab),
+    titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, fontFeatures: _tab),
+    titleSmall: TextStyle(fontFeatures: _tab),
+    bodyLarge: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, fontFeatures: _tab),
+    bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, fontFeatures: _tab),
+    bodySmall: TextStyle(fontFeatures: _tab),
+    labelLarge: TextStyle(fontFeatures: _tab),
   );
 
   static ThemeData build() {
     final dark = GPColors.dark;
     final brightness = dark ? Brightness.dark : Brightness.light;
-    final scheme = ColorScheme.fromSeed(seedColor: const Color(0xFF4F46E5), brightness: brightness).copyWith(
+    final scheme = ColorScheme.fromSeed(seedColor: const Color(0xFF2563EB), brightness: brightness).copyWith(
       primary: GPColors.primary,
       onPrimary: GPColors.onPrimary,
       secondary: GPColors.accent,
@@ -184,7 +189,7 @@ class AppTheme {
       progressIndicatorTheme: ProgressIndicatorThemeData(color: GPColors.primary),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: dark ? const Color(0xF22B3560) : const Color(0xF20F172A),
+        backgroundColor: dark ? const Color(0xF2334155) : const Color(0xF20F172A),
         contentTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),

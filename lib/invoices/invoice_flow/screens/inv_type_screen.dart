@@ -59,7 +59,7 @@ class _InvTypeScreenState extends State<InvTypeScreen> {
           Expanded(
             child: ListView.separated(
               itemCount: cards.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
+              separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (_, i) {
                 final c = cards[i];
                 final selected = _type == c.type;
@@ -89,7 +89,7 @@ class _InvTypeScreenState extends State<InvTypeScreen> {
                             width: 46,
                             height: 46,
                             decoration: BoxDecoration(
-                              color: GPColors.primary.withOpacity(0.18),
+                              color: GPColors.primary.withValues(alpha: 0.18),
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: Icon(c.icon, color: GPColors.ink),

@@ -6,6 +6,7 @@ const asyncHandler = require('../utils/asyncHandler');
 const { notFound, badRequest, conflict } = require('../utils/errors');
 const { parseId } = require('../utils/ids');
 const { audit } = require('../utils/audit');
+const { normalize: normalizePackaging, toPieces } = require('../services/packaging');
 const { ITEM_SELECT, itemJson, allowsNegativeStock } = require('../services/itemQueries');
 
 const paise = z.number().int().min(0);
@@ -25,10 +26,14 @@ const itemSchema = z.object({
   stock_qty: z.number().min(0).default(0),     // opening stock on create; absolute stock when editing
   low_stock_level: z.number().int().min(0).default(0),
   location: z.string().trim().max(100).default(''),
+  packaging: z.array(z.object({
+    tier: z.enum(['primary', 'secondary', 'box', 'mini_box', 'piece']),
+    name: z.string().trim().max(20).optional(), enabled: z.boolean().optional(), per: z.number().int().min(1).max(100000).optional(),
+  })).max(5).default([]),
 });
 const updateSchema = itemSchema.partial();
 const COLUMNS = ['name', 'sku', 'category', 'unit', 'hsn', 'barcode', 'purchase_price', 'selling_price', 'price_inclusive',
-  'gst_rate', 'gst_enabled', 'stock_enabled', 'low_stock_level', 'location'];
+  'gst_rate', 'gst_enabled', 'stock_enabled', 'low_stock_level', 'location', 'packaging'];
 
 async function loadItem(client, businessId, id) {
   const { rows } = await client.query(`${ITEM_SELECT} WHERE i.business_id = $1 AND i.id = $2`, [businessId, id]);
@@ -55,10 +60,10 @@ router.post('/', validate(itemSchema), asyncHandler(async (req, res) => {
   const item = await withTransaction(async (c) => {
     const { rows } = await c.query(
       `INSERT INTO items (business_id, name, sku, category, unit, hsn, barcode, purchase_price, selling_price, price_inclusive,
-                          gst_rate, gst_enabled, stock_enabled, low_stock_level, location)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING id`,
+                          gst_rate, gst_enabled, stock_enabled, low_stock_level, location, packaging)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16::jsonb) RETURNING id`,
       [req.business.id, b.name, b.sku, b.category, b.unit, b.hsn, b.barcode, b.purchase_price, b.selling_price,
-       b.price_inclusive, b.gst_rate, b.gst_enabled, b.stock_enabled, b.low_stock_level, b.location]);
+       b.price_inclusive, b.gst_rate, b.gst_enabled, b.stock_enabled, b.low_stock_level, b.location, JSON.stringify(normalizePackaging(b.packaging))]);
     const id = rows[0].id;
     if (b.stock_enabled && b.stock_qty > 0) {
       await c.query(
@@ -80,9 +85,9 @@ router.put('/:id', validate(updateSchema), asyncHandler(async (req, res) => {
 
     const fields = COLUMNS.filter((k) => b[k] !== undefined);
     if (fields.length) {
-      const sets = fields.map((f, i) => `${f} = $${i + 3}`);
+      const sets = fields.map((f, i) => `${f} = $${i + 3}${f === 'packaging' ? '::jsonb' : ''}`);
       await c.query(`UPDATE items SET ${sets.join(', ')}, updated_at = now() WHERE id = $1 AND business_id = $2`,
-        [id, req.business.id, ...fields.map((f) => b[f])]);
+        [id, req.business.id, ...fields.map((f) => (f === 'packaging' ? JSON.stringify(normalizePackaging(b.packaging)) : b[f]))]);
     }
     // Editing "stock" on the item form sets the absolute quantity; keep the ledger honest with an adjustment row.
     const stockEnabled = b.stock_enabled ?? rows[0].stock_enabled;
@@ -122,23 +127,26 @@ router.delete('/:id', asyncHandler(async (req, res) => {
 // Stock received from a supplier (the app's "Purchase entry"); also refreshes the prices.
 const purchaseSchema = z.object({
   qty: z.number().positive().max(1e7),
-  purchase_price: paise.nullable().optional(),
-  selling_price: paise.nullable().optional(),
+  purchase_price: paise.nullable().optional(),   // per piece
+  selling_price: paise.nullable().optional(),    // per piece
+  tier: z.enum(['primary', 'secondary', 'box', 'mini_box', 'piece']).optional(),  // qty is in this packaging level; stock is stored in pieces
 });
 router.post('/:id/purchase-entry', validate(purchaseSchema), asyncHandler(async (req, res) => {
   const id = parseId(req.params.id);
   const b = req.body;
   const item = await withTransaction(async (c) => {
-    const { rows } = await c.query('SELECT stock_enabled FROM items WHERE id=$1 AND business_id=$2 FOR UPDATE', [id, req.business.id]);
+    const { rows } = await c.query('SELECT stock_enabled, packaging FROM items WHERE id=$1 AND business_id=$2 FOR UPDATE', [id, req.business.id]);
     if (!rows[0]) throw notFound('Item not found');
     if (!rows[0].stock_enabled) throw badRequest('Stock tracking is off for this item');
+    const pieces = b.tier ? toPieces(rows[0].packaging, b.tier, b.qty) : b.qty;
+    if (pieces === null) throw badRequest('That packaging level is not switched on for this item');
     await c.query(
       `INSERT INTO stock_movements (business_id, item_id, qty_in, reason, ref_type, ref_id, created_by)
-       VALUES ($1,$2,$3,'purchase','item',$2,$4)`, [req.business.id, id, b.qty, req.user.id]);
+       VALUES ($1,$2,$3,'purchase','item',$2,$4)`, [req.business.id, id, pieces, req.user.id]);
     await c.query(
       `UPDATE items SET purchase_price = COALESCE($3, purchase_price), selling_price = COALESCE($4, selling_price), updated_at = now()
         WHERE id = $1 AND business_id = $2`, [id, req.business.id, b.purchase_price ?? null, b.selling_price ?? null]);
-    await audit(c, { businessId: req.business.id, userId: req.user.id, entity: 'item', entityId: id, action: 'purchase_entry', details: { qty: b.qty } });
+    await audit(c, { businessId: req.business.id, userId: req.user.id, entity: 'item', entityId: id, action: 'purchase_entry', details: { qty: pieces, entered: b.tier ? { tier: b.tier, qty: b.qty } : undefined } });
     return loadItem(c, req.business.id, id);
   });
   res.status(201).json({ item });

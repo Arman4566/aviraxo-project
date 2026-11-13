@@ -6,22 +6,26 @@ class GPPrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const GPPrimaryButton({super.key, required this.text, required this.onPressed});
+  /// true for the single terminal action of a flow (Save, Finish, Collect): shown in green.
+  /// false (default) for ordinary steps such as Next: shown in the brand blue.
+  final bool commit;
+
+  const GPPrimaryButton({super.key, required this.text, required this.onPressed, this.commit = false});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 52,
+      height: 54,
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: GPColors.primary,
+          backgroundColor: commit ? GPColors.commit : GPColors.primary,
           foregroundColor: GPColors.onPrimary,
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
         onPressed: onPressed,
-        child: Text(text, style: const TextStyle(fontWeight: FontWeight.w900)),
+        child: Text(text, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
       ),
     );
   }

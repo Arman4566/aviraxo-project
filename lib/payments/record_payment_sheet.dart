@@ -158,11 +158,11 @@ class _RecordPaymentSheetState extends State<_RecordPaymentSheet> {
           ),
           const SizedBox(height: 8),
           SizedBox(
-            height: 52,
+            height: 54,
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: GPColors.primary,
+                backgroundColor: GPColors.commit, // terminal action = green
                 foregroundColor: GPColors.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

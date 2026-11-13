@@ -47,7 +47,20 @@ router.post('/scan-bill', limit, validate(z.object({
   image_base64: z.string().min(100).max(7_000_000), mime_type: z.enum(['image/jpeg', 'image/png', 'image/webp']).default('image/jpeg'),
 })), asyncHandler(async (req, res) => {
   if (!can(req.business.role, 'items.manage')) throw new AppError(403, 'Not allowed to add items');
-  res.json(await ai.scanBill({ imageBase64: req.body.image_base64.replace(/^data:[^,]+,/, ''), mimeType: req.body.mime_type }));
+  const scan = await ai.scanBill({ imageBase64: req.body.image_base64.replace(/^data:[^,]+,/, ''), mimeType: req.body.mime_type });
+  res.json({ ...scan, items: await ai.matchExisting({ query }, req.business.id, scan.items) });
+}));
+
+// A PDF, Excel (.xlsx) or CSV file of purchases or a price list -> the same checked item list as a photo scan.
+router.post('/import-file', limit, validate(z.object({
+  file_base64: z.string().min(20).max(9_000_000), file_name: z.string().max(200).default(''),
+  mime_type: z.string().max(120).default(''),
+})), asyncHandler(async (req, res) => {
+  if (!can(req.business.role, 'items.manage')) throw new AppError(403, 'Not allowed to add items');
+  const name = req.body.file_name.toLowerCase();
+  if (!/\.(pdf|xlsx|csv)$/.test(name) && req.body.mime_type !== 'application/pdf') throw new AppError(400, 'Use a PDF, .xlsx or .csv file');
+  const scan = await ai.importFile({ fileBase64: req.body.file_base64.replace(/^data:[^,]+,/, ''), fileName: req.body.file_name, mimeType: req.body.mime_type });
+  res.json({ ...scan, items: await ai.matchExisting({ query }, req.business.id, scan.items) });
 }));
 
 module.exports = router;

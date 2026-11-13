@@ -59,7 +59,7 @@ class _InventoryFiltersSheetState extends State<InventoryFiltersSheet> {
 
           Align(
             alignment: Alignment.centerLeft,
-            child: Text("Price range (selling)", style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.ink.withOpacity(0.9))),
+            child: Text("Price range (selling)", style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.ink.withValues(alpha: 0.9))),
           ),
           RangeSlider(
             values: f.priceRange,
@@ -144,7 +144,7 @@ class _InventoryFiltersSheetState extends State<InventoryFiltersSheet> {
         Text(label, style: const TextStyle(fontWeight: FontWeight.w900)),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: values.contains(selected) ? selected : values.first,
+          initialValue: values.contains(selected) ? selected : values.first,
           items: values.map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
           onChanged: (v) => onChanged(v ?? "All"),
         ),

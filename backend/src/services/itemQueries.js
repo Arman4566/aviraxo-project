@@ -14,6 +14,8 @@ const ITEM_SELECT = `
         FROM stock_movements WHERE business_id = $1 GROUP BY item_id
     ) s ON s.item_id = i.id`;
 
+const { normalize } = require('./packaging');
+
 function itemJson(r) {
   return {
     id: r.id,
@@ -32,6 +34,7 @@ function itemJson(r) {
     stock_qty: r.stock_qty,
     low_stock_level: r.low_stock_level,
     location: r.location,
+    packaging: normalize(r.packaging),
     stock_in_total: r.stock_in_total,
     stock_out_total: r.stock_out_total,
     updated_at: r.updated_at,

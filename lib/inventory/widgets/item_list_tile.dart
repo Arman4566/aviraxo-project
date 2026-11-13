@@ -37,7 +37,7 @@ class ItemListTile extends StatelessWidget {
         alignLeft: false,
         icon: Icons.delete_outline_rounded,
         label: trs("Delete"),
-        color: Colors.red.withOpacity(0.12),
+        color: Colors.red.withValues(alpha: 0.12),
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
@@ -85,7 +85,7 @@ class ItemListTile extends StatelessWidget {
                 width: 46,
                 height: 46,
                 decoration: BoxDecoration(
-                  color: GPColors.primary.withOpacity(0.18),
+                  color: GPColors.primary.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(stockEnabled

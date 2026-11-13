@@ -33,7 +33,7 @@ class InvPartyCard extends StatelessWidget {
               width: 46,
               height: 46,
               decoration: BoxDecoration(
-                color: GPColors.primary.withOpacity(0.18),
+                color: GPColors.primary.withValues(alpha: 0.18),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(Icons.person_rounded, color: GPColors.ink),

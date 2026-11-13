@@ -103,7 +103,7 @@ class _OBTeamScreenState extends State<OBTeamScreen> {
                 ],
 
                 const SizedBox(height: 18),
-                GPPrimaryButton(text: "Finish Setup", onPressed: widget.onFinish),
+                GPPrimaryButton(commit: true, text: "Finish Setup", onPressed: widget.onFinish),
               ],
             ),
           ),

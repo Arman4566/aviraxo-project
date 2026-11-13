@@ -21,7 +21,7 @@ class MetricStrip extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: metrics.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (_, i) => _MetricCard(m: metrics[i]),
       ),
     );
@@ -51,7 +51,7 @@ class _MetricCard extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: GPColors.primary.withOpacity(0.18),
+                  color: GPColors.primary.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(m.icon, size: 20),

@@ -68,7 +68,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(22),
-                          color: p.demoImageColors[i].withOpacity(0.9),
+                          color: p.demoImageColors[i].withValues(alpha: 0.9),
                           border: Border.all(color: GPColors.line),
                         ),
                         child: const Center(child: Icon(Icons.image_rounded, size: 56)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Text;
+import '../export_sheet.dart';
 import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../data/repositories/party_repo.dart';
@@ -18,6 +19,7 @@ class PartyReportsScreen extends StatelessWidget {
         title: const Text("Party Reports", style: TextStyle(fontWeight: FontWeight.w900)),
         backgroundColor: GPColors.surface,
         surfaceTintColor: Colors.transparent,
+        actions: [ExportButton(spec: const ExportSpec('receivables', 'Receivables', hasRange: false))],
       ),
       body: FutureBuilder<_PartyData>(
         future: _load(),
@@ -30,9 +32,9 @@ class PartyReportsScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Expanded(child: _sum("Customers", "${d.customers}")),
+                  Expanded(child: _Sum("Customers", "${d.customers}")),
                   const SizedBox(width: 10),
-                  Expanded(child: _sum("Suppliers", "${d.suppliers}")),
+                  Expanded(child: _Sum("Suppliers", "${d.suppliers}")),
                 ],
               ),
               const SizedBox(height: 14),
@@ -112,9 +114,11 @@ class PartyReportsScreen extends StatelessWidget {
     // count based on stored "type" string (customer/supplier/both)
     for (final p in parties) {
       final t = p.type.toLowerCase();
-      if (t == "customer") customers++;
-      else if (t == "supplier") suppliers++;
-      else if (t == "both") {
+      if (t == "customer") {
+        customers++;
+      } else if (t == "supplier") {
+        suppliers++;
+      } else if (t == "both") {
         customers++;
         suppliers++;
       }
@@ -143,10 +147,10 @@ class _PartyData {
   });
 }
 
-class _sum extends StatelessWidget {
+class _Sum extends StatelessWidget {
   final String label;
   final String value;
-  const _sum(this.label, this.value);
+  const _Sum(this.label, this.value);
 
   @override
   Widget build(BuildContext context) {

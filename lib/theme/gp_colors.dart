@@ -10,33 +10,36 @@ class GPColors {
   static bool dark = false;
 
   // Brand
-  static Color get primary => dark ? const Color(0xFF6366F1) : const Color(0xFF4F46E5);       // buttons, selected states
-  static Color get primaryDeep => dark ? const Color(0xFFA5B4FC) : const Color(0xFF3730A3);   // emphasis text
-  static Color get tint => dark ? const Color(0x406366F1) : const Color(0x264F46E5);          // selected cards, chips (see-through wash)
+  static Color get primary => dark ? const Color(0xFF3B82F6) : const Color(0xFF2563EB);       // links, focus, selected states (design guide: brand-primary-action)
+  static Color get primaryDeep => dark ? const Color(0xFF93C5FD) : const Color(0xFF1E40AF);   // emphasis text
+  static Color get tint => dark ? const Color(0x403B82F6) : const Color(0x1F2563EB);          // selected cards, chips (see-through wash)
   static const Color onPrimary = Colors.white;         // text/icons placed on primary
   static const Color accent = Color(0xFF14B8A6);       // teal: second series in charts, highlights
+  static const Color commit = Color(0xFF059669);       // the one terminal action on a screen (Save, Charge, Collect)
+  static const Color sandbox = Color(0xFF7C3AED);      // practice / test mode only
+  static const Color highlight = Color(0xFFFEF08A);    // search match highlight (use with dark text)
   static const Color white = Colors.white;
 
   // Neutrals (text, lines, glass surfaces)
-  static Color get ink => dark ? const Color(0xFFF1F5F9) : const Color(0xFF0F172A);           // main text
-  static Color get ink2 => dark ? const Color(0xFFB8C2D6) : const Color(0xFF55657E);          // secondary text
-  static Color get line => dark ? const Color(0x2EFFFFFF) : const Color(0x1F0F172A);         // dividers and thin borders
-  static Color get surface => dark ? const Color(0x991E2748) : const Color(0xB8FFFFFF);       // glass cards (see-through)
-  static Color get bg => dark ? const Color(0xFF0B1020) : const Color(0xFFF3F4FA);            // base colour behind the glass
+  static Color get ink => dark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A);           // main text
+  static Color get ink2 => dark ? const Color(0xFFCBD5E1) : const Color(0xFF475569);          // secondary text
+  static Color get line => dark ? const Color(0xFF334155) : const Color(0xFFE2E8F0);         // dividers and thin borders
+  static Color get surface => dark ? const Color(0xF21E293B) : const Color(0xF2FFFFFF);       // cards: near-solid so numbers stay crisp
+  static Color get bg => dark ? const Color(0xFF0B0F19) : const Color(0xFFF8FAFC);            // base colour behind the glass
 
   // Glass details
-  static Color get glassEdge => dark ? const Color(0x33FFFFFF) : const Color(0xCCFFFFFF);     // bright rim of a glass panel
-  static Color get glassSolid => dark ? const Color(0xFF1A2240) : const Color(0xFFFFFFFF);    // where it must be opaque (menus)
-  static Color get glassShadow => dark ? const Color(0x66000000) : const Color(0x1A1E2A5A);
+  static Color get glassEdge => dark ? const Color(0xFF334155) : const Color(0xFFE2E8F0);     // bright rim of a glass panel
+  static Color get glassSolid => dark ? const Color(0xFF1E293B) : const Color(0xFFFFFFFF);    // where it must be opaque (menus)
+  static Color get glassShadow => dark ? const Color(0x66000000) : const Color(0x140F172A);
 
   // Meaning (readable in both modes)
-  static const Color success = Color(0xFF0F9F6E);      // money in, paid, healthy
-  static const Color danger = Color(0xFFE5484D);       // overdue, out of stock, errors
-  static const Color warning = Color(0xFFE08A00);      // due soon, low stock
+  static const Color success = Color(0xFF059669);      // money in, paid, verified (emerald)
+  static const Color danger = Color(0xFFDC2626);       // void, out of stock, errors (hazard red)
+  static const Color warning = Color(0xFFD97706);      // due soon, low stock (amber)
   static const Color info = Color(0xFF0A8FD6);         // neutral information
 
   // Chart series (colour-blind friendly order)
   static const List<Color> series = [
-    Color(0xFF4F46E5), Color(0xFF14B8A6), Color(0xFFF59E0B), Color(0xFFEC4899), Color(0xFF0EA5E9), Color(0xFF84CC16),
+    Color(0xFF2563EB), Color(0xFF14B8A6), Color(0xFFD97706), Color(0xFFEC4899), Color(0xFF0EA5E9), Color(0xFF84CC16),
   ];
 }

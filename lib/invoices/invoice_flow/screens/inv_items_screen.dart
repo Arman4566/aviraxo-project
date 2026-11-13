@@ -39,7 +39,7 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
         gstEnabled: _gstEnabled,
       ),);
 
-    if (line != null) {
+    if (line != null && mounted) {
       setState(() {
         widget.draft.lines.add(line);
       });
@@ -115,7 +115,7 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
                     ? _EmptyItems(onAdd: _openAddItemSheet)
                     : ListView.separated(
                   itemCount: lines.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
                   itemBuilder: (_, i) {
                     final l = lines[i];
                     return InvItemRow(
@@ -168,7 +168,7 @@ class _HeaderMini extends StatelessWidget {
           width: 38,
           height: 38,
           decoration: BoxDecoration(
-            color: GPColors.primary.withOpacity(0.18),
+            color: GPColors.primary.withValues(alpha: 0.18),
             borderRadius: BorderRadius.circular(14),
           ),
           child: Icon(icon, color: GPColors.ink, size: 20),

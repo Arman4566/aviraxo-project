@@ -85,8 +85,11 @@ async function restore(c, { biz, userId, data }) {
         vals.ref_id = m;
       }
       const keys = Object.keys(vals);
+      // JSON columns (e.g. items.packaging) come back from the file as arrays / objects: send them as JSON text, not as a Postgres array
+      const isJson = (v) => v !== null && typeof v === 'object' && !(v instanceof Date);
       const { rows } = await c.query(
-        `INSERT INTO ${t.table} (${keys.join(',')}) VALUES (${keys.map((_, i) => `$${i + 1}`).join(',')}) RETURNING id`, keys.map((k) => vals[k]));
+        `INSERT INTO ${t.table} (${keys.join(',')}) VALUES (${keys.map((k, i) => `$${i + 1}${isJson(vals[k]) ? '::jsonb' : ''}`).join(',')}) RETURNING id`,
+        keys.map((k) => (isJson(vals[k]) ? JSON.stringify(vals[k]) : vals[k])));
       idMap[t.table].set(row.id, rows[0].id);
     }
   }

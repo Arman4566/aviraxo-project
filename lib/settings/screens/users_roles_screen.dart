@@ -38,7 +38,7 @@ class _UsersRolesScreenState extends State<UsersRolesScreen> {
             TextField(controller: email, keyboardType: TextInputType.emailAddress, decoration: InputDecoration(labelText: trs('Their email (the one they sign in with)'))),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: role,
+              initialValue: role,
               isExpanded: true,
               decoration: InputDecoration(labelText: trs('Role')),
               items: [for (final e in _roleHelp.entries) DropdownMenuItem(value: e.key, child: Text(e.key))],

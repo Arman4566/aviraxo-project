@@ -58,7 +58,7 @@ class _Card extends StatelessWidget {
             width: 34,
             height: 34,
             decoration: BoxDecoration(
-              color: GPColors.primary.withOpacity(0.18),
+              color: GPColors.primary.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(d.icon, size: 18),

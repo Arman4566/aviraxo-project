@@ -4,6 +4,7 @@ import '../../l10n/gtext.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../theme/gp_colors.dart';
 import '../models/inventory_item.dart';
+import '../models/packaging.dart';
 import '../widgets/stock_badge.dart';
 
 class ItemDetailScreen extends StatelessWidget {
@@ -84,6 +85,8 @@ class ItemDetailScreen extends StatelessWidget {
           const SizedBox(height: 10),
 
           _kv("Current stock", stockEnabled ? "${item.stockQty} ${item.unit}" : "Not applicable"),
+          if (stockEnabled && Packaging.isActive(item.packaging))
+            _kv("In packs", Packaging.breakdown(item.packaging, item.stockQty)),
           _kv("Total stock IN", stockEnabled ? "${item.stockInTotal} ${item.unit}" : "—"),
           _kv("Total stock OUT", stockEnabled ? "${item.stockOutTotal} ${item.unit}" : "—"),
           _kv("Low stock alert", stockEnabled ? "${item.lowStockLevel}" : "—"),

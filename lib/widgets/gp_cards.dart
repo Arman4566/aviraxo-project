@@ -132,7 +132,7 @@ class GPToggleCard extends StatelessWidget {
             Switch(
               value: value,
               onChanged: onChanged,
-              activeColor: GPColors.ink,
+              activeThumbColor: GPColors.ink,
               activeTrackColor: GPColors.primary,
             ),
           ],

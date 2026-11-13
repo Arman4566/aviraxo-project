@@ -11,7 +11,7 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 // Bill photos are bigger than normal requests; this parser runs first for that one route only.
-app.use('/api/ai/scan-bill', express.json({ limit: '8mb' }));
+app.use(['/api/ai/scan-bill', '/api/ai/import-file'], express.json({ limit: '12mb' }));
 app.use(express.json({ limit: '1mb' }));
 
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));

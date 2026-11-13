@@ -142,7 +142,7 @@ class _RuleFormState extends State<_RuleForm> {
   Widget _drop(String label, String value, Map<String, String> opts, ValueChanged<String> on) => Padding(
         padding: const EdgeInsets.only(bottom: 12),
         child: DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           decoration: InputDecoration(labelText: label),
           items: [for (final e in opts.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
           onChanged: (v) => v == null ? null : setState(() => on(v)),
@@ -185,7 +185,7 @@ class _RuleFormState extends State<_RuleForm> {
                     ? null
                     : () async {
                         await ReceivablesRepo().deleteRule((widget.rule!['id'] as num).toInt());
-                        if (mounted) Navigator.pop(context, true);
+                        if (mounted && context.mounted) Navigator.pop(context, true);
                       },
                 child: const Text('Delete', style: TextStyle(color: Colors.red)),
               ),
