@@ -24,11 +24,11 @@ class AppPreferencesScreen extends StatelessWidget {
             Text(tr('theme'), style: const TextStyle(fontWeight: FontWeight.w900)),
             RadioGroup<ThemeMode>(
               groupValue: mode,
-              onChanged: (v) => p.setThemeMode(v!),
+              onChanged: (v) { if (v != null) p.setThemeMode(v); },
               child: Column(children: [
-                RadioListTile<ThemeMode>(value: ThemeMode.light, title: Text(tr('light'))),
-                RadioListTile<ThemeMode>(value: ThemeMode.dark, title: Text(tr('dark'))),
-                RadioListTile<ThemeMode>(value: ThemeMode.system, title: Text(tr('system'))),
+            RadioListTile<ThemeMode>(value: ThemeMode.light, title: Text(tr('light'))),
+            RadioListTile<ThemeMode>(value: ThemeMode.dark, title: Text(tr('dark'))),
+            RadioListTile<ThemeMode>(value: ThemeMode.system, title: Text(tr('system'))),
               ]),
             ),
             const Divider(),

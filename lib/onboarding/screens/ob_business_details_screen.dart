@@ -213,6 +213,7 @@ class _SafeDropdownField extends StatelessWidget {
         const SizedBox(height: 8),
 
         DropdownButtonFormField<String>(
+          key: ValueKey(value),
           initialValue: value,
           isExpanded: true, // ✅ KEY: prevents row overflow
           icon: const Icon(Icons.arrow_drop_down_rounded),

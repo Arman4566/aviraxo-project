@@ -39,11 +39,12 @@ class _InvItemsScreenState extends State<InvItemsScreen> {
         gstEnabled: _gstEnabled,
       ),);
 
-    if (line != null && mounted) {
+    if (line != null) {
       setState(() {
         widget.draft.lines.add(line);
       });
 
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("${line.item.name} added")),
       );

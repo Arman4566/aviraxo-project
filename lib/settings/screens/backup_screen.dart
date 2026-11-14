@@ -1,3 +1,4 @@
+import '../../core/responsive.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -42,7 +43,7 @@ class _BackupScreenState extends State<BackupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(tr('backup'))),
-      body: Padding(
+      body: ScrollFill(
         padding: const EdgeInsets.all(16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Your data is already stored safely on the server. A backup file is your own extra copy: all parties, items, invoices, payments and expenses in one file.'),

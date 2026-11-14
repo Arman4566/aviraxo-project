@@ -1,3 +1,4 @@
+import '../../core/responsive.dart';
 import 'package:flutter/material.dart' hide Text;
 import '../../l10n/gtext.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -50,7 +51,7 @@ class OrderSuccessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: ScrollFill(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [

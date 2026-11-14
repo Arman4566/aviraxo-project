@@ -38,16 +38,16 @@ class _TaxSettingsScreenState extends State<TaxSettingsScreen> {
               const Text("GST Behavior", style: TextStyle(fontWeight: FontWeight.w900)),
               RadioGroup<String>(
                 groupValue: gstType,
-                onChanged: (v) => _repo.setGstType(v ?? "Within State"),
-                child: const Column(children: [
-                  RadioListTile<String>(
-                    value: "Within State",
-                    title: Text("CGST + SGST (Within State)"),
-                  ),
-                  RadioListTile<String>(
-                    value: "Inter State",
-                    title: Text("IGST (Inter State)"),
-                  ),
+                onChanged: (v) { if (v != null) _repo.setGstType(v); },
+                child: Column(children: [
+              RadioListTile(
+                value: "Within State",
+                title: const Text("CGST + SGST (Within State)"),
+              ),
+              RadioListTile(
+                value: "Inter State",
+                title: const Text("IGST (Inter State)"),
+              ),
                 ]),
               ),
 

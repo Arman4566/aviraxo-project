@@ -109,8 +109,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         const SizedBox(height: 12),
         if (empty)
           const _Card(title: 'No activity yet', child: Text('Create an invoice or record a payment and your charts will fill in here.')),
-        GridView.count(
-          crossAxisCount: 2,
+        GridView.extent(
+          maxCrossAxisExtent: 280,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           mainAxisSpacing: 10,

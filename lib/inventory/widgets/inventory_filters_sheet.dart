@@ -144,6 +144,7 @@ class _InventoryFiltersSheetState extends State<InventoryFiltersSheet> {
         Text(label, style: const TextStyle(fontWeight: FontWeight.w900)),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
+          key: ValueKey(values.contains(selected) ? selected : values.first),
           initialValue: values.contains(selected) ? selected : values.first,
           items: values.map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
           onChanged: (v) => onChanged(v ?? "All"),

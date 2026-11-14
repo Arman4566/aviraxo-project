@@ -1,3 +1,4 @@
+import '../../core/responsive.dart';
 import 'package:flutter/material.dart' hide Text;
 import '../../l10n/auto_translate.dart';
 import '../../l10n/gtext.dart';
@@ -74,7 +75,7 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
       appBar: AppBar(
         title: Text(isLogin ? "Sign in with Email" : "Create Account"),
       ),
-      body: Padding(
+      body: ScrollFill(
         padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
         child: Column(
           children: [

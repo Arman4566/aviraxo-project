@@ -81,8 +81,8 @@ class _OBIndustryScreenState extends State<OBIndustryScreen> {
                 Expanded(
                   child: GridView.builder(
                     itemCount: items.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 260,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
                       childAspectRatio: 1.12,

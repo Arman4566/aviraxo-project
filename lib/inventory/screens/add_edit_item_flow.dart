@@ -337,6 +337,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
         ),
         const SizedBox(height: 10),
         DropdownButtonFormField<String>(
+          key: ValueKey(_category),
           initialValue: _category,
           items: categories
               .map((c) => DropdownMenuItem(value: c, child: Text(c)))
@@ -349,6 +350,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
         ),
         const SizedBox(height: 10),
         DropdownButtonFormField<String>(
+          key: ValueKey(_unit),
           initialValue: _unit,
           items: units
               .map((u) => DropdownMenuItem(value: u, child: Text(u)))

@@ -355,6 +355,7 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
         ),
         const SizedBox(height: 10),
         DropdownButtonFormField(
+          key: ValueKey(_terms),
           initialValue: _terms,
           items: const ["Immediate", "7 days", "15 days", "30 days"]
               .map((e) => DropdownMenuItem(value: e, child: Text(e)))

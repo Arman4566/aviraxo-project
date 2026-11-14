@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/messenger.dart';
 import 'core/prefs.dart';
+import 'core/responsive.dart';
 import 'theme/app_theme.dart';
 import 'theme/gp_colors.dart';
 import 'auth/auth_gate.dart';
@@ -74,6 +75,18 @@ class _GallaProAppState extends State<GallaProApp> with WidgetsBindingObserver {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      // Phones, tablets and PCs: keep text readable but never let a huge system font break layouts, and on very
+      // wide screens keep the app in a centred column instead of stretching it edge to edge.
+      builder: (context, child) {
+        final mq = MediaQuery.of(context);
+        return MediaQuery(
+          data: mq.copyWith(textScaler: mq.textScaler.clamp(minScaleFactor: 0.9, maxScaleFactor: 1.3)),
+          child: ColoredBox(
+            color: GPColors.bg,
+            child: ContentWidth(child: child ?? const SizedBox.shrink()),
+          ),
+        );
+      },
       home: const AuthGate(),
     );
   }

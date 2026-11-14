@@ -1,3 +1,4 @@
+import '../../../core/responsive.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart' hide Text;
 import '../../../l10n/gtext.dart';
@@ -46,7 +47,7 @@ class _InvSuccessScreenState extends State<InvSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      body: ScrollFill(
         padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
         child: Column(
           children: [

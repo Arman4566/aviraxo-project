@@ -181,6 +181,7 @@ class _ExpenseFormState extends State<_ExpenseForm> {
           TextField(controller: _amount, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: InputDecoration(labelText: trs('Amount (₹)'))),
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
+            key: ValueKey(_cat),
             initialValue: _cat,
             decoration: InputDecoration(labelText: trs('Category')),
             items: [for (final c in _cats) DropdownMenuItem(value: c, child: Text(c))],
@@ -190,6 +191,7 @@ class _ExpenseFormState extends State<_ExpenseForm> {
           Row(children: [
             Expanded(
               child: DropdownButtonFormField<String>(
+                key: ValueKey(_mode),
                 initialValue: _mode,
                 decoration: InputDecoration(labelText: trs('Paid by')),
                 items: [for (final m in ['cash', 'upi', 'card', 'bank', 'cheque', 'other']) DropdownMenuItem(value: m, child: Text(m))],
@@ -201,6 +203,7 @@ class _ExpenseFormState extends State<_ExpenseForm> {
           ]),
           const SizedBox(height: 12),
           DropdownButtonFormField<String?>(
+            key: ValueKey(_recurring),
             initialValue: _recurring,
             decoration: InputDecoration(labelText: trs('Repeats')),
             items: const [

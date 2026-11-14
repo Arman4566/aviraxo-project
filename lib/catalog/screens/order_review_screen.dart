@@ -207,6 +207,8 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
                 return;
               }
 
+              final nav = Navigator.of(context);
+              final messenger = ScaffoldMessenger.of(context);
               setState(() => _loading = true);
               try {
                 await _savePhone(buyerPhone);
@@ -221,10 +223,9 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
                   total: c.total,
                 );
 
-                if (!mounted || !context.mounted) return;
+                if (!mounted) return;
 
-                Navigator.pushReplacement(
-                  context,
+                nav.pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => OrderSuccessScreen(
                       controller: c,
@@ -236,8 +237,8 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
                   ),
                 );
               } catch (e) {
-                if (!mounted || !context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
+                if (!mounted) return;
+                messenger.showSnackBar(
                   SnackBar(content: Text("Failed to place order: $e")),
                 );
                 setState(() => _loading = false);

@@ -47,7 +47,7 @@ class Packaging {
           tier: k,
           name: (given[k]?.name.trim().isNotEmpty ?? false) ? given[k]!.name.trim() : defaultNames[k]!,
           enabled: k == 'piece' ? true : (given[k]?.enabled ?? false),
-          per: k == 'piece' ? 1 : ((given[k]?.per ?? 1) < 1 ? 1 : given[k]!.per),
+          per: k == 'piece' ? 1 : ((given[k]?.per ?? 1) < 1 ? 1 : (given[k]?.per ?? 1)),
         ),
     ];
     var acc = 1;

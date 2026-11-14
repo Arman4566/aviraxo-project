@@ -93,6 +93,7 @@ class _FinanceReportsScreenState extends State<FinanceReportsScreen> {
       ),
       body: ListView(padding: const EdgeInsets.all(16), children: [
         DropdownButtonFormField<String>(
+          key: ValueKey(_report),
           initialValue: _report,
           decoration: InputDecoration(labelText: trs('Report')),
           items: [for (final e in reports.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],

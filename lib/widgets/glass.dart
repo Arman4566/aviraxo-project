@@ -1,4 +1,3 @@
-import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/material.dart';
@@ -59,16 +58,14 @@ class GlassBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: GPColors.surface.withValues(alpha: (GPColors.surface.a + opacityBoost).clamp(0.0, 1.0)),
-            borderRadius: BorderRadius.circular(radius),
-            border: Border.all(color: GPColors.glassEdge),
-          ),
-          child: Padding(padding: padding ?? EdgeInsets.zero, child: child),
+      // No BackdropFilter: a live blur is expensive on low-end phones and the surface is nearly opaque anyway.
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: GPColors.surface.withValues(alpha: (GPColors.surface.a + opacityBoost).clamp(0.0, 1.0)),
+          borderRadius: BorderRadius.circular(radius),
+          border: Border.all(color: GPColors.glassEdge),
         ),
+        child: Padding(padding: padding ?? EdgeInsets.zero, child: child),
       ),
     );
   }
@@ -93,26 +90,24 @@ Future<T?> showGlassSheet<T>({
     backgroundColor: Colors.transparent,
     elevation: 0,
     barrierColor: Colors.black.withValues(alpha: GPColors.dark ? 0.55 : 0.28),
+    constraints: const BoxConstraints(maxWidth: 640), // keeps forms narrow on tablets and PCs
     builder: (ctx) => ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: GPColors.glassSolid.withValues(alpha: GPColors.dark ? 0.78 : 0.82),
-            border: Border(top: BorderSide(color: GPColors.glassEdge, width: 1.2)),
-          ),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            if (showDragHandle)
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 6),
-                width: 38,
-                height: 5,
-                decoration: BoxDecoration(color: GPColors.ink2.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(3)),
-              ),
-            Flexible(child: builder(ctx)),
-          ]),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: GPColors.glassSolid.withValues(alpha: 0.98),
+          border: Border(top: BorderSide(color: GPColors.glassEdge, width: 1.2)),
         ),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          if (showDragHandle)
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 6),
+              width: 38,
+              height: 5,
+              decoration: BoxDecoration(color: GPColors.ink2.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(3)),
+            ),
+          Flexible(child: builder(ctx)),
+        ]),
       ),
     ),
   );

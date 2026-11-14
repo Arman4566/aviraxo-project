@@ -120,6 +120,7 @@ class _RuleFormState extends State<_RuleForm> {
       _err = null;
       _busy = true;
     });
+    final nav = Navigator.of(context);
     try {
       await ReceivablesRepo().saveRule({
         'name': name,
@@ -130,7 +131,8 @@ class _RuleFormState extends State<_RuleForm> {
         'tone': _tone,
         'language': _lang,
       }, id: widget.rule == null ? null : (widget.rule!['id'] as num).toInt());
-      if (mounted) Navigator.pop(context, true);
+      if (!mounted) return;
+      nav.pop(true);
     } catch (e) {
       setState(() {
         _err = '$e'.replaceFirst('Exception: ', '');
@@ -142,6 +144,7 @@ class _RuleFormState extends State<_RuleForm> {
   Widget _drop(String label, String value, Map<String, String> opts, ValueChanged<String> on) => Padding(
         padding: const EdgeInsets.only(bottom: 12),
         child: DropdownButtonFormField<String>(
+          key: ValueKey(value),
           initialValue: value,
           decoration: InputDecoration(labelText: label),
           items: [for (final e in opts.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
@@ -184,8 +187,10 @@ class _RuleFormState extends State<_RuleForm> {
                 onPressed: _busy
                     ? null
                     : () async {
+                        final nav = Navigator.of(context);
                         await ReceivablesRepo().deleteRule((widget.rule!['id'] as num).toInt());
-                        if (mounted && context.mounted) Navigator.pop(context, true);
+                        if (!mounted) return;
+                        nav.pop(true);
                       },
                 child: const Text('Delete', style: TextStyle(color: Colors.red)),
               ),

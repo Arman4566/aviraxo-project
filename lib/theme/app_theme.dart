@@ -158,7 +158,7 @@ class AppTheme {
         titleTextStyle: TextStyle(color: GPColors.ink, fontSize: 18, fontWeight: FontWeight.w800),
         contentTextStyle: TextStyle(color: GPColors.ink2, fontSize: 14.5),
       ),
-      bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.transparent, surfaceTintColor: Colors.transparent, elevation: 0),
+      bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.transparent, surfaceTintColor: Colors.transparent, elevation: 0, constraints: BoxConstraints(maxWidth: 640)),
       drawerTheme: DrawerThemeData(
         backgroundColor: GPColors.glassSolid.withValues(alpha: dark ? 0.82 : 0.86),
         surfaceTintColor: Colors.transparent,

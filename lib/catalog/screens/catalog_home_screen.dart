@@ -132,8 +132,8 @@ class _CatalogHomeScreenState extends State<CatalogHomeScreen> {
                         : GridView.builder(
                       padding: const EdgeInsets.only(bottom: 16),
                       itemCount: products.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 230,
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 12,
                         childAspectRatio: 0.74,

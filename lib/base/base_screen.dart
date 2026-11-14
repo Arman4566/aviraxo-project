@@ -1,10 +1,10 @@
-import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart' hide Text;
 import '../l10n/auto_translate.dart';
 import '../l10n/gtext.dart';
 import '../models/onboarding_data.dart';
 import '../theme/gp_colors.dart';
 import '../core/prefs.dart';
+import '../core/responsive.dart';
 
 import '../dashboard/dashboard_screen.dart';
 import '../invoices/invoices_screen.dart';
@@ -159,6 +159,8 @@ class _BaseScreenState extends State<BaseScreen> {
         final isServices = _isServicesFrom(data);
         final tabs = _tabsFor(data);
         _lastTabs = tabs;
+        final rail = Responsive.useRail(context);
+        final pages = IndexedStack(index: _index, children: tabs.map((t) => t.screen).toList());
 
         return Scaffold(
           appBar: AppBar(
@@ -167,15 +169,10 @@ class _BaseScreenState extends State<BaseScreen> {
             foregroundColor: GPColors.ink,
             elevation: 0,
             scrolledUnderElevation: 0,
-            // Frosted bar: blurs and tints whatever scrolls under it.
-            flexibleSpace: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(color: GPColors.surface, border: Border(bottom: BorderSide(color: GPColors.glassEdge))),
-                  child: const SizedBox.expand(),
-                ),
-              ),
+            // Flat bar (no live blur: it slows low-end phones); the surface colour is almost opaque anyway.
+            flexibleSpace: DecoratedBox(
+              decoration: BoxDecoration(color: GPColors.surface, border: Border(bottom: BorderSide(color: GPColors.glassEdge))),
+              child: const SizedBox.expand(),
             ),
             leading: Builder(
               builder: (context) => IconButton(
@@ -270,50 +267,66 @@ class _BaseScreenState extends State<BaseScreen> {
               );
             },
           ),
-          body: IndexedStack(
-            index: _index,
-            children: tabs.map((t) => t.screen).toList(),
-          ),
-          bottomNavigationBar: Theme(
-            data: Theme.of(context).copyWith(
-              splashFactory: NoSplash.splashFactory,
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-            child: ClipRect(
-              child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-              child: Container(
-              decoration: BoxDecoration(
-                color: GPColors.surface,
-                border: Border(top: BorderSide(color: GPColors.glassEdge)),
-              ),
-              child: BottomNavigationBar(
-                currentIndex: _index,
-                onTap: (i) => setState(() => _index = i),
-                type: BottomNavigationBarType.fixed,
-                selectedItemColor: _accent,
-                unselectedItemColor: GPColors.ink2,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                selectedIconTheme: const IconThemeData(size: 24),
-                unselectedIconTheme: const IconThemeData(size: 24),
-                selectedLabelStyle: const TextStyle(fontSize: 12),
-                unselectedLabelStyle: const TextStyle(fontSize: 12),
-                items: [
-                  for (int i = 0; i < tabs.length; i++)
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        i == _index ? tabs[i].iconFilled : tabs[i].iconOutlined,
+          body: rail
+              ? Row(
+                  children: [
+                    SafeArea(
+                      right: false,
+                      child: NavigationRail(
+                        selectedIndex: _index,
+                        onDestinationSelected: (i) => setState(() => _index = i),
+                        extended: MediaQuery.sizeOf(context).width >= 1000,
+                        minExtendedWidth: 190,
+                        backgroundColor: GPColors.surface,
+                        selectedIconTheme: IconThemeData(color: _accent),
+                        selectedLabelTextStyle: TextStyle(color: _accent, fontWeight: FontWeight.w800),
+                        unselectedIconTheme: IconThemeData(color: GPColors.ink2),
+                        unselectedLabelTextStyle: TextStyle(color: GPColors.ink2),
+                        labelType: MediaQuery.sizeOf(context).width >= 1000 ? NavigationRailLabelType.none : NavigationRailLabelType.all,
+                        destinations: [
+                          for (final t in tabs)
+                            NavigationRailDestination(
+                              icon: Icon(t.iconOutlined),
+                              selectedIcon: Icon(t.iconFilled),
+                              label: Text(t.label),
+                            ),
+                        ],
                       ),
-                      label: trs(tabs[i].label),
                     ),
-                ],
-              ),
-            ),
-              ),
-            ),
-          ),
+                    VerticalDivider(width: 1, color: GPColors.glassEdge),
+                    Expanded(child: pages),
+                  ],
+                )
+              : pages,
+          // Phones in portrait get the bottom bar; wide screens and phones turned sideways use the side rail instead.
+          bottomNavigationBar: rail
+              ? null
+              : DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: GPColors.surface,
+                    border: Border(top: BorderSide(color: GPColors.glassEdge)),
+                  ),
+                  child: BottomNavigationBar(
+                    currentIndex: _index,
+                    onTap: (i) => setState(() => _index = i),
+                    type: BottomNavigationBarType.fixed,
+                    selectedItemColor: _accent,
+                    unselectedItemColor: GPColors.ink2,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    selectedIconTheme: const IconThemeData(size: 24),
+                    unselectedIconTheme: const IconThemeData(size: 24),
+                    selectedLabelStyle: const TextStyle(fontSize: 12),
+                    unselectedLabelStyle: const TextStyle(fontSize: 12),
+                    items: [
+                      for (int i = 0; i < tabs.length; i++)
+                        BottomNavigationBarItem(
+                          icon: Icon(i == _index ? tabs[i].iconFilled : tabs[i].iconOutlined),
+                          label: trs(tabs[i].label),
+                        ),
+                    ],
+                  ),
+                ),
         );
       },
     );
