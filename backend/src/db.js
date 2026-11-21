@@ -12,7 +12,8 @@ types.setTypeParser(1082, (v) => v);
 const needsSsl = /sslmode=require|neon\.tech/i.test(config.databaseUrl);
 const pool = new Pool({
   connectionString: config.databaseUrl,
-  ssl: needsSsl ? { rejectUnauthorized: false } : undefined,
+  // Verify the server certificate (Neon uses a public CA). Set DB_SSL_INSECURE=true only for a self-signed database.
+  ssl: needsSsl ? { rejectUnauthorized: process.env.DB_SSL_INSECURE !== 'true' } : undefined,
   max: 5,
 });
 

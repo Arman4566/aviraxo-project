@@ -7,6 +7,7 @@ import '../data/repositories/receivables_repo.dart';
 import '../l10n/strings.dart';
 import '../theme/gp_colors.dart';
 import '../widgets/charts.dart';
+import '../core/responsive.dart';
 
 /// Business analytics: KPIs against the previous period, trends, rankings and splits.
 class AnalyticsScreen extends StatefulWidget {
@@ -56,7 +57,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         builder: (context, snap) {
           if (snap.connectionState != ConnectionState.done) return const Center(child: CircularProgressIndicator());
           if (snap.hasError) {
-            return Center(
+            return ScrollCenter(
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [

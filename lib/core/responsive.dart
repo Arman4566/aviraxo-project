@@ -76,3 +76,21 @@ class ScrollFill extends StatelessWidget {
         ),
       );
 }
+
+
+/// Like [Center], but scrolls when the content is taller than the space
+/// (short landscape screens, open keyboard, large text) instead of overflowing.
+class ScrollCenter extends StatelessWidget {
+  const ScrollCenter({super.key, required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, box) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: box.maxHeight.isFinite ? box.maxHeight : 0),
+            child: Center(child: child),
+          ),
+        ),
+      );
+}

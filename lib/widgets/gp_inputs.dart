@@ -73,7 +73,7 @@ class GPDropdownField extends StatelessWidget {
           key: ValueKey(value),
           initialValue: value,
           decoration: InputDecoration(hintText: hint),
-          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          items: (value == null || items.contains(value) ? items : [value!, ...items]).map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: onChanged,
         ),
       ],

@@ -28,6 +28,7 @@ async function provisionUser(claims) {
 
 /** Verifies the Firebase ID token and sets req.user = { id, firebaseUid, email }. */
 const requireAuth = asyncHandler(async (req, _res, next) => {
+  if (req.user) return next();                 // already verified earlier in the chain (large-body routes authenticate first)
   const h = req.headers.authorization || '';
   const token = h.startsWith('Bearer ') ? h.slice(7).trim() : '';
   if (!token) throw unauthorized('Missing token');
@@ -35,7 +36,7 @@ const requireAuth = asyncHandler(async (req, _res, next) => {
   let claims;
   if (config.devAuth && token.startsWith('dev:')) {
     const [, name, email] = token.split(':');
-    claims = { sub: `dev:${name}`, email: email || null, name };
+    claims = { sub: `dev:${name}`, email: email || null, name, email_verified: true };
   } else {
     try {
       claims = await verifyFirebaseIdToken(token, { projectId: config.firebaseProjectId });
@@ -45,7 +46,9 @@ const requireAuth = asyncHandler(async (req, _res, next) => {
     }
   }
   const id = await provisionUser(claims);
-  req.user = { id, firebaseUid: claims.sub, email: claims.email || null };
+  // A staff invitation is matched by email, so it may only be honoured for an email the provider has verified.
+  // (Google sign-in is always verified; email+password sign-up is not until the user confirms the link.)
+  req.user = { id, firebaseUid: claims.sub, email: claims.email || null, emailVerified: claims.email_verified === true };
   next();
 });
 
@@ -71,11 +74,12 @@ async function findBusiness(userId, wanted) {
  * first joins any staff invitations sent to their email. Every business-owned query MUST filter by req.business.id.
  */
 const requireBusiness = asyncHandler(async (req, _res, next) => {
+  if (req.business) return next();
   const wanted = String(req.headers['x-business-id'] || '').trim();
   if (wanted && !UUID.test(wanted)) throw new AppError(400, 'Invalid X-Business-Id');
   let biz = await findBusiness(req.user.id, wanted || null);
   if (!biz && !wanted) {
-    await withTransaction((c) => acceptInvitesFor(c, { userId: req.user.id, email: req.user.email }));
+    if (req.user.emailVerified) await withTransaction((c) => acceptInvitesFor(c, { userId: req.user.id, email: req.user.email }));
     biz = await findBusiness(req.user.id, null);
   }
   if (!biz) {

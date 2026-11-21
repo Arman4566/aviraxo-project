@@ -24,6 +24,7 @@ import '../invoices/invoice_flow/invoice_flow.dart';
 import '../core/api_client.dart';
 import '../core/money.dart';
 import '../data/models/invoice_entity.dart';
+import '../core/responsive.dart';
 
 class DashboardScreen extends StatefulWidget {
   final OnboardingData data;
@@ -94,7 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       future: _future,
       builder: (context, snap) {
         if (snap.hasError) {
-          return Center(
+          return ScrollCenter(
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(

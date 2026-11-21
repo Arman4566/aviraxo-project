@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Text;
+import '../../core/responsive.dart';
 import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../widgets/language_picker.dart';
@@ -16,7 +17,7 @@ class OBWelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return ScrollFill(
       padding: const EdgeInsets.fromLTRB(20, 28, 20, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

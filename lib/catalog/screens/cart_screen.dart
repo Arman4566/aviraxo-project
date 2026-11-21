@@ -5,6 +5,7 @@ import '../controllers/catalog_controller.dart';
 import '../widgets/qty_stepper.dart';
 import 'order_review_screen.dart';
 import '../data/catalog_repo.dart';
+import '../../core/responsive.dart';
 
 class CartScreen extends StatelessWidget {
   final CatalogController controller;
@@ -41,7 +42,7 @@ class CartScreen extends StatelessWidget {
             surfaceTintColor: Colors.transparent,
           ),
           body: lines.isEmpty
-              ? Center(
+              ? ScrollCenter(
             child: Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(

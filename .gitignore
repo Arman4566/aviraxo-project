@@ -52,3 +52,5 @@ node_modules/
 *.apk
 *.aab
 local.properties
+# Widget Preview related
+.widget_preview/

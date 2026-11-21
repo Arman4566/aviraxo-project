@@ -357,7 +357,10 @@ class _AddEditPartyFlowState extends State<AddEditPartyFlow> {
         DropdownButtonFormField(
           key: ValueKey(_terms),
           initialValue: _terms,
-          items: const ["Immediate", "7 days", "15 days", "30 days"]
+          items: [
+            ...const ["Immediate", "7 days", "15 days", "30 days"],
+            if (!const ["Immediate", "7 days", "15 days", "30 days"].contains(_terms)) _terms,
+          ]
               .map((e) => DropdownMenuItem(value: e, child: Text(e)))
               .toList(),
           onChanged: (v) => setState(() => _terms = v as String),

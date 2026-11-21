@@ -81,7 +81,7 @@ class _InventorySettingsScreenState extends State<InventorySettingsScreen> {
     return DropdownButtonFormField(
       key: ValueKey(value),
       initialValue: value,
-      items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+      items: (items.contains(value) ? items : [value, ...items]).map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
       onChanged: (_) {},
       decoration: InputDecoration(labelText: label),
     );

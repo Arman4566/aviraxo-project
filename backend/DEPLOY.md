@@ -20,3 +20,17 @@ Free Render services sleep after ~15 min idle; the first request after that take
 ## 3. Point the Flutter app at it
 `flutter run --dart-define=API_BASE_URL=https://<service-name>.onrender.com`
 (release builds: add the same flag to `flutter build apk`).
+
+
+## Security settings (all optional, safe defaults)
+| Variable | Default | Meaning |
+|---|---|---|
+| `NODE_ENV` | - | **Must be `production`** on Render. It switches off dev tokens and hides database error details. |
+| `CORS_ORIGINS` | empty | Browser origins allowed to call the API, comma separated. Leave empty: the mobile app does not need CORS. |
+| `RATE_LIMIT_PER_MIN` | 240 | Requests per minute per client address. |
+| `HEAVY_LIMIT_PER_MIN` | 20 | Per signed-in user, for AI, exports and backups. |
+| `AUTH_FAIL_LIMIT` | 30 | Per minute per address for requests with no login token. |
+| `AI_HOURLY_LIMIT` | 40 | AI calls per business per hour. |
+| `DB_SSL_INSECURE` | unset | Only `true` for a self-signed database. Neon does not need it. |
+
+Never set `DEV_AUTH` on Render. Never commit `.env`. Rotate `GEMINI_API_KEY` and the Neon password if either was ever pasted into chat, email or a public repo.

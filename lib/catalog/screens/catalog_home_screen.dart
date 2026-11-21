@@ -8,6 +8,7 @@ import '../widgets/cart_badge_icon.dart';
 import 'product_details_screen.dart';
 import 'cart_screen.dart';
 import '../data/catalog_repo.dart';
+import '../../core/responsive.dart';
 
 class CatalogHomeScreen extends StatefulWidget {
   final CatalogController controller;
@@ -168,7 +169,7 @@ class _EmptyCatalog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return ScrollCenter(
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(

@@ -8,6 +8,7 @@ import '../l10n/strings.dart';
 import '../theme/gp_colors.dart';
 import 'reminder_rules_screen.dart';
 import 'reminder_sheet.dart';
+import '../core/responsive.dart';
 
 /// "Money to collect": who owes you, how old it is, and one-tap reminders. This is the screen the owner opens every morning.
 class ReceivablesScreen extends StatefulWidget {
@@ -62,7 +63,7 @@ class _ReceivablesScreenState extends State<ReceivablesScreen> {
           builder: (context, snap) {
             if (snap.connectionState != ConnectionState.done) return const Center(child: CircularProgressIndicator());
             if (snap.hasError) {
-              return Center(
+              return ScrollCenter(
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Text('${snap.error}'.replaceFirst('Exception: ', '')),
                   TextButton(onPressed: _refresh, child: Text(tr('retry'))),

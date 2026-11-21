@@ -6,6 +6,7 @@ import '../../theme/gp_colors.dart';
 import '../models/party_model.dart';
 import '../widgets/party_list_tile.dart';
 import '../widgets/party_filters_sheet.dart';
+import '../../core/responsive.dart';
 
 class PartiesListScreen extends StatelessWidget {
   final bool isRetail;
@@ -112,7 +113,7 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return ScrollCenter(
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(

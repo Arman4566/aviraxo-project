@@ -36,8 +36,12 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
       if (email.isEmpty || !email.contains("@")) {
         throw Exception("Enter a valid email.");
       }
-      if (pass.length < 6) {
-        throw Exception("Password should be at least 6 characters.");
+      if (!isLogin &&
+          (pass.length < 8 || !RegExp(r'[A-Za-z]').hasMatch(pass) || !RegExp(r'\d').hasMatch(pass))) {
+        throw Exception("Use at least 8 characters with a letter and a number.");
+      }
+      if (pass.isEmpty) {
+        throw Exception("Enter your password.");
       }
 
       if (isLogin) {

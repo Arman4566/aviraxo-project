@@ -10,7 +10,7 @@ let cache = { certs: null, expires: 0 };
 
 async function fetchGoogleCerts() {
   if (cache.certs && Date.now() < cache.expires) return cache.certs;
-  const res = await fetch(CERT_URL);
+  const res = await fetch(CERT_URL, { signal: AbortSignal.timeout(8000) });
   if (!res.ok) throw new Error(`Could not load Firebase certificates (${res.status})`);
   const maxAge = Number(/max-age=(\d+)/.exec(res.headers.get('cache-control') || '')?.[1] || 3600);
   cache = { certs: await res.json(), expires: Date.now() + maxAge * 1000 };

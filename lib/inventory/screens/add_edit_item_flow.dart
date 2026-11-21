@@ -275,7 +275,7 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
   }
 
   Widget _step1Basic() {
-    final categories = const [
+    final categories = <String>[
       "Electronics",
       "Mobile",
       "FMCG",
@@ -285,8 +285,22 @@ class _AddEditItemFlowState extends State<AddEditItemFlow> {
       "Stationery",
       "Other"
     ];
-    final units =
-    widget.stockEnabled ? const ["pcs", "kg", "box", "litre"] : const ["service", "job", "hour"];
+    final units = <String>[
+      ...(widget.stockEnabled
+          ? const ["pcs", "kg", "box", "litre"]
+          : const ["service", "job", "hour"]),
+    ];
+    // The current value must always exist in the list, otherwise the
+    // dropdown asserts (e.g. default "pcs" while in service mode, or an
+    // older item saved with a custom category/unit).
+    if (!categories.contains(_category)) categories.add(_category);
+    if (!units.contains(_unit)) {
+      if (_unit == "pcs" && !widget.stockEnabled) {
+        _unit = units.first;
+      } else {
+        units.add(_unit);
+      }
+    }
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),

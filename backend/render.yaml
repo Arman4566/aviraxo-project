@@ -11,5 +11,11 @@ services:
         value: production
       - key: FIREBASE_PROJECT_ID
         value: galla-pro-b61ef
+      - key: CORS_ORIGINS
+        value: ""            # browser origins allowed to call the API (comma separated). The mobile app needs none.
+      - key: RATE_LIMIT_PER_MIN
+        value: "240"
+      - key: HEAVY_LIMIT_PER_MIN
+        value: "20"
       - key: DATABASE_URL
         sync: false   # paste your Neon connection string in the Render dashboard

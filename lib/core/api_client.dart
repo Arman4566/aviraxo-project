@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:http/http.dart' as http;
 
 import 'outbox.dart';
@@ -40,6 +41,10 @@ class ApiClient {
   final http.Client _http = http.Client();
 
   Future<Map<String, String>> _headers() async {
+    // Release builds must talk to the server over HTTPS, otherwise the login token and business data travel in clear text.
+    if (kReleaseMode && !baseUrl.startsWith('https://')) {
+      throw ApiException('This build is not configured with a secure (https) server address.');
+    }
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) throw ApiException('Please sign in again.', status: 401);
     final token = await user.getIdToken();

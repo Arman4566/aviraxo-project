@@ -8,6 +8,7 @@ import '../models/invoice_draft.dart';
 import '../widgets/inv_add_item_sheet.dart';
 import '../widgets/inv_item_row.dart';
 import '../widgets/inv_summary_bar.dart';
+import '../../../core/responsive.dart';
 
 class InvItemsScreen extends StatefulWidget {
   final OnboardingData onboarding;
@@ -196,7 +197,7 @@ class _EmptyItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return ScrollCenter(
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(

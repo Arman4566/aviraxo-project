@@ -159,7 +159,10 @@ class ItemsListScreen extends StatelessWidget {
 
       // Price range
       final sp = it.sellingPrice;
-      if (sp < filters.priceRange.start || sp > filters.priceRange.end) return false;
+      if (filters.priceActive &&
+          (sp < filters.priceRange.start || sp > filters.priceRange.end)) {
+        return false;
+      }
 
       return true;
     }).toList();
@@ -181,6 +184,7 @@ class ItemsListScreen extends StatelessWidget {
       filters.category = updated.category;
       filters.gst = updated.gst;
       filters.priceRange = updated.priceRange;
+      filters.priceActive = updated.priceActive;
       onFiltersChanged();
     }
   }
@@ -199,7 +203,10 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return LayoutBuilder(builder: (context, box) => SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: box.maxHeight),
+        child: Center(
       child: Container(
         margin: const EdgeInsets.all(16),
         padding: const EdgeInsets.all(16),
@@ -233,7 +240,9 @@ class _EmptyState extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),
+      ),
+    ));
   }
 }
 

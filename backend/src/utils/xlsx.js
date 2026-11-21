@@ -63,7 +63,7 @@ function unzip(buf) {
   let e = buf.length - 22;
   while (e >= 0 && buf.readUInt32LE(e) !== 0x06054b50) e--;
   if (e < 0) throw new Error('Not a valid .xlsx file');
-  const count = buf.readUInt16LE(e + 10);
+  const count = Math.min(buf.readUInt16LE(e + 10), 500);
   let p = buf.readUInt32LE(e + 16);
   const out = {};
   for (let i = 0; i < count; i++) {
@@ -75,7 +75,7 @@ function unzip(buf) {
     const ds = lho + 30 + buf.readUInt16LE(lho + 26) + buf.readUInt16LE(lho + 28);
     const raw = buf.subarray(ds, ds + csize);
     if (/^xl\/(worksheets\/[^/]+\.xml|sharedStrings\.xml|workbook\.xml)$/.test(name) && raw.length < 20_000_000) {
-      out[name] = (method === 0 ? raw : zlib.inflateRawSync(raw)).toString('utf8');
+      out[name] = (method === 0 ? raw : zlib.inflateRawSync(raw, { maxOutputLength: 30_000_000 })).toString('utf8');
     }
     p += 46 + nlen + elen + clen;
   }

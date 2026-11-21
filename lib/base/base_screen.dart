@@ -272,6 +272,13 @@ class _BaseScreenState extends State<BaseScreen> {
                   children: [
                     SafeArea(
                       right: false,
+                      // The rail does not scroll by itself; in landscape the
+                      // destinations can be taller than the screen.
+                      child: LayoutBuilder(
+                        builder: (context, box) => SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(minHeight: box.maxHeight),
+                            child: IntrinsicHeight(
                       child: NavigationRail(
                         selectedIndex: _index,
                         onDestinationSelected: (i) => setState(() => _index = i),
@@ -291,6 +298,10 @@ class _BaseScreenState extends State<BaseScreen> {
                               label: Text(t.label),
                             ),
                         ],
+                      ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     VerticalDivider(width: 1, color: GPColors.glassEdge),

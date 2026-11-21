@@ -7,6 +7,7 @@ import 'invoice_flow/invoice_flow.dart';
 
 import '../data/repositories/invoice_repo.dart';
 import 'invoice_detail_screen.dart';
+import '../core/responsive.dart';
 
 class InvoicesScreen extends StatelessWidget {
   final OnboardingData data;
@@ -67,7 +68,7 @@ class InvoicesScreen extends StatelessWidget {
               builder: (context, snap) {
                 final list = (snap.data ?? []);
                 if (list.isEmpty) {
-                  return Center(
+                  return ScrollCenter(
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(

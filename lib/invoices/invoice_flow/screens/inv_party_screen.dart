@@ -12,6 +12,7 @@ import '../../../parties/screens/add_edit_party_flow.dart';
 
 import '../models/invoice_draft.dart';
 import '../widgets/inv_party_card.dart';
+import '../../../core/responsive.dart';
 
 class InvPartyScreen extends StatefulWidget {
   final OnboardingData onboarding;
@@ -270,7 +271,7 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return ScrollCenter(
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(

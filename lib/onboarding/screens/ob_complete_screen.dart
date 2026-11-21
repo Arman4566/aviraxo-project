@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Text;
+import '../../core/responsive.dart';
 import '../../l10n/gtext.dart';
 import '../../theme/gp_colors.dart';
 import '../../widgets/gp_buttons.dart';
@@ -17,7 +18,7 @@ class OBCompleteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return ScrollFill(
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
       child: Column(
         children: [

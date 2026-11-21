@@ -30,10 +30,15 @@ class AuthService {
     required String email,
     required String password,
   }) {
-    return _auth.createUserWithEmailAndPassword(
-      email: email.trim(),
-      password: password,
-    );
+    return _auth
+        .createUserWithEmailAndPassword(email: email.trim(), password: password)
+        .then((cred) async {
+      // Ask the person to confirm the address. The server only honours staff invitations for verified emails.
+      try {
+        await cred.user?.sendEmailVerification();
+      } catch (_) {}
+      return cred;
+    });
   }
 
   Future<void> _ensureGoogleInitialized() async {

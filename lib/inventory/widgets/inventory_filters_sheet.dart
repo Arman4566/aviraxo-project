@@ -61,14 +61,26 @@ class _InventoryFiltersSheetState extends State<InventoryFiltersSheet> {
             alignment: Alignment.centerLeft,
             child: Text("Price range (selling)", style: TextStyle(fontWeight: FontWeight.w900, color: GPColors.ink.withValues(alpha: 0.9))),
           ),
-          RangeSlider(
-            values: f.priceRange,
-            min: 0,
-            max: 5000,
-            divisions: 50,
-            labels: RangeLabels("₹${f.priceRange.start.toStringAsFixed(0)}", "₹${f.priceRange.end.toStringAsFixed(0)}"),
-            onChanged: (v) => setState(() => f.priceRange = v),
-          ),
+          Builder(builder: (_) {
+            var top = 1000.0;
+            for (final it in widget.items) {
+              if (it.sellingPrice > top) top = it.sellingPrice.toDouble();
+            }
+            top = (top / 100).ceil() * 100.0;
+            final start = f.priceRange.start.clamp(0.0, top).toDouble();
+            final end = (f.priceActive ? f.priceRange.end : top).clamp(start, top).toDouble();
+            return RangeSlider(
+              values: RangeValues(start, end),
+              min: 0,
+              max: top,
+              divisions: 50,
+              labels: RangeLabels("₹${start.toStringAsFixed(0)}", "₹${end.toStringAsFixed(0)}"),
+              onChanged: (v) => setState(() {
+                f.priceRange = v;
+                f.priceActive = true;
+              }),
+            );
+          }),
 
           const SizedBox(height: 10),
           Row(

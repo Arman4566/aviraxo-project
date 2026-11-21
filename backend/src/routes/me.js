@@ -9,7 +9,7 @@ const { PERMISSIONS } = require('../utils/permissions');
 // Staff invitations sent to this email are accepted here, so an invited cashier lands straight in the shop.
 router.get('/', asyncHandler(async (req, res) => {
   const { rows: u } = await query('SELECT id, email, name FROM users WHERE id = $1', [req.user.id]);
-  await withTransaction((c) => acceptInvitesFor(c, { userId: req.user.id, email: u[0] && u[0].email }));
+  if (req.user.emailVerified) await withTransaction((c) => acceptInvitesFor(c, { userId: req.user.id, email: req.user.email }));
   const { rows: b } = await query(
     `SELECT b.*, bu.role FROM businesses b JOIN business_users bu ON bu.business_id = b.id
       WHERE bu.user_id = $1 AND bu.status = 'active' ORDER BY b.created_at`, [req.user.id]);

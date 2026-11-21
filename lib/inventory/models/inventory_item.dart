@@ -109,12 +109,17 @@ class InventoryFilters {
   String gst = "All";
   RangeValues priceRange = const RangeValues(0, 5000);
 
+  /// Price filter applies only after the user moves the slider, so items
+  /// priced above the slider's range are never hidden by default.
+  bool priceActive = false;
+
   InventoryFilters copy() {
     final f = InventoryFilters();
     f.status = status;
     f.category = category;
     f.gst = gst;
     f.priceRange = priceRange;
+    f.priceActive = priceActive;
     return f;
   }
 }
